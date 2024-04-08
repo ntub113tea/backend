@@ -1,3 +1,5 @@
+import pymysql
+pymysql.install_as_MySQLdb()
 """
 Django settings for Tea project.
 
@@ -75,8 +77,12 @@ WSGI_APPLICATION = 'Tea.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': '113-407_tea',                      
+        'USER': '113407_db',                      
+        'PASSWORD': '@NtubTea11046',               
+        'HOST': '140.131.114.242',                           
+        'PORT': '3306',                           
     }
 }
 
