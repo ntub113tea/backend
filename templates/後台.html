@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>選擇您的症狀</title>
+    <style>
+        body {
+            font-family: '微軟正黑體', Arial, sans-serif;
+            background-color: #d1f0c0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            margin: 50px auto;
+            max-width: 80%;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .item {
+            display: inline-block;
+            margin: 10px;
+            cursor: pointer;
+            width: calc(30% - 20px);
+            text-align: center;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .item:hover {
+            transform: translateY(-5px);
+            transition: transform 0.3s ease;
+        }
+        .item img {
+            width: 100%;
+            height: auto;
+            border-bottom: 2px solid #ccc;
+        }
+        .item .title {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+{% load static %}
+<div class="container">
+    <h1>選擇您的症狀</h1>
+    <div class="row">
+        <a href="/index2/" class="item" id="symptom1" onclick="selectSymptom('睡不好')"> <!-- 注意这里添加了 onclick 事件 -->
+            <img src='{% static "images/睡不好.jpg" %}' alt="Item 1">
+            <div class="title">睡不好</div>
+        </a>
+
+        <a href="/index2/" class="item" id="symptom2" onclick="selectSymptom('半暝還在嗨')"> <!-- 添加 onclick 事件 -->
+            <img src='{% static "images/半暝還在嗨.jpg" %}' alt="Item 2">
+            <div class="title">半暝還在嗨</div>
+        </a>
+
+        <a href="/index2/" class="item" id="symptom3" onclick="selectSymptom('早上哈啾')"> <!-- 添加 onclick 事件 -->
+            <img src='{% static "images/早上哈啾.jpg" %}' alt="Item 3">
+            <div class="title">早上哈啾</div>
+        </a>
+    </div>
+
+    <div class="row">
+        <a href="/index2/" class="item" id="symptom4" onclick="selectSymptom('癢癢')"> <!-- 添加 onclick 事件 -->
+            <img src='{% static "images/癢癢.jpg" %}' alt="Item 4">
+            <div class="title">癢癢</div>
+        </a>
+
+        <a href="/index2/" class="item" id="symptom5" onclick="selectSymptom('胃生氣')"> <!-- 添加 onclick 事件 -->
+            <img src='{% static "images/胃生氣.jpg" %}' alt="Item 5">
+            <div class="title">胃生氣</div>
+        </a>
+
+        <a href="/index2/" class="item" id="symptom6" onclick="selectSymptom('厭世生理期')"> <!-- 添加 onclick 事件 -->
+            <img src='{% static "images/生理期.jpg" %}' alt="Item 6">
+            <div class="title">厭世生理期</div>
+        </a>
+    </div>
+</div>
+
+<script>
+    function selectSymptom(symptom) {
+        localStorage.setItem('symptom', symptom); // 将选定的症状存储到本地存储中
+    }
+</script>
+
+</body>
+</html>

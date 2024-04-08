@@ -9,7 +9,7 @@ from django.db import models
 
 
 class Customer(models.Model):
-    customer = models.OneToOneField('SymptomOfQuestion', on_delete=models.CASCADE, primary_key=True,related_name='customers')
+    customer_id = models.IntegerField(primary_key=True)
     password = models.CharField(max_length=45)
     customer_name = models.CharField(max_length=10)
     sex = models.CharField(max_length=10)
@@ -31,7 +31,7 @@ class Employee(models.Model):
 
 
 class HerbsStock(models.Model):
-    herbs = models.OneToOneField('Sale', on_delete=models.CASCADE, primary_key=True)
+    herbs = models.OneToOneField('Purchases', on_delete=models.CASCADE, primary_key=True)
     herbs_name = models.CharField(max_length=45)
     current_stock = models.FloatField()
 
@@ -41,8 +41,9 @@ class HerbsStock(models.Model):
 
 
 class Purchases(models.Model):
-    purchases = models.OneToOneField(HerbsStock, on_delete=models.CASCADE, primary_key=True)
-    purchases_value = models.IntegerField()
+    purchases_id = models.IntegerField(primary_key=True)
+    herbs_id = models.IntegerField()
+    purchases_value = models.FloatField()
     purchases_time = models.DateTimeField()
 
     class Meta:
@@ -51,7 +52,7 @@ class Purchases(models.Model):
 
 
 class Sale(models.Model):
-    customer_id = models.IntegerField(primary_key=True)
+    customer = models.OneToOneField('HerbsStock', on_delete=models.CASCADE, primary_key=True)
     product_id = models.IntegerField()
     herbs_id = models.IntegerField()
     sales_value = models.FloatField()
@@ -74,7 +75,7 @@ class Sale2(models.Model):
 
 
 class SymptomOfQuestion(models.Model):
-    customer = models.OneToOneField(Sale,on_delete=models.CASCADE, primary_key=True,related_name='symptom_questions')
+    customer = models.OneToOneField(Customer,on_delete=models.CASCADE, primary_key=True,related_name='symptom_questions')
     question_time = models.ForeignKey(Sale,on_delete=models.CASCADE, db_column='question_time',related_name='questions')
     q1 = models.IntegerField(db_column='Q1', blank=True, null=True)  # Field name made lowercase.
     q2 = models.IntegerField(db_column='Q2', blank=True, null=True)  # Field name made lowercase.
