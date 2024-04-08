@@ -57,7 +57,7 @@ ROOT_URLCONF = 'Tea.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / templates], #加上templates路徑
+        'DIRS': [BASE_DIR / 'templates'], #加上templates路徑
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

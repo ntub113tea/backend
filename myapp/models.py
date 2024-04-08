@@ -9,7 +9,7 @@ from django.db import models
 
 
 class Customer(models.Model):
-    customer = models.OneToOneField('SymptomOfQuestion', models.DO_NOTHING, primary_key=True)
+    customer = models.OneToOneField('SymptomOfQuestion', on_delete=models.CASCADE, primary_key=True,related_name='customers')
     password = models.CharField(max_length=45)
     customer_name = models.CharField(max_length=10)
     sex = models.CharField(max_length=10)
@@ -31,7 +31,7 @@ class Employee(models.Model):
 
 
 class HerbsStock(models.Model):
-    herbs = models.OneToOneField('Sale', models.DO_NOTHING, primary_key=True)
+    herbs = models.OneToOneField('Sale', on_delete=models.CASCADE, primary_key=True)
     herbs_name = models.CharField(max_length=45)
     current_stock = models.FloatField()
 
@@ -41,7 +41,7 @@ class HerbsStock(models.Model):
 
 
 class Purchases(models.Model):
-    purchases = models.OneToOneField(HerbsStock, models.DO_NOTHING, primary_key=True)
+    purchases = models.OneToOneField(HerbsStock, on_delete=models.CASCADE, primary_key=True)
     purchases_value = models.IntegerField()
     purchases_time = models.DateTimeField()
 
@@ -63,9 +63,9 @@ class Sale(models.Model):
 
 
 class Sale2(models.Model):
-    customer = models.OneToOneField(Sale, models.DO_NOTHING, primary_key=True)
-    product = models.ForeignKey(Sale, models.DO_NOTHING)
-    order_time = models.ForeignKey(Sale, models.DO_NOTHING, db_column='order_time')
+    customer = models.OneToOneField(Sale,on_delete=models.CASCADE, primary_key=True)
+    product = models.ForeignKey(Sale,on_delete=models.CASCADE,related_name='products')
+    order_time = models.ForeignKey(Sale,on_delete=models.CASCADE, db_column='order_time',related_name='order_times')
     price = models.IntegerField()
 
     class Meta:
@@ -74,8 +74,8 @@ class Sale2(models.Model):
 
 
 class SymptomOfQuestion(models.Model):
-    customer = models.OneToOneField(Sale, models.DO_NOTHING, primary_key=True)
-    question_time = models.ForeignKey(Sale, models.DO_NOTHING, db_column='question_time')
+    customer = models.OneToOneField(Sale,on_delete=models.CASCADE, primary_key=True,related_name='symptom_questions')
+    question_time = models.ForeignKey(Sale,on_delete=models.CASCADE, db_column='question_time',related_name='questions')
     q1 = models.IntegerField(db_column='Q1', blank=True, null=True)  # Field name made lowercase.
     q2 = models.IntegerField(db_column='Q2', blank=True, null=True)  # Field name made lowercase.
     q3 = models.IntegerField(db_column='Q3', blank=True, null=True)  # Field name made lowercase.
