@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>庫存資料表</title>
+</head>
+<body>
+    <h2>庫存資料</h2><!-- <h3><a href="/purchasepostform/">新增資料</a></h3> -->
+    <table border="1" cellpadding="4" cellspacing="1">
+        <th>藥草id</th><th>藥草名稱</th><th>庫存數量</th><th>編輯</th>
+        {% for Purchase in purchases %}
+            <tr>
+                <td>{{ HerbStock.herbs_id }}</td>
+                <td>{{ HerbStock.herbs_name }}</td>
+                <td>{{ HerbStock.current_stock }}</td>
+                <!-- <td>
+                    <a href="/edit/{{HerbStock.herbs_id}}/" title="編輯"> 編輯 </a>
+                    <a href="/delete/{{HerbStock.herbs_id}}" title="刪除"> 刪除 </a>
+                </td> -->
+            </tr>
+        {% endfor %}
+    </table> 
+</body>
+</html>

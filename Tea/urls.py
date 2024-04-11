@@ -21,9 +21,13 @@ from myapp.views import index,index2,index3,perchaselist,purchasepostform
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("", views.test),
     path('index/', index),
     path('index2/', index2),
     path('index3/', index3),
     path('perchaselist/', perchaselist),
-    path('purchasepostform/', purchasepostform)
+    path('purchasepostform/', purchasepostform),
+    path('delete/<int:id>', views.delete),
+    path('edit/<int:id>/', views.edit),
+    path('herbstocklist/',views.herbstocklist)
 ]
