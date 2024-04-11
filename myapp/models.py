@@ -30,17 +30,17 @@ class Employee(models.Model):
         db_table = 'employee'
 
 
-class HerbsStock(models.Model):
-    herbs = models.OneToOneField('Purchases', on_delete=models.CASCADE, primary_key=True)
+class HerbStock(models.Model):
+    herbs = models.OneToOneField('Purchase', on_delete=models.CASCADE, primary_key=True)
     herbs_name = models.CharField(max_length=45)
     current_stock = models.FloatField()
 
     class Meta:
         managed = False
-        db_table = 'herbs_stock'
+        db_table = 'herb_stock'
 
 
-class Purchases(models.Model):
+class Purchase(models.Model):
     purchases_id = models.IntegerField(primary_key=True)
     herbs_id = models.IntegerField()
     purchases_value = models.FloatField()
@@ -48,11 +48,11 @@ class Purchases(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'purchases'
+        db_table = 'purchase'
 
 
 class Sale(models.Model):
-    customer = models.OneToOneField('HerbsStock', on_delete=models.CASCADE, primary_key=True)
+    customer = models.OneToOneField('HerbStock', on_delete=models.CASCADE, primary_key=True)
     product_id = models.IntegerField()
     herbs_id = models.IntegerField()
     sales_value = models.FloatField()
