@@ -9,7 +9,7 @@ class HerbStockAdmin(admin.ModelAdmin):
     list_filter=('herbs_name',)
 
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display=('purchases_id','herbs_id','purchases_value','purchases_time')
+    list_display=('purchases_id','herbs_name','purchases_value','purchases_time')
     #list_filter()
     ordering=('purchases_id',)
 

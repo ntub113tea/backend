@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<head>
+    <title>資料新增(進貨)</title>
+</head>
+<body>
+    <h2>新增進貨資料</h2>
+    <form action="." method="post" name="purchasespostform">
+        {% csrf_token %}
+        <table border="1" cellspacing="1" cellpadding="4">
+            <tr>
+                <th>藥草名稱</th>
+                <td>
+                    <label for="herbs">選擇藥草：</label>
+                        <select id="herbs" name="herbs">
+                            <option value="魚腥草">魚腥草</option>
+                            <option value="白鶴靈芝">白鶴靈芝</option>
+                            <option value="積雪草">積雪草</option>
+                            <option value="金銀花">金銀花</option>
+                            <option value="蒲公英">蒲公英</option>
+                        </select>
+                </td>
+            </tr>
+            <tr>
+                <th>數量(公克)</th><td><input type="text" id="value" name="value"></td>
+            </tr>
+            <tr>
+                <th>時間</th>
+                <td>
+                    <label for="datetime">選擇日期＆時間：</label>
+                        <input type="datetime-local" id="datetime" name="datetime">
+                </td>
+            </tr>
+            <tr>
+                <th colspan="2" align="center">
+                    <input type="submit" name="button" id="buttom" value="送出">
+                    <input type="reset" name="buttom2" id="buttom2" value="重設">
+                </th>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

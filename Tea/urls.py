@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myapp import views
-from myapp.views import index,index2,index3,perchaselist
+from myapp.views import index,index2,index3,perchaselist,purchasepostform
 
 
 urlpatterns = [
@@ -24,5 +24,6 @@ urlpatterns = [
     path('index/', index),
     path('index2/', index2),
     path('index3/', index3),
-    path('perchaselist/', perchaselist)
+    path('perchaselist/', perchaselist),
+    path('purchasepostform/', purchasepostform)
 ]
