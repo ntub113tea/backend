@@ -1,18 +1,36 @@
 from django.shortcuts import render, redirect
 from myapp.models import Purchase
 from myapp import models
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.contrib import auth
 
 def test(request):
     return render(request,"123.html")
 
 def index(request):
-    return render(request,"後台.html")
+    return render(request,"index.html")
 
-def index2(request):
-    return render(request,"甜度冰塊.html")
+def login(request): #登入
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/index/')
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = auth.authenticate(username=username, password=password)
+    if user is not None and user.is_active:
+        auth.login(request, user)
+        return HttpResponseRedirect('/index/')
+    else:
+        return render(request, 'login.html', locals())
+    
+def logout(request): #登出
+    auth.logout(request)
+    return HttpResponseRedirect('/index/')
+    
+def CustomizationForm(request): #客製化表單
+    return render(request,"使用者表單.html")
 
-def index3(request):
-    return render(request,"選的飲料.html")
+#--------------------------------------------------------------------------進貨表單
 
 def perchaselist(request): #進貨表單設定
     purchases = Purchase.objects.all().order_by('purchases_id')

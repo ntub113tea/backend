@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    font-family: '標楷體', Arial, sans-serif;
+    position: relative; /* 添加相對定位 */
+    padding: 20px 50px; /* 为页面添加上下各 20px，左右各 50px 的内边距 */
+    background-color: #d1f0c0;
+}
+
+.scale {
+    display: flex;
+    flex-wrap: wrap; /* 新增，使得元素在空間不足時可以換行 */
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* 新增以下樣式 */
+.scale > div {
+    flex-basis: calc(50% - 5px); /* 將元素寬度設置為父元素的一半，減去間隔 */
+    margin-right: 10px; /* 新增右側間距 */
+}
+
+.scale > div:nth-child(2n) {
+    margin-right: 0; /* 將第二個元素的右邊距設置為0，以免與右側邊界重疊 */
+}
+
+.scale span {
+    font-weight: bold;
+    font-size: 20px;
+}
+.active { /*按鈕*/
+    background-color: #265cdc;
+    color: white;
+}
+
+
+
+footer { /*版權所有 © 專屬你的草本茶飲*/
+background-color: #4CAF50;
+text-align: center;
+padding: 8px 0; /* 调整页脚的上下内边距 */
+position: relative; /* 相对定位 */
+width: calc(100% - 20px); /* 计算页脚的宽度 */
+margin: 0px; /* 为页脚添加左右边距 */
+}
+
+/* 占位符元素 */
+.footer-placeholder {
+height: 50px; /* 调整为与 footer 高度相同 */
+}
+
+.green-background { /*專屬你的草本茶飲*/
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 30px;
+}
+.center-image {
+    display: block;
+    margin: 0 auto; /* 将左右边距设置为 auto，使图像水平居中 */
+}
+

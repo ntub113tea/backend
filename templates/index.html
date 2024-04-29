@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+    <title>侍茶師</title>
+</head>
+<body>
+    <h2>歡迎來到侍茶師</h2>
+        {% if request.user.is_authenticated %}
+            <p>
+                {{request.user}} 您已經登入囉
+                <a href="/accounts/logout/">登出</a>
+            </p>
+            <a href="/customizationform/">客製化表單</a>
+        {% else %}
+            <p>您尚未登入喔~<a href="/accounts/login/">登入</a></p>
+        {% endif %}
+</body>
+</html>

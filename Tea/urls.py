@@ -16,17 +16,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myapp import views
-from myapp.views import index,index2,index3,perchaselist,purchasepostform
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.test),
-    path('index/', index),
-    path('index2/', index2),
-    path('index3/', index3),
-    path('perchaselist/', perchaselist),
-    path('purchasepostform/', purchasepostform),
+    path('index/', views.index),
+    path('accounts/login/', views.login),
+    path('accounts/logout/', views.logout),
+    path('accounts/profile/', views.index),
+    path('customizationform/', views.CustomizationForm),
+    path('perchaselist/', views.perchaselist),
+    path('purchasepostform/', views.purchasepostform),
     path('delete/<int:id>', views.delete),
     path('edit/<int:id>/', views.edit),
     path('herbstocklist/',views.herbstocklist)
