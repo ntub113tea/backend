@@ -31,8 +31,8 @@ class Employee(models.Model):
 
 
 class HerbStock(models.Model):
-    herbs_id = models.IntegerField(primary_key=True)
-    herbs_name = models.OneToOneField('Purchase', on_delete=models.CASCADE)
+    herbs = models.OneToOneField('Purchase', on_delete=models.CASCADE, primary_key=True)
+    herbs_name = models.CharField(max_length=10)
     current_stock = models.FloatField()
 
     class Meta:
@@ -42,6 +42,7 @@ class HerbStock(models.Model):
 
 class Purchase(models.Model):
     purchases_id = models.IntegerField(primary_key=True,editable=False)
+    herbs_id = models.IntegerField()
     herbs_name = models.CharField(max_length=10)
     purchases_value = models.FloatField()
     purchases_time = models.DateTimeField()

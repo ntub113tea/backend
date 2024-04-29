@@ -6,10 +6,11 @@
 <body>
     <h2>進貨資料</h2><h3><a href="/purchasepostform/">新增資料</a></h3>
     <table border="1" cellpadding="4" cellspacing="1">
-        <th>進貨id</th><th>藥草</th><th>進貨數量</th><th>進貨時間</th><th>編輯</th>
-        {% for Purchase in purchases %}
+        <th>進貨id</th><th>料號</th><th>藥草</th><th>進貨數量</th><th>進貨時間</th><th>編輯</th>
+        {% for Purchase in purchases %} 
             <tr>
                 <td>{{ Purchase.purchases_id }}</td>
+                <td>{{ Purchase.herbs_id }}</td>
                 <td>{{ Purchase.herbs_name }}</td>
                 <td>{{ Purchase.purchases_value }}</td>
                 <td>{{ Purchase.purchases_time }}</td>

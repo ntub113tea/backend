@@ -3,54 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
     <title>選擇您的症狀</title>
-    <style>
-        body {
-            font-family: '微軟正黑體', Arial, sans-serif;
-            background-color: #d1f0c0;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-        .container {
-            margin: 50px auto;
-            max-width: 80%;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        .item {
-            display: inline-block;
-            margin: 10px;
-            cursor: pointer;
-            width: calc(30% - 20px);
-            text-align: center;
-            background-color: #fff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .item:hover {
-            transform: translateY(-5px);
-            transition: transform 0.3s ease;
-        }
-        .item img {
-            width: 100%;
-            height: auto;
-            border-bottom: 2px solid #ccc;
-        }
-        .item .title {
-            margin: 10px 0;
-            font-size: 18px;
-            color: #333;
-        }
-    </style>
-</head>
+    <link rel="stylesheet" href="{% static 'css/後台.css' %}">
+    
 <body>
 {% load static %}
 <div class="container">
