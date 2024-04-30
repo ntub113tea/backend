@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from myapp.models import Purchase
+from myapp.models import Purchase,Sale,HerbStock
 from myapp import models
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
+from django.contrib.auth.forms import UserCreationForm
+from datetime import datetime
 
 def test(request):
     return render(request,"123.html")
@@ -11,7 +13,42 @@ def test(request):
 def index(request):
     return render(request,"index.html")
 
-def login(request): #登入
+def pos(request):
+
+    symptom = request.COOKIES.get('finalsymptom')
+
+    if symptom:
+        customer = 0
+        sale_value = 2.5
+        time = datetime.now().strftime("%Y-%m-%d %H:%M")
+        if symptom == "星夜寧靜":
+            product = "星夜寧靜"
+            herb = HerbStock.objects.get(herbs=1)
+        elif symptom == "宵福調和":
+            product = "宵福調和"
+            herb = HerbStock.objects.get(herbs=2)
+        elif symptom == "鼻福寧茶":
+            product = "鼻福寧茶"
+            herb = HerbStock.objects.get(herbs=3)
+        elif symptom == "悅膚寧茶":
+            product = "悅膚寧茶"
+            herb = HerbStock.objects.get(herbs=4)
+        elif symptom == "慰胃來茶":
+            product = "慰胃來茶"
+            herb = HerbStock.objects.get(herbs=5)
+        else: #月悅茶
+            product = "月悅茶" 
+            herb = HerbStock.objects.get(herbs=6)
+        
+        Sale.objects.create(customer_id=customer,product_name=product,herbs=herb,sales_value=sale_value,order_time=time)
+        return redirect('//')
+    else:
+        message = '請輸入資料'
+    return render(request,"POS介面.html",locals())
+
+#----------------------------------------------------登入登出註冊
+
+def login(request): #用戶登入
     if request.user.is_authenticated:
         return HttpResponseRedirect('/index/')
     username = request.POST.get('username', '')
@@ -23,9 +60,19 @@ def login(request): #登入
     else:
         return render(request, 'login.html', locals())
     
-def logout(request): #登出
+def logout(request): #用戶登出
     auth.logout(request)
     return HttpResponseRedirect('/index/')
+
+def register(request): #用戶註冊
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            return HttpResponseRedirect('/accounts/login/')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', locals())
     
 def CustomizationForm(request): #客製化表單
     return render(request,"使用者表單.html")

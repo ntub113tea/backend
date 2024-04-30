@@ -41,7 +41,7 @@ class HerbStock(models.Model):
 
 
 class Purchase(models.Model):
-    purchases_id = models.IntegerField(primary_key=True,editable=False)
+    purchases_id = models.IntegerField(primary_key=True,editable=False) #editable此值不可改動 因為有自動+1
     herbs_id = models.IntegerField()
     herbs_name = models.CharField(max_length=10)
     purchases_value = models.FloatField()
@@ -53,9 +53,10 @@ class Purchase(models.Model):
 
 
 class Sale(models.Model):
-    customer = models.OneToOneField('HerbStock', on_delete=models.CASCADE, primary_key=True)
-    product_id = models.IntegerField()
-    herbs_id = models.IntegerField()
+    sale_id = models.IntegerField(primary_key=True,editable=False)
+    customer_id = models.IntegerField()
+    product_name = models.CharField(max_length=10)
+    herbs = models.OneToOneField('HerbStock', on_delete=models.CASCADE,)
     sales_value = models.FloatField()
     order_time = models.DateTimeField()
 

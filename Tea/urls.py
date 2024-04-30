@@ -21,10 +21,12 @@ from myapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", views.test),
+    path("pos/", views.pos),
     path('index/', views.index),
     path('accounts/login/', views.login),
     path('accounts/logout/', views.logout),
     path('accounts/profile/', views.index),
+    path('accounts/register/', views.register),
     path('customizationform/', views.CustomizationForm),
     path('perchaselist/', views.perchaselist),
     path('purchasepostform/', views.purchasepostform),
