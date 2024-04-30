@@ -32,5 +32,6 @@ urlpatterns = [
     path('purchasepostform/', views.purchasepostform),
     path('delete/<int:id>', views.delete),
     path('edit/<int:id>/', views.edit),
-    path('herbstocklist/',views.herbstocklist)
+    path('herbstocklist/',views.herbstocklist),
+    path('salelist/',views.salelist)
 ]

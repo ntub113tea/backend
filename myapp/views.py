@@ -13,6 +13,8 @@ def test(request):
 def index(request):
     return render(request,"index.html")
 
+#--------------------------------------------pos系統(非客製化)
+
 def pos(request):
 
     symptom = request.COOKIES.get('finalsymptom')
@@ -29,16 +31,16 @@ def pos(request):
             herb = HerbStock.objects.get(herbs=2)
         elif symptom == "鼻福寧茶":
             product = "鼻福寧茶"
-            herb = HerbStock.objects.get(herbs=3)
+            herb = HerbStock.objects.get(herbs=4)
         elif symptom == "悅膚寧茶":
             product = "悅膚寧茶"
-            herb = HerbStock.objects.get(herbs=4)
+            herb = HerbStock.objects.get(herbs=6)
         elif symptom == "慰胃來茶":
             product = "慰胃來茶"
-            herb = HerbStock.objects.get(herbs=5)
+            herb = HerbStock.objects.get(herbs=3)
         else: #月悅茶
             product = "月悅茶" 
-            herb = HerbStock.objects.get(herbs=6)
+            herb = HerbStock.objects.get(herbs=10)
         
         Sale.objects.create(customer_id=customer,product_name=product,herbs=herb,sales_value=sale_value,order_time=time)
         return redirect('//')
@@ -123,6 +125,12 @@ def edit(request,id=None): #編輯進貨資料
 def herbstocklist(request): #庫存表單設定
     herbs = models.HerbStock.objects.all().order_by('herbs_id')
     return render(request, "herbstocklist.html", locals())
+
+#----------------------------------------銷售表單
+
+def salelist(request): #庫存表單設定
+    sales = Sale.objects.all().order_by('sale_id')
+    return render(request, "salelist.html", locals())
 
         
 

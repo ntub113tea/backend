@@ -15,8 +15,8 @@ class PurchaseAdmin(admin.ModelAdmin):
     ordering=('purchases_id',)
 
 class SaleAdmin(admin.ModelAdmin):
-    list_display=('sale_id','customer_id','product_name','order_time')
-    ordering=('order_time',)
+    list_display=('sale_id','customer_id','herbs_id','product_name','order_time')
+    ordering=('sale_id',)
 
 # Register your models here.
 admin.site.register(HerbStock,HerbStockAdmin)

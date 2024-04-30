@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>銷售資料表</title>
+</head>
+<body>
+    <h2>銷售資料</h2><!-- <h3><a href="/purchasepostform/">新增資料</a></h3> -->
+    <table border="1" cellpadding="4" cellspacing="1">
+        <th>銷售id</th><th>顧客id</th><th>商品名稱</th><th>使用藥草料號</th><th>使用量(g)</th><th>點餐時間</th>
+        {% for Sale in sales %}
+            <tr>
+                <td>{{ Sale.sale_id }}</td>
+                <td>{{ Sale.customer_id }}</td>
+                <td>{{ Sale.product_name }}</td>
+                <td>{{ Sale.herbs.herbs_id }}</td>
+                <td>{{ Sale.sales_value }}</td>
+                <td>{{ Sale.order_time }}</td>
+                <!-- <td>
+                    <a href="/edit/{{HerbStock.herbs_id}}/" title="編輯"> 編輯 </a>
+                    <a href="/delete/{{HerbStock.herbs_id}}" title="刪除"> 刪除 </a>
+                </td> -->
+            </tr>
+        {% endfor %}
+    </table> 
+</body>
+</html>
