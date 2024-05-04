@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth.forms import UserCreationForm
 from datetime import datetime
-
+from .form import PostForm
 def test(request):
     return render(request,"123.html")
 
@@ -85,17 +85,22 @@ def perchaselist(request): #進貨表單設定
     purchases = Purchase.objects.all().order_by('purchases_id')
     return render(request, "purchaselist.html", locals())
 
-def purchasepostform(requset): #新增進貨資料
-    if requset.method == "POST":
-        herbs = requset.POST['herbs']
-        herbsid = requset.POST['herbsid']
-        value = requset.POST['value']
-        datetime = requset.POST['datetime']
-        unit = Purchase.objects.create(herbs_name=herbs, herbs_id=herbsid, purchases_value=value, purchases_time=datetime)
-        return redirect('/perchaselist/')
+def purchasepostform(request): #新增進貨資料
+    if request.method == "POST":
+        postform=PostForm(request.POST)
+        if postform.is_valid():
+            herbs_name = postform.cleaned_data['herbs_name']
+            herbs_id =postform.cleaned_data['herbs_id']
+            purchases_value = postform.cleaned_data['purchases_value']
+            purchases_time =postform.cleaned_data['purchases_time']
+            unit = Purchase.objects.create(herbs_name=herbs_name, herbs_id=herbs_id, purchases_value=purchases_value, purchases_time=purchases_time) 
+            return redirect('/perchaselist/')
+        else:
+            message='驗證碼錯誤'
     else:
         message = '請輸入資料'
-    return render(requset, "purchasepostform.html",locals()) 
+        postform=PostForm()
+    return render(request, "purchasepostform.html",locals()) 
 
 def delete(request,id=None): #刪除進貨資料
     if id!=None:
