@@ -1,13 +1,112 @@
 <!DOCTYPE html>
+<html>
 <head>
     <title>註冊</title>
+    <style>
+        .inline-radio label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .input-field {
+            display: flex;
+            align-items: center; /* 輸入框跟提示訊息在同一線上 */
+            margin-bottom: 20px; 
+        }
+        .error-message {
+            color: red;
+            margin-left: 10px; 
+        }
+        p, .input-field {
+        margin-bottom: 20px; 
+        }
+        .toggle-password {
+        background-color: #000000;  
+        color: white;               
+        border: none;               
+        border-radius: 5px;         
+        padding: 5px 10px;         
+        cursor: pointer;            
+        outline: none;              
+        font-size: 14px;            
+        }
+    </style>
 </head>
 <body>
     <h1>註冊新帳號</h1>
-        <form action="" method="post">
+    <form action="" method="post" >
         {% csrf_token %}
-            {{ form.as_p }}
+        <div>
+        {{ form.customer_id.label_tag }}
+        </div>
+        <div class="input-field">
+        {{ form.customer_id }}
+        {% if form.customer_id.errors %}
+        <span class="error-message">{{ form.customer_id.errors.as_text }}</span>
+        {% endif %}
+        </div>
+        <p>
+            {{ form.password.label_tag }}<br>
+            {{ form.password}}
+            <button type="button" onclick="togglePassword()" class="toggle-password">查看密碼</button>
+        </p>
+        <div>
+            {{ form.password_confirmation.label_tag }}
+        </div>
+        <div class="input-field">
+            {{ form.password_confirmation }}
+            {% if form.password_confirmation.errors %}
+            <span class="error-message">{{ form.password_confirmation.errors}}</span>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.customer_name.label_tag }} 
+        </div>
+        <div class="input-field">
+            {{ form.customer_name }}
+            {% if form.customer_name.errors %}
+                <span class="error-message">{{ form.customer_name.errors }}</span>
+            {% endif %}
+        </div>
+        <p>
+            {{ form.age.label_tag }}<br>
+            {{ form.age }}
+            
+        </p>
+        <p>
+            {{ form.line_id.label_tag }}<br>
+            {{ form.line_id }}
+        </p>
+        <p>
+            <div class="input-field">
+                {{ form.sex.label_tag }}
+                <div class="inline-radio">
+                    {% for radio in form.sex %}
+                        <label>
+                            {{ radio.tag }}
+                            {{ radio.choice_label }}
+                        </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </p>
+        <p>
             <input type="submit" value="註冊">
-        </form> 
+            <button type="button" onclick="window.location.href='/index/';">返回登入</button>
+        </p>
+        
+    </form> 
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById('password');
+            var toggleButton = document.querySelector('.toggle-password');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.textContent = '隱藏密碼';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = '查看密碼';
+            }
+        }
+    </script>
 </body>
 </html>
