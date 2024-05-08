@@ -98,18 +98,19 @@ def purchasepostform(request): #新增進貨資料
     if request.method == "POST":
         postform=PostForm(request.POST)
         if postform.is_valid():
-            herbs_name = postform.cleaned_data['herbs_name']
-            herbs_id =postform.cleaned_data['herbs_id']
+            herbs_id = postform.cleaned_data['herbs_name']
+            herbs_name = dict(PostForm.HERBS_CHOICES).get(herbs_id, "Unknown Herb")
             purchases_value = postform.cleaned_data['purchases_value']
             purchases_time =postform.cleaned_data['purchases_time']
-            unit = Purchase.objects.create(herbs_name=herbs_name, herbs_id=herbs_id, purchases_value=purchases_value, purchases_time=purchases_time) 
+            if herbs_id:  # 确保herbs_id非空
+                unit = Purchase.objects.create(herbs_name=herbs_name, herbs_id=herbs_id, purchases_value=purchases_value, purchases_time=purchases_time)
             return redirect('/perchaselist/')
         else:
-            message='驗證碼錯誤'
+            message = postform.errors.get('herbs_name', ['請檢查輸入的數據'])[0]  # 藥草名稱錯誤訊息
     else:
         message = '請輸入資料'
         postform=PostForm()
-    return render(request, "purchasepostform.html",locals()) 
+    return render(request, "purchasepostform.html", {'postform': postform, 'message': message})
 
 def delete(request,id=None): #刪除進貨資料
     if id!=None:

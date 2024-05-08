@@ -16,12 +16,11 @@
             <tr>
                 <th>藥草名稱</th>
                 <td>
-                    <label for="herbs">選擇藥草：</label>
                     {{ postform.herbs_name}}
                 </td>
             </tr>
             <tr>
-                <th>料號</th><td>{{ postform.herbs_id}}</td>
+                <th>料號</th> <td><input type="text" id="herbs_id_display" name="herbs_id" ></td>
             </tr>
             <tr>
                 <th>數量(公克)</th><td>{{ postform.purchases_value}}</td>
@@ -44,6 +43,17 @@
             <tr><td colspan="2" class='center-text'>{{ message }}</td></tr>
         {% endif %}
         </table>
+    <script>
+        document.getElementById('id_herbs_name').addEventListener('change', function() {
+            var herbsId = this.value;
+            if (herbsId) {
+                document.getElementById('herbs_id_display').value = herbsId;
+            } else {
+                document.getElementById('herbs_id_display').value = '';  // 清空输入框
+            }
+        });
+    </script>
+        
     </form>
 </body>
 </html>
