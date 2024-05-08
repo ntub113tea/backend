@@ -12,13 +12,14 @@ from django.utils import timezone
 class CustomerManager(BaseUserManager):
     def create_user(self, customer_id, password=None, **extra_fields):
         if not customer_id:
-            raise ValueError('Customers must have an ID')
+            raise ValueError('The Customer ID must be set')
+        
         user = self.model(customer_id=customer_id, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, customer_id, password, **extra_fields):
+    def create_superuser(self, customer_id, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
 
@@ -26,8 +27,11 @@ class CustomerManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
 
         return self.create_user(customer_id, password, **extra_fields)
+    def has_module_perms(self, app_label):
+        # 在这里实现 has_module_perms 方法逻辑
+        return True
 
-class Customer(AbstractBaseUser):
+class Customer(AbstractBaseUser,PermissionsMixin):
     GENDER_CHOICES = (
         ('男', '男'),
         ('女', '女'),
@@ -41,6 +45,7 @@ class Customer(AbstractBaseUser):
     last_login = models.DateTimeField('last login', default=timezone.now, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     
     objects = CustomerManager()
 
