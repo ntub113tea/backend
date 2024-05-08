@@ -4,6 +4,12 @@
 </head>
 <body>
     <h2>新增進貨資料</h2>
+    <style>
+        .center-text {
+            text-align: center;
+            color: red; 
+        }
+    </style>
     <form action="." method="post" name="purchasespostform">
         {% csrf_token %}
         <table border="1" cellspacing="1" cellpadding="4">
@@ -11,43 +17,32 @@
                 <th>藥草名稱</th>
                 <td>
                     <label for="herbs">選擇藥草：</label>
-                        <select id="herbs" name="herbs">
-                            <option value="魚腥草">魚腥草</option>
-                            <option value="白鶴靈芝">白鶴靈芝</option>
-                            <option value="積雪草">積雪草</option>
-                            <option value="金銀花">金銀花</option>
-                            <option value="蒲公英">蒲公英</option>
-                            <option value="忍冬">忍冬</option>
-                            <option value="野茄樹">野茄樹</option>
-                            <option value="金錢薄荷">金錢薄荷</option>
-                            <option value="紫蘇">紫蘇</option>
-                            <option value="鴨舌癀">鴨舌癀</option>
-                            <option value="益母草">益母草</option>
-                            <option value="薄荷">薄荷</option>
-                            <option value="甜菊">甜菊</option>
-                            <option value="咸豐草">咸豐草</option>
-                        </select>
+                    {{ postform.herbs_name}}
                 </td>
             </tr>
             <tr>
-                <th>料號</th><td><input type="number" id="herbsid" name="herbsid"></td>
+                <th>料號</th><td>{{ postform.herbs_id}}</td>
             </tr>
             <tr>
-                <th>數量(公克)</th><td><input type="text" id="value" name="value"></td>
+                <th>數量(公克)</th><td>{{ postform.purchases_value}}</td>
             </tr>
             <tr>
                 <th>時間</th>
                 <td>
                     <label for="datetime">選擇日期＆時間：</label>
-                        <input type="datetime-local" id="datetime" name="datetime">
+                    {{ postform.purchases_time }}
                 </td>
             </tr>
+            
             <tr>
                 <th colspan="2" align="center">
                     <input type="submit" name="button" id="button" value="送出">
                     <input type="reset" name="button2" id="button2" value="重設">
                 </th>
             </tr>
+            {% if message %}
+            <tr><td colspan="2" class='center-text'>{{ message }}</td></tr>
+        {% endif %}
         </table>
     </form>
 </body>

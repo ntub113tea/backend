@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<head>
-    <title>登入</title>
-</head>
-<body>
-    <form action="" method="post">
-        {% csrf_token %}
-        <label for="username">用戶名稱:</label>
-        <input type="text" name="username" value="" id="username"> <br/>
-        <label for="password">用戶密碼:</label>
-        <input type="password" name="password" value="" id="password"> <br/>
-        <input type="submit" value="登入" />
-    </form>
-</body>
-</html>
+
+
+
+{% block content %}
+<h1>顧客登入</h1>
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">登入</button>
+    <button type="button" onclick="window.location.href='/index/';">返回首頁</button>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</form>
+{% endblock %}

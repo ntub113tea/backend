@@ -4,9 +4,11 @@ from myapp import models
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from datetime import datetime
-
+from .form import PostForm,CustomerRegistrationForm,LoginForm
+from django.contrib.auth.hashers import make_password #加密
 def test(request):
     return render(request,"123.html")
 
@@ -49,32 +51,39 @@ def pos(request):
     return render(request,"POS介面.html",locals())
 
 #----------------------------------------------------登入登出註冊
-
-def login(request): #用戶登入
-    if request.user.is_authenticated:
-        return HttpResponseRedirect('/index/')
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
-    user = auth.authenticate(username=username, password=password)
-    if user is not None and user.is_active:
-        auth.login(request, user)
-        return HttpResponseRedirect('/index/')
+def login_view(request): #用戶登入
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('/index/') 
+            else:
+                return render(request, 'login.html', {'form': form, 'error': '帳號或密碼輸入錯誤'})
     else:
-        return render(request, 'login.html', locals())
-    
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})   
 def logout(request): #用戶登出
     auth.logout(request)
     return HttpResponseRedirect('/index/')
 
 def register(request): #用戶註冊
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomerRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            return HttpResponseRedirect('/accounts/login/')
+            user = form.save(commit=False)
+            user.password = make_password(form.cleaned_data['password'])
+            user.save()
+            return HttpResponseRedirect('/index/')
+        else:
+            # 如果表單無效，模板中顯示錯誤
+            return render(request, 'register.html', {'form': form})
     else:
-        form = UserCreationForm()
-    return render(request, 'register.html', locals())
+        form = CustomerRegistrationForm()
+    return render(request, 'register.html', {'form': form})
     
 def CustomizationForm(request): #客製化表單
     return render(request,"使用者表單.html")
@@ -85,17 +94,22 @@ def perchaselist(request): #進貨表單設定
     purchases = Purchase.objects.all().order_by('purchases_id')
     return render(request, "purchaselist.html", locals())
 
-def purchasepostform(requset): #新增進貨資料
-    if requset.method == "POST":
-        herbs = requset.POST['herbs']
-        herbsid = requset.POST['herbsid']
-        value = requset.POST['value']
-        datetime = requset.POST['datetime']
-        unit = Purchase.objects.create(herbs_name=herbs, herbs_id=herbsid, purchases_value=value, purchases_time=datetime)
-        return redirect('/perchaselist/')
+def purchasepostform(request): #新增進貨資料
+    if request.method == "POST":
+        postform=PostForm(request.POST)
+        if postform.is_valid():
+            herbs_name = postform.cleaned_data['herbs_name']
+            herbs_id =postform.cleaned_data['herbs_id']
+            purchases_value = postform.cleaned_data['purchases_value']
+            purchases_time =postform.cleaned_data['purchases_time']
+            unit = Purchase.objects.create(herbs_name=herbs_name, herbs_id=herbs_id, purchases_value=purchases_value, purchases_time=purchases_time) 
+            return redirect('/perchaselist/')
+        else:
+            message='驗證碼錯誤'
     else:
         message = '請輸入資料'
-    return render(requset, "purchasepostform.html",locals()) 
+        postform=PostForm()
+    return render(request, "purchasepostform.html",locals()) 
 
 def delete(request,id=None): #刪除進貨資料
     if id!=None:
