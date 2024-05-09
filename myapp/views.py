@@ -108,7 +108,7 @@ def purchasepostform(request): #新增進貨資料
         else:
             message = postform.errors.get('herbs_name', ['請檢查輸入的數據'])[0]  # 藥草名稱錯誤訊息
     else:
-        message = '請輸入資料'
+        message = '請輸入進貨資料'
         postform=PostForm()
     return render(request, "purchasepostform.html", {'postform': postform, 'message': message})
 

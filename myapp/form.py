@@ -61,8 +61,13 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
 
         if password and password_confirmation and password != password_confirmation:
             self.add_error('password_confirmation', "密碼不一致")
-
+    
         return cleaned_data
+    def clean_age(self):
+        age = self.cleaned_data.get('age')
+        if age < 0:
+            raise ValidationError('年齡不能為負數。')
+        return age
 class LoginForm(forms.Form): #登入系統
     username = forms.CharField(label='電話號碼', max_length=100,)
     password = forms.CharField(label='密碼', widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))

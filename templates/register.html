@@ -67,11 +67,15 @@
                 <span class="error-message">{{ form.customer_name.errors }}</span>
             {% endif %}
         </div>
-        <p>
-            {{ form.age.label_tag }}<br>
+        <div>
+            {{ form.age.label_tag }} 
+        </div>
+        <div class="input-field">
             {{ form.age }}
-            
-        </p>
+            {% if form.age.errors %}
+                <span class="error-message">{{ form.age.errors }}</span>
+            {% endif %}
+        </div>
         <p>
             {{ form.line_id.label_tag }}<br>
             {{ form.line_id }}
