@@ -11,7 +11,8 @@ from .form import PostForm,CustomerRegistrationForm,LoginForm
 from django.contrib.auth.hashers import make_password #加密
 def test(request):
     return render(request,"123.html")
-
+def administrator(request):
+    return render(request,"administrator.html")
 def index(request):
     return render(request,"index.html")
 
