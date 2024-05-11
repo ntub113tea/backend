@@ -34,6 +34,6 @@ urlpatterns = [
     path('edit/<int:id>/', views.edit),
     path('herbstocklist/',views.herbstocklist),
     path('salelist/',views.salelist),
-    path('administrator/',views.administrator)
-
+    path('administrator/',views.administrator),
+    path('check_inventory/', views.check_inventory),
 ]

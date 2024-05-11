@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from myapp.models import Purchase,Sale,HerbStock
 from myapp import models
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
@@ -142,6 +142,10 @@ def herbstocklist(request): #庫存表單設定
     herbs = models.HerbStock.objects.all().order_by('herbs_id')
     return render(request, "herbstocklist.html", locals())
 
+def check_inventory(request):
+    low_inventory_herbs = HerbStock.objects.filter(current_stock__lt=30)  #藥草存貨30以下發出警告
+    low_inventory_list = [{'herbs_name': herb.herbs_name, 'current_stock': herb.current_stock} for herb in low_inventory_herbs]
+    return JsonResponse({'low_inventory': low_inventory_list})
 #----------------------------------------銷售表單
 
 def salelist(request): #庫存表單設定
