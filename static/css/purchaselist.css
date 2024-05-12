@@ -1,0 +1,55 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px 5%; /* 頁面添加上下各 20px，左右各為畫面寬度的5% */
+    background-color: #f4f4f4;
+}
+
+h2 { /* 進貨資料 */
+    text-align: center;
+    color: #333;
+    font-size: 30px; /* 可以調整文字大小 */
+}
+
+table { /* 名字格子 */
+    width: 90%; /* 表格寬度為畫面寬度的90% */
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+th, td { /* 名字格子外框 */
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #000000;
+    width: 20%; /* 每個格子寬度為表格寬度的20% */
+}
+
+th {
+    background-color: #4a69bd;
+    color: #333;
+}
+
+a { /* 新增資料 */
+    display: block;
+    text-decoration: none;
+    color: #047bfa;
+    font-size: 30px; /* 可以調整文字大小 */
+    margin-bottom: 5px; /* 可以調整連結之間的間距 */
+}
+
+a:hover { /* 新增資料滑鼠 */
+    text-decoration: underline;
+    color: #f8c291;
+}
+
+.add-link {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+td {
+    white-space: nowrap;
+}

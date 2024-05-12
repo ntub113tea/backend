@@ -1,0 +1,56 @@
+/* 重置默認的邊距和填充 */
+body, h2, table {
+    margin: 0;
+    padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
+}
+
+/* 在表格周圍添加一些間距 */
+table {
+    margin: 20px;
+}
+
+/* 美化表頭 */
+th {
+    background-color: #4a69bd; /* 背景顏色 */
+    padding: 10px; /* 填充 */
+}
+
+/* 美化表格單元格 */
+td {
+    padding: 10px; /* 填充 */
+}
+
+/* 在表格行之間添加一些間距 */
+tr {
+    margin-bottom: 10px;
+}
+
+/* 添加表格邊框 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* 添加表格單元格邊框 */
+td, th { /*格字框*/
+    border: 1px solid #000000; /* 邊框 */
+    text-align: left; /* 文本對齊方式 */
+}
+
+/* 美化標題 */
+h2 {
+    margin: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+
+/* 美化連結 */
+a {
+    text-decoration: none; /* 去除下劃線 */
+    color: blue; /* 文本顏色 */
+}
+
+/* 懸停連結時的樣式 */
+a:hover {
+    text-decoration: underline; /* 添加下劃線 */
+}

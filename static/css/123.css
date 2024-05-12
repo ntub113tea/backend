@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
+    text-align: center;
+}
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+h1 {
+    background-color: #4a69bd; /* 更改背景色為深藍色 */
+    color: #f8c291; /* 更改文字顏色為淡橙色 */
+    padding: 30px 0;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    height: 100px;
+    top: 50px;
+    left: 50px;
+}
+h1 a {
+    color: #f8c291; /* 更改連結顏色為淡橙色 */
+    margin: 0 15px;
+    text-decoration: none;
+    font-size: 20px;
+}
+h1 a:hover {
+    color: #e55039; /* 更改滑鼠懸停時的顏色為深橙色 */
+}
+/* 基本連結樣式 */
+/* 基本連結樣式 */
+a {
+    color: #333; /* 文字顏色 */
+    text-decoration: none; /* 刪除下劃線 */
+    padding: 10px 20px; /* 增加內邊距使按鈕稍大 */
+    border: 1px solid #ccc; /* 邊框 */
+    border-radius: 5px; /* 圓角 */
+    margin-right: 10px; /* 右邊距 */
+    font-size: 16px; /* 調整字體大小 */
+}
+
+/* 滑鼠懸停時的樣式 */
+a:hover {
+    background-color: #f0f0f0; /* 滑鼠懸停時的背景色 */
+}
+
+

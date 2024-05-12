@@ -32,29 +32,29 @@
 <div class="container">
     <h1>選擇飲品</h1>
     <div class="row">
-        <a class="item" id="symptom1" onclick="selectSymptom('星夜寧靜')">
+        <a class="item" id="symptom1" onclick="selectSymptom('symptom1')">
             <div class="title">星夜寧靜</div>
         </a>
 
-        <a class="item" id="symptom2" onclick="selectSymptom('宵福調和')">
+        <a class="item" id="symptom2" onclick="selectSymptom('symptom2')">
             <div class="title">宵福調和</div>
         </a>
 
-        <a class="item" id="symptom3" onclick="selectSymptom('鼻福寧茶')">
+        <a class="item" id="symptom3" onclick="selectSymptom('symptom3')">
             <div class="title">鼻福寧茶</div>
         </a>
     </div>
 
     <div class="row">
-        <a class="item" id="symptom4" onclick="selectSymptom('悅膚寧茶')">
+        <a class="item" id="symptom4" onclick="selectSymptom('symptom4')">
             <div class="title">悅膚寧茶</div>
         </a>
 
-        <a class="item" id="symptom5" onclick="selectSymptom('慰胃來茶')">
+        <a class="item" id="symptom5" onclick="selectSymptom('symptom5')">
             <div class="title">慰胃來茶</div>
         </a>
 
-        <a class="item" id="symptom6" onclick="selectSymptom('月悅茶')">
+        <a class="item" id="symptom6" onclick="selectSymptom('symptom6')">
             <div class="title">月悅茶</div>
         </a>
     </div>
@@ -128,7 +128,37 @@ document.addEventListener('DOMContentLoaded', function() { //庫存不足顯示�
 
    /*症狀儲存在localStorage*/
     function selectSymptom(symptom) {
-        localStorage.setItem('symptom', symptom);
+        console.log("選擇的症狀：" + symptom);
+        let chineseSymptom = '';
+        switch (symptom) {
+            case 'symptom1':
+                chineseSymptom = '星夜寧靜';
+                break;
+            case 'symptom2':
+                chineseSymptom = '宵福調和';
+                break;
+            case 'symptom3':
+                chineseSymptom = '鼻福寧茶';
+                break;
+            case 'symptom4':
+                chineseSymptom = '悅膚寧茶';
+                break;
+            case 'symptom5':
+                chineseSymptom = '慰胃來茶';
+                break;
+            case 'symptom6':
+                chineseSymptom = '月悅茶';
+                break;
+            default:
+                chineseSymptom = '未知症狀';
+        }
+        localStorage.setItem('symptom', chineseSymptom);
+        const items = document.querySelectorAll('.item');
+        items.forEach(item => {
+            item.classList.remove('selected');
+        });
+        const selectedSymptom = document.getElementById(symptom);
+        selectedSymptom.classList.add('selected');
         
         // 設置cookie
         var fianlsymptom = localStorage.getItem('symptom');
@@ -137,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() { //庫存不足顯示�
         
         // 设置 Cookie 的过期时间
         var expirationDate = new Date();
-        expirationDate.setTime(expirationDate.getTime() + 10000); // 设置为当前时间的10秒後
+        expirationDate.setTime(expirationDate.getTime() + 3000); // 设置为当前时间的10秒後
 
         // 将过期时间转换为 UTC 格式的字符串
         var expiresUTC = expirationDate.toUTCString();

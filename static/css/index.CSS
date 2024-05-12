@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif; /* 字體設為Arial，無襯線 */
+    margin: 0; /* 邊距設為0 */
+    padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
+    background-color: #f4f4f4; /* 背景顏色設為#f4f4f4 */
+    text-align: center;
+}
+
+.container {
+    width: 80%; /* 寬度設為80% */
+    margin: auto; /* 邊距自動 */
+    overflow: hidden; /* 隱藏溢出的內容 */
+    text-align: center; /* 文字置中 */
+    font-family: Arial, sans-serif; /* 字體設為Arial，無襯線 */
+    background-color: #f4f4f4; /* 背景顏色設為#f4f4f4 */
+}
+
+p {
+    display: inline-block; 
+    padding: 10px 20px; 
+    border: 2px solid #020202; 
+    margin-top: 20px; 
+}
+
+p :hover {
+    background-color: #4a69bd; 
+    color: white; 
+}
+
+p + a {
+    display: inline-block; 
+    padding: 10px 20px; 
+    border: 2px solid #020202; 
+    margin-top: 20px; 
+}
+
+p + a:hover {   /*定義當鼠標懸停在與段落相鄰的超連結上時的樣式*/
+    background-color: #4a69bd; 
+    color: white; 
+}

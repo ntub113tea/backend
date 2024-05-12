@@ -1,0 +1,64 @@
+/* 重置默認樣式 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
+    
+    background-color: #f4f4f4;
+}
+
+/* 容器樣式 */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* 添加內邊距以在容器周圍創建空間 */
+    padding: 30px; /* 您可以根據需要調整此值 */
+}
+
+/* 標題樣式 */
+h2 {
+    color: #333;
+    font-size: 30px;
+    text-align: center;
+}
+
+/* 表格樣式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* 表頭樣式 */
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 表頭樣式 */
+th {
+    background-color: #4a69bd;
+    font-weight: normal;
+    color: #000000;
+}
+
+/* 表格行懸停效果 */
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* 鏈接樣式 */
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+/* 鏈接懸停效果 */
+a:hover {
+    text-decoration: underline;
+}

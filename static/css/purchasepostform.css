@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
+    text-align: center; /* 將內容置中 */
+}
+
+
+h2 {
+    text-align: center;
+    font-size: 30px;
+}
+
+form {
+    width: 50%;
+    margin: 0 auto;
+    
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+label {
+    font-weight: bold;
+}
+
+/*按鈕和重置按鈕的樣式*/
+input[type="submit"], input[type="reset"] {
+    padding: 8px 20px;
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/*滑鼠懸停在提交按鈕或重置按鈕上時的樣式*/
+input[type="submit"]:hover, input[type="reset"]:hover {
+    background-color: #f8c291;
+}
+
+/*設定日期時間、數字、文字輸入框和下拉菜單的樣式*/
+input[type="datetime-local"], input[type="number"], input[type="text"], select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}

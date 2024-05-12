@@ -1,0 +1,75 @@
+/* 針對整個表單進行樣式設定 */
+body {
+    font-family: Arial, sans-serif; /* 使用非等寬字型 */
+    margin: 20px auto; /* 調整左右外邊距為自動並加入上下外邊距 */
+    padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
+    text-align: center; /* 將內容置中 */
+}
+
+form {
+    width: 300px; /* 表單寬度設置為固定值 */
+    margin: 0 auto; /* 讓表單水平居中對齊 */
+    padding: 20px; /* 增加內邊距來調整表單大小 */
+    box-sizing: border-box; /* 讓內邊距和邊框計算在內容的寬度之內 */
+
+}
+
+h2 {
+    text-align: center; /* 將標題置中 */
+    margin-bottom: 20px; /* 加入底部間距 */
+    font-size: 30px;
+}
+
+/* 藥草名稱標籤的樣式設定 */
+label {
+    display: block; /* 將標籤轉換為區塊元素 */
+    margin-bottom: 5px; /* 加入底部間距 */
+}
+
+/* 選擇藥草下拉選單的樣式設定 */
+select {
+    width: 100%; /* 讓下拉選單填滿父元素的寬度 */
+    padding: 5px; /* 加入內邊距 */
+    margin-bottom: 10px; /* 加入底部間距 */
+}
+
+/* 數量輸入框的樣式設定 */
+input[type="text"] {
+    width: calc(100% - 12px); /* 考慮內邊距的寬度 */
+    padding: 5px; /* 加入內邊距 */
+    margin-bottom: 10px; /* 加入底部間距 */
+}
+
+/* 時間標籤的樣式設定 */
+label[for="datetime"] {
+    display: block; /* 將標籤轉換為區塊元素 */
+    margin-bottom: 5px; /* 加入底部間距 */
+}
+
+/* 日期時間輸入框的樣式設定 */
+input[type="datetime-local"] {
+    width: calc(100% - 12px); /* 考慮內邊距的寬度 */
+    padding: 5px; /* 加入內邊距 */
+    margin-bottom: 10px; /* 加入底部間距 */
+}
+
+/* 提交按鈕和重設按鈕的樣式設定 */
+input[type="submit"],
+input[type="reset"] {
+    padding: 8px 20px; /* 加入內邊距 */
+    background-color: #4a69bd; /* 設定背景顏色 */
+    color: white; /* 設定文字顏色 */
+    border: none; /* 移除邊框 */
+    border-radius: 4px; /* 加入圓角 */
+    cursor: pointer; /* 變換游標形狀 */
+}
+
+/* 提交按鈕的懸停樣式 */
+input[type="submit"]:hover {
+    background-color: #f8c291; /* 懸停時的背景顏色 */
+}
+
+/* 重設按鈕的懸停樣式 */
+input[type="reset"]:hover {
+    background-color: #f8c291; /* 懸停時的背景顏色 */
+}
