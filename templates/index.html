@@ -10,7 +10,7 @@
             <p>
                 顧客：{{request.user.customer_name}} <br>電話號碼：{{request.user.customer_id|mask_phone}} <br>您已經登入囉 
             </p>
-            <a href="/customizationform/">客製化表單</a><br>
+            <a href="/question/">客製化表單</a><br>
             <a href="/accounts/logout/">登出</a>
         {% else %}
             <p>您尚未登入喔~<a href="/accounts/login/">登入</a></p>

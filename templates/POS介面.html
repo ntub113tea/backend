@@ -98,18 +98,18 @@
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function() { //庫存不足顯示在pos上
-    fetch('/check_inventory/')
-        .then(response => response.json())
-        .then(data => {
-            const lowInventoryList = data.low_inventory;
-            if (lowInventoryList.length > 0) {
-                const message = lowInventoryList.map(item => `${item.herbs_name} 剩餘 ${item.current_stock}g`).join('<br>');
-                document.getElementById('lowInventoryList').innerHTML = `以下藥草庫存不足：<br>${message}`;
-            }
-        })
-        .catch(error => console.error('Error fetching inventory:', error));
-});
+    document.addEventListener('DOMContentLoaded', function() { //庫存不足顯示在pos上
+            fetch('/check_inventory/')
+                .then(response => response.json())
+                .then(data => {
+                    const lowInventoryList = data.low_inventory;
+                    if (lowInventoryList.length > 0) {
+                        const message = lowInventoryList.map(item => `${item.herbs_name} 剩餘 ${item.current_stock}g`).join('<br>');
+                        document.getElementById('lowInventoryList').innerHTML = `以下藥草庫存不足：<br>${message}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching inventory:', error));
+        });
     document.getElementById('submitButton').addEventListener('click', function() {
             // 发送请求到 Django 后端
             fetch('/pos/', {

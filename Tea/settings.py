@@ -84,8 +84,12 @@ DATABASES = {
         'USER': '113407_db',                      
         'PASSWORD': '@NtubTea11046',               
         'HOST': '140.131.114.242',                           
-        'PORT': '3306',                           
+        'PORT': '3306',    
+        # 'OPTIONS': {
+        #     "init_command": "SET foreign_key_checks = 0;",
+        #}                       
     }
+    
 }
 AUTH_USER_MODEL = 'myapp.Customer'
 

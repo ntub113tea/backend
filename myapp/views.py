@@ -5,9 +5,12 @@ from django.http import HttpResponse,JsonResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.forms import UserCreationForm
 from datetime import datetime
 from .form import PostForm,CustomerRegistrationForm,LoginForm
+from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
 def test(request):
     return render(request,"123.html")
@@ -16,8 +19,99 @@ def administrator(request):
 def index(request):
     return render(request,"index.html")
 
-#--------------------------------------------pos系統(非客製化)
+def manage_groups(request):
+    if request.method == 'POST':
+        # 处理表单提交，创建/编辑用户组
+        # 分配权限等操作
+        pass
+    else:
+        groups = Group.objects.all()
+        permissions = Permission.objects.all()
+        context = {'groups': groups, 'permissions': permissions}
+        return render(request, 'manage_groups.html', context)
 
+def question(request): #客製化問卷
+    nosleep = request.COOKIES.get('nosleep')
+    semi_darkness=request.COOKIES.get('semi_darkness')
+    sneezing=request.COOKIES.get('sneezing')
+    itchiness=request.COOKIES.get('itchiness')
+    stomach_anger=request.COOKIES.get('stomach_anger')
+    menstrual_anguish=request.COOKIES.get('menstrual_anguish')
+    if nosleep:
+        def main():
+            symptoms = [
+                "睏不好",
+                "半暝還在嗨",
+                "早上哈啾",
+                "癢癢",
+                "胃生氣",
+                "厭世生理期"
+            ]
+            value = [
+                nosleep,
+                semi_darkness,
+                sneezing,
+                itchiness,
+                stomach_anger,
+                menstrual_anguish
+            ]
+
+            result = []
+            total_weight = 5  # 定義藥材克數的總和
+            for i in range(6):
+                choice = value[i]
+                result.append(choose_herb(symptoms[i], choice, total_weight))
+
+            # 如果六種藥材的克數加總超過5，則進行額外調整
+            total_sum = sum(float(item.split()[1][:-1]) for item in result)
+            if total_sum > 5:
+                adjustment_factor = 5 / total_sum
+                for i in range(len(result)):
+                    dosage = float(result[i].split()[1][:-1]) * adjustment_factor
+                    result[i] = result[i].split()[0] + f" {dosage:.2f}g"
+            return result
+        def choose_herb(symptom, choice, total_weight):
+            herbs = {
+                "睏不好": "魚腥草",
+                "半暝還在嗨": ["白鶴靈芝(不苦)", "蒲公英(苦)"],
+                "早上哈啾": "金銀花",
+                "癢癢": "忍冬",
+                "胃生氣": "積雪草",
+                "厭世生理期": ["鴨舌黃", "益母草"]
+            }
+
+            dosage = {
+                "1": 0.5,
+                "2": 1.0,
+                "3": 1.5,
+                "4": 2.0,
+                "5": 2.5
+            }
+
+            if symptom in herbs:
+                herb = herbs[symptom]
+                if isinstance(herb, list):
+                    herb = "or".join(herb)
+                if choice in dosage:
+                    # 計算每個症狀所需的藥材克數
+                    required_dosage = dosage[choice]
+                    # 計算調整比例，以確保所有藥材的總和為 total_weight
+                    adjustment_factor = total_weight / sum(dosage.values())
+                    # 調整每個症狀所需的藥材克數
+                    adjusted_dosage = required_dosage * adjustment_factor
+                    # 限制小數位數最多為兩位
+                    adjusted_dosage = round(adjusted_dosage, 2)
+                    return f"{herb} {adjusted_dosage:.2f}g"
+                else:
+                    return "Invalid choice!"
+            else:
+                return "Invalid symptom!"
+        result = main()  # 調用 main 函式獲取處理結果列表
+        return render(request, "question.html", {'result': result})
+    return render(request,"question.html")
+
+#--------------------------------------------pos系統(非客製化)
+#@user_passes_test(lambda user:user.is_staff,login_url='這裡放管理員登入的URL')
 def pos(request):
 
     symptom = request.COOKIES.get('finalsymptom')
@@ -146,6 +240,7 @@ def check_inventory(request):
     low_inventory_herbs = HerbStock.objects.filter(current_stock__lt=30)  #藥草存貨30以下發出警告
     low_inventory_list = [{'herbs_name': herb.herbs_name, 'current_stock': herb.current_stock} for herb in low_inventory_herbs]
     return JsonResponse({'low_inventory': low_inventory_list})
+
 #----------------------------------------銷售表單
 
 def salelist(request): #庫存表單設定

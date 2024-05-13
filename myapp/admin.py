@@ -20,6 +20,7 @@ class SaleAdmin(admin.ModelAdmin):
     ordering=('sale_id',)
 
 class CustomerAdmin(admin.ModelAdmin):
+    model = Customer
     list_display=('customer_id','customer_name','sex','age','line_id')
     ordering=('customer_id',)
 
