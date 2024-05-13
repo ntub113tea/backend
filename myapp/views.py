@@ -1,23 +1,41 @@
 from django.shortcuts import render, redirect
-from myapp.models import Purchase,Sale,HerbStock
+from myapp.models import Purchase,Sale,HerbStock,Customer
 from myapp import models
 from django.http import HttpResponse,JsonResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth import authenticate, login, get_user_model
+
+from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.forms import UserCreationForm
 from datetime import datetime
 from .form import PostForm,CustomerRegistrationForm,LoginForm
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
-def test(request):
-    return render(request,"123.html")
-def administrator(request):
-    return render(request,"administrator.html")
+
+@user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
+def manage(request):
+    return render(request,"manage.html")
+
+@user_passes_test(lambda user:user.is_staff,login_url='/accounts/login/')
+def staff(request):
+    return render(request,"staff.html")
+
 def index(request):
     return render(request,"index.html")
+
+def manage_users(request):
+    user_form = UserCreationForm(request.POST or None)
+    Customer = get_user_model()
+    users = Customer.objects.all()
+    
+    if request.method == 'POST':
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('manage_users')
+
+    return render(request, 'manage_users.html', {'user_form': user_form, 'users': users})
 
 def manage_groups(request):
     if request.method == 'POST':
@@ -29,6 +47,8 @@ def manage_groups(request):
         permissions = Permission.objects.all()
         context = {'groups': groups, 'permissions': permissions}
         return render(request, 'manage_groups.html', context)
+    
+#---------------------------------------------------------------
 
 def question(request): #客製化問卷
     nosleep = request.COOKIES.get('nosleep')
@@ -111,7 +131,8 @@ def question(request): #客製化問卷
     return render(request,"question.html")
 
 #--------------------------------------------pos系統(非客製化)
-#@user_passes_test(lambda user:user.is_staff,login_url='這裡放管理員登入的URL')
+
+@user_passes_test(lambda user:user.is_staff,login_url='/accounts/login/')
 def pos(request):
 
     symptom = request.COOKIES.get('finalsymptom')
@@ -140,12 +161,13 @@ def pos(request):
             herb = HerbStock.objects.get(herbs=10)
         
         Sale.objects.create(customer_id=customer,product_name=product,herbs=herb,sales_value=sale_value,order_time=time)
-        return redirect('//')
+        return redirect('/manage/')
     else:
         message = '請輸入資料'
     return render(request,"POS介面.html",locals())
 
 #----------------------------------------------------登入登出註冊
+
 def login_view(request): #用戶登入
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -153,9 +175,18 @@ def login_view(request): #用戶登入
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/question/') 
+            if user is not None and user.is_active:
+                if user.is_superuser:
+                    # 如果用戶是管理員,跳轉到管理員首頁
+                    login(request, user)
+                    return redirect('/manage/')
+                if user.is_staff:
+                    # 如果用戶是員工,跳轉到員工首頁
+                    login(request, user)
+                    return redirect('/staff/')
+                else:
+                    login(request, user)
+                    return redirect('/question/')
             else:
                 return render(request, 'login.html', {'form': form, 'error': '帳號或密碼輸入錯誤'})
     else:

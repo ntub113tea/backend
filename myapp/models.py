@@ -26,7 +26,7 @@ class CustomerManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self.create_user(customer_id, password, **extra_fields)
+        return self.create_user(customer_id=customer_id, password=password, **extra_fields)
     def has_module_perms(self, app_label):
         # 在这里实现 has_module_perms 方法逻辑
         return True
@@ -36,9 +36,9 @@ class Customer(AbstractBaseUser,PermissionsMixin):
         ('男', '男'),
         ('女', '女'),
     )
-    customer_id = models.CharField(primary_key=True,max_length=15)
+    customer_id = models.CharField(primary_key=True,max_length=15,verbose_name="user_id")
     password = models.CharField(max_length=128)
-    customer_name = models.CharField(max_length=10)
+    customer_name = models.CharField(max_length=10,verbose_name="name")
     sex = models.CharField(max_length=1, choices=GENDER_CHOICES)
     age = models.IntegerField()
     line_id = models.CharField(max_length=45, blank=True, null=True)
@@ -56,6 +56,7 @@ class Customer(AbstractBaseUser,PermissionsMixin):
     class Meta:
         managed = False
         db_table = 'customer'
+        verbose_name = 'User'
 
 
 class Employee(models.Model):
@@ -68,7 +69,7 @@ class Employee(models.Model):
 
 
 class HerbStock(models.Model):
-    herbs = models.OneToOneField('Purchase', on_delete=models.CASCADE, primary_key=True)
+    herbs_id = models.IntegerField(primary_key=True)
     herbs_name = models.CharField(max_length=10)
     current_stock = models.FloatField()
 

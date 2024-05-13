@@ -13,29 +13,31 @@
 </head>
 {% load static%}
 <body>
-    {% if request.user.is_authenticated %}
-        {% csrf_token %}
-            <p>
-                顧客：{{request.user.customer_name}} <br>電話號碼：{{request.user.customer_id|mask_phone}} <br>您已經登入囉 
-            </p>
-            <a href="/accounts/logout/">登出</a>
-        {% else %}
-            <p>您尚未登入喔~<a href="/accounts/login/">登入</a></p>
-            <p>若您還沒有帳號，請<a href="/accounts/register/">註冊</a></p>
-        {% endif %}
-    
-    <h1>問卷結果</h1>
-    <ul>
-        {% for item in result %}
-            <li>{{ item }}</li>
-        {% endfor %}
-    </ul>
 
-    <div class="container">
-        <h1>選擇您的症狀 (1症狀最輕 5症狀最重)</h1>
+    
+   
+        {% if request.user.is_authenticated %}
+            {% csrf_token %}
+                <p align="right">
+                    顧客：{{request.user.customer_name}} 
+                    <br>電話號碼：{{request.user.customer_id|mask_phone}} 
+                    <br>您已經登入囉
+                <a href="/accounts/logout/">登出</a></p>
+            {% else %}
+                <p align="right">
+                您尚未登入喔~<a href="/accounts/login/">登入</a>
+                若您還沒有帳號，請<a href="/accounts/register/">註冊</a></p>
+            {% endif %}
         
+    
+
+            <h1>選擇您的症狀 (1症狀最輕 5症狀最重)</h1>  
+        
+<div class="container">
+       
     <!-- 第一行 -->
 <div class="row">
+    
     <div class="item" id="symptom1"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
 
         <img src="{% static 'images/睡不好.jpg' %}" alt="Item 1"><!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
@@ -136,9 +138,15 @@
 
         <!-- 確認按鈕 -->
         
-            <button onclick="deleteCookie(['nosleep','semi_darkness','sneezing','itchiness','stomach_anger','menstrual_anguish'])" id="submitButton" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
-        
-        
+            <button onclick="javascript:window.location.reload()" id="submitButton" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
+        </div>
+
+            <h1>問卷結果</h1>
+            <ul>
+                {% for item in result %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
         
 
 <script>
