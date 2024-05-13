@@ -155,7 +155,7 @@ def login_view(request): #用戶登入
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('/index/') 
+                return redirect('/question/') 
             else:
                 return render(request, 'login.html', {'form': form, 'error': '帳號或密碼輸入錯誤'})
     else:

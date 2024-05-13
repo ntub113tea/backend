@@ -1,21 +1,33 @@
-{% load my_filters %}
 <!DOCTYPE html>
+<html>
 <head>
-    <title>侍茶師</title>
+    <title>播放影片</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'css/AI影片.css' %}">
 </head>
 <body>
-    <h2>歡迎來到智慧侍茶師</h2>
-        {% if request.user.is_authenticated %}
-        {% csrf_token %}
-            <p>
-                顧客：{{request.user.customer_name}} <br>電話號碼：{{request.user.customer_id|mask_phone}} <br>您已經登入囉 
-            </p>
-            <a href="/question/">客製化表單</a><br>
-            <a href="/accounts/logout/">登出</a>
-        {% else %}
-            <p>您尚未登入喔~<a href="/accounts/login/">登入</a></p>
-            <p>若您還沒有帳號，請<a href="/accounts/register/">註冊</a></p>
-        {% endif %}
-        
+{% load static%}
+<video id="videoPlayer" controls>
+    <source src="{% static 'images/AI Video .mp4' %}" type="video/mp4">
+    Your browser does not support the video tag or the file format of this video. 
+</video>
+
+<div id="buttonContainer">
+    <button id="nextPageButton">開始填表單</button>
+</div>
+
+<script>
+    var video = document.getElementById('videoPlayer');
+    var nextPageButton = document.getElementById('nextPageButton');
+
+    video.addEventListener('ended', function () {
+        window.location.href = "/question/"; // 影片播放完畢後導航到下一個 HTML 頁面
+    });
+
+    nextPageButton.addEventListener('click', function() {
+        window.location.href = "/question/"; // 點擊按鈕時導航到下一個 HTML 頁面
+    });
+</script>
+
 </body>
 </html>

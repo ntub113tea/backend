@@ -1,3 +1,4 @@
+{% load my_filters %}
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -12,9 +13,19 @@
 </head>
 {% load static%}
 <body>
+    {% if request.user.is_authenticated %}
+        {% csrf_token %}
+            <p>
+                顧客：{{request.user.customer_name}} <br>電話號碼：{{request.user.customer_id|mask_phone}} <br>您已經登入囉 
+            </p>
+            <a href="/accounts/logout/">登出</a>
+        {% else %}
+            <p>您尚未登入喔~<a href="/accounts/login/">登入</a></p>
+            <p>若您還沒有帳號，請<a href="/accounts/register/">註冊</a></p>
+        {% endif %}
+    
     <h1>問卷結果</h1>
-
-    <ul id="resultContainer">
+    <ul>
         {% for item in result %}
             <li>{{ item }}</li>
         {% endfor %}

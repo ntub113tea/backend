@@ -36,7 +36,7 @@ label {
 }
 
 /*按鈕和重置按鈕的樣式*/
-input[type="submit"], input[type="reset"] {
+input[type="submit"], input[type="reset"], button[type="button"]{
     padding: 8px 20px;
     background-color: #4a69bd;
     color: white;

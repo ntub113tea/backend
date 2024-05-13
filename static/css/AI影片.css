@@ -1,0 +1,36 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+video {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* styles.css */
+#buttonContainer {
+    position: absolute;
+    bottom: 20px; /* 距離底部的距離 */
+    text-align: center;
+    width: 100%;
+}
+
+#nextPageButton {
+    background-color: #519be5; /* 背景顏色 */
+    color: white; /* 文字顏色 */
+    padding: 10px 20px; /* 內邊距 */
+    font-size: 16px; /* 文字大小 */
+    border: none; /* 移除邊框 */
+    border-radius: 5px; /* 圓角 */
+    cursor: pointer; /* 滑鼠懸停時顯示指針 */
+    transition: background-color 0.3s; /* 平滑過渡 */
+}
+
+#nextPageButton:hover {
+    background-color: #5ad1f9; /* 滑鼠懸停時的背景顏色 */
+}
+
