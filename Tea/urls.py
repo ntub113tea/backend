@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from myapp import views
-
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,5 +39,5 @@ urlpatterns = [
     path('herbstocklist/',views.herbstocklist),
     path('salelist/',views.salelist),
     path('check_inventory/', views.check_inventory),
-     path('history/', views.history_view, name='history'),
+    path('history/', views.history_view, name='history'),
 ]
