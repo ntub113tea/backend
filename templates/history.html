@@ -1,0 +1,54 @@
+{% load my_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歷史紀錄</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse; /* 合併表格邊框 */
+            table-layout: fixed; /* 使用固定表格布局 */
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: center; /* 將表格內容水平置中 */
+            padding: 10px; /* 調整表格內容的填充 */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>顧客上次的點餐紀錄</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>電話號碼</th>
+                <th>睡不好</th>
+                <th>半暝還在嗨</th>
+                <th>早上哈啾</th>
+                <th>癢癢</th>
+                <th>胃生氣</th>
+                <th>厭世生理期</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in history_records %}
+            <tr>
+                <td>{{request.user.customer_id|mask_phone}} </td>
+                <td>{{ record.q1 }}</td>
+                <td>{{ record.q2 }}</td>
+                <td>{{ record.q3 }}</td>
+                <td>{{ record.q4 }}</td>
+                <td>{{ record.q5 }}</td>
+                <td>{{ record.q6 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -39,4 +39,5 @@ urlpatterns = [
     path('herbstocklist/',views.herbstocklist),
     path('salelist/',views.salelist),
     path('check_inventory/', views.check_inventory),
+     path('history/', views.history_view, name='history'),
 ]

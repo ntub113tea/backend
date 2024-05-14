@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from myapp.models import Purchase,Sale,HerbStock,Customer
+from myapp.models import Purchase,Sale,HerbStock,Customer,SymptomOfQuestion
 from myapp import models
 from django.http import HttpResponse,JsonResponse
 from django.http import HttpResponseRedirect
@@ -13,6 +13,8 @@ from datetime import datetime
 from .form import PostForm,CustomerRegistrationForm,LoginForm
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
+from datetime import datetime, timedelta
+import pytz
 
 @user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
 def manage(request):
@@ -60,6 +62,42 @@ def question(request): #客製化問卷
     itchiness=request.COOKIES.get('itchiness')
     stomach_anger=request.COOKIES.get('stomach_anger')
     menstrual_anguish=request.COOKIES.get('menstrual_anguish')
+    customer_id = request.user.customer_id if request.user.is_authenticated else 0
+
+# 取得台北的時區
+    taipei_tz = pytz.timezone('Asia/Taipei')
+
+# 獲取現在的台北時間
+    taipei_now = datetime.now(taipei_tz)
+
+# 將台北時間轉換為 UTC 時間
+    utc_now = taipei_now.astimezone(pytz.utc)
+
+    # 將症狀資料存入資料庫
+    try:
+        symptom = SymptomOfQuestion.objects.get(customer_id=customer_id)
+        
+        # 如果找到現有的記錄，則更新問題資料
+        symptom.question_time = utc_now
+        symptom.q1 = nosleep
+        symptom.q2 = semi_darkness
+        symptom.q3 = sneezing
+        symptom.q4 = itchiness
+        symptom.q5 = stomach_anger
+        symptom.q6 = menstrual_anguish
+        symptom.save()
+    except SymptomOfQuestion.DoesNotExist:
+        # 如果不存在，則創建一個新的記錄
+        SymptomOfQuestion.objects.create(
+            customer_id=customer_id,
+            question_time=utc_now,
+            q1=nosleep,
+            q2=semi_darkness,
+            q3=sneezing,
+            q4=itchiness,
+            q5=stomach_anger,
+            q6=menstrual_anguish
+        )
     if nosleep:
         def main():
             symptoms = [
@@ -133,6 +171,18 @@ def question(request): #客製化問卷
         return render(request, "question.html", {'result': result})
     return render(request,"question.html")
 
+def history_view(request):
+    # 確保只有登入的用戶才能訪問歷史記錄頁面
+    if not request.user.is_authenticated:
+        return render(request, 'login_required.html')
+
+    # 獲取當前用戶的電話號碼
+    customer_id = request.user.customer_id
+
+    # 獲取當前用戶的所有歷史記錄
+    history_records = SymptomOfQuestion.objects.filter(customer_id=customer_id)
+
+    return render(request, 'history.html', {'history_records': history_records})
 #--------------------------------------------pos系統(非客製化)
 
 @user_passes_test(lambda user:user.is_staff,login_url='/accounts/login/')

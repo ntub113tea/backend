@@ -7,7 +7,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">登入</button>
-    <button type="button" onclick="window.location.href='/index/';">返回首頁</button>
+    <button type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
