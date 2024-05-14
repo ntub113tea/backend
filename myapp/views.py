@@ -256,7 +256,18 @@ def register(request): #用戶註冊
             user = form.save(commit=False)
             user.password = make_password(form.cleaned_data['password'])
             user.save()
-            return HttpResponseRedirect('/index/')
+            # 检查是否已存在历史记录，如果不存在则创建新的记录
+            if not SymptomOfQuestion.objects.filter(customer_id=user.customer_id).exists():
+                SymptomOfQuestion.objects.create(customer_id=user.customer_id)
+            # 清除 Cookie
+            response = HttpResponseRedirect('/question/')
+            response.delete_cookie('nosleep')
+            response.delete_cookie('semi_darkness')
+            response.delete_cookie('sneezing')
+            response.delete_cookie('itchiness')
+            response.delete_cookie('stomach_anger')
+            response.delete_cookie('menstrual_anguish')
+            return response
         else:
             # 如果表單無效，模板中顯示錯誤
             return render(request, 'register.html', {'form': form})
