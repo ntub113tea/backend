@@ -22,11 +22,14 @@
                     顧客：{{request.user.customer_name}} 
                     <br>電話號碼：{{request.user.customer_id|mask_phone}} 
                     <br>您已經登入囉
-                <a href="/accounts/logout/">登出</a></p>
+                    <br><a href="">歷史紀錄</a>
+                    <br><a href="/accounts/logout/">登出</a></p>
             {% else %}
                 <p align="right">
-                您尚未登入喔~<a href="/accounts/login/">登入</a>
-                若您還沒有帳號，請<a href="/accounts/register/">註冊</a></p>
+                    您尚未登入喔~<a href="/accounts/login/">登入</a>
+                    若您還沒有帳號，請<a href="/accounts/register/">註冊</a><br>
+                    請先登入再做問卷,若沒有登入,無法儲存紀錄哦～
+                </p>
             {% endif %}
         
     

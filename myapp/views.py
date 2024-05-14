@@ -22,6 +22,9 @@ def manage(request):
 def staff(request):
     return render(request,"staff.html")
 
+def url(request):
+    return render(request,"url.html")
+
 def index(request):
     return render(request,"index.html")
 
@@ -143,24 +146,24 @@ def pos(request):
         time = datetime.now().strftime("%Y-%m-%d %H:%M")
         if symptom == "星夜寧靜":
             product = "星夜寧靜"
-            herb = HerbStock.objects.get(herbs=1)
+            herb = 1
         elif symptom == "宵福調和":
             product = "宵福調和"
-            herb = HerbStock.objects.get(herbs=2)
+            herb = 2
         elif symptom == "鼻福寧茶":
             product = "鼻福寧茶"
-            herb = HerbStock.objects.get(herbs=4)
+            herb = 4
         elif symptom == "悅膚寧茶":
             product = "悅膚寧茶"
-            herb = HerbStock.objects.get(herbs=6)
+            herb = 6
         elif symptom == "慰胃來茶":
             product = "慰胃來茶"
-            herb = HerbStock.objects.get(herbs=3)
+            herb = 3
         else: #月悅茶
             product = "月悅茶" 
-            herb = HerbStock.objects.get(herbs=10)
+            herb = 10
         
-        Sale.objects.create(customer_id=customer,product_name=product,herbs=herb,sales_value=sale_value,order_time=time)
+        Sale.objects.create(customer_id=customer,product_name=product,herbs_id=herb,sales_value=sale_value,order_time=time)
         return redirect('/manage/')
     else:
         message = '請輸入資料'
