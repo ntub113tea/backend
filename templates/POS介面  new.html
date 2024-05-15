@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>症狀、甜度與冰塊選擇</title>
+    <link rel="stylesheet" href="{% static 'css/POS介面.css' %}">
+    <style>
+       
+    </style>
+</head>
+<body>
+    <!-- 提示存貨不足 -->
+    <div id="lowInventoryList" class="lowInventoryList">庫存不足警示</div>
+
+    <!-- 症狀選擇 -->
+    <div class="container">
+        <h1>選擇飲品</h1>
+        <div class="row">
+            <a class="item" id="symptom1" onclick="selectSymptom('symptom1')">星夜寧靜</a>
+            <a class="item" id="symptom2" onclick="selectSymptom('symptom2')">宵福調和</a>
+            <a class="item" id="symptom3" onclick="selectSymptom('symptom3')">鼻福寧茶</a>
+        </div>
+        <div class="row">
+            <a class="item" id="symptom4" onclick="selectSymptom('symptom4')">悅膚寧茶</a>
+            <a class="item" id="symptom5" onclick="selectSymptom('symptom5')">慰胃來茶</a>
+            <a class="item" id="symptom6" onclick="selectSymptom('symptom6')">月悅茶</a>
+        </div>
+        <hr>
+        <!-- 甜度選擇 -->
+        <div class="option-group">
+            <div class="option-title">甜度：</div>
+            <div class="sweetnessOptions">
+                <div class="option" data-value="正常甜(10分)" onclick="setSelected(this)">正常甜(10分)</div>
+                <div class="option" data-value="少糖(7分)" onclick="setSelected(this)">少糖(7分)</div>
+                <div class="option" data-value="半糖(5分)" onclick="setSelected(this)">半糖(5分)</div>
+                <div class="option" data-value="微糖(3分)" onclick="setSelected(this)">微糖(3分)</div>
+                <div class="option" data-value="無糖" onclick="setSelected(this)">無糖(0分)</div>
+            </div>
+        </div>
+        <!-- 冰塊選擇 -->
+        <div class="option-group">
+            <div class="option-title">冰塊：</div>
+            <div class="iceOptions">
+                <div class="option" data-value="正常冰" onclick="setSelected(this)">正常冰</div>
+                <div class="option" data-value="少冰" onclick="setSelected(this)">少冰</div>
+                <div class="option" data-value="微冰" onclick="setSelected(this)">微冰</div>
+                <div class="option" data-value="去冰" onclick="setSelected(this)">去冰</div>
+                <div class="option" data-value="熱飲" onclick="setSelected(this)">熱飲</div>
+            </div>
+        </div>
+        <!-- 產品數量輸入框 -->
+        <input type="number" class="productQuantityInput" placeholder="輸入產品數量" value="1" min="1">
+        <!-- 添加到購物車按鈕 -->
+        <button class="submitButton" onclick="onSubmit()">添加到購物車</button>
+    </div>
+
+    <!-- 顯示選擇結果的容器 -->
+    <div class="resultContainer" style="display: none;">
+        <div class="resultbox">
+            <h2>已點餐點：</h2>
+            <ul id="productList"></ul>
+            <!-- 確認訂單 -->
+            <button onclick="sendOrdersToDjango()">確認訂單</button>
+        </div>
+    </div>
+    
+
+<script>
+    // 更新產品數量的函數
+    function updateQuantity() {
+        var productQuantity = document.querySelector('.productQuantityInput').value;
+        document.getElementById('quantityResult').textContent = '數量：' + productQuantity;
+        localStorage.setItem('productQuantity', productQuantity);
+    }
+
+    //庫存不足顯示在pos上
+    document.addEventListener('DOMContentLoaded', function() { 
+            fetch('/check_inventory/')
+                .then(response => response.json())
+                .then(data => {
+                    const lowInventoryList = data.low_inventory;
+                    if (lowInventoryList.length > 0) {
+                        const message = lowInventoryList.map(item => `${item.herbs_name} 剩餘 ${item.current_stock}g`).join('<br>');
+                        document.getElementById('lowInventoryList').innerHTML = `以下藥草庫存不足：<br>${message}`;
+                    }
+                })
+                .catch(error => console.error('Error fetching inventory:', error));
+        });
+
+    // 症狀選擇
+    function selectSymptom(symptom) {
+        console.log("選擇的症狀：" + symptom);
+        let chineseSymptom = '';
+        switch (symptom) {
+            case 'symptom1':
+                chineseSymptom = '星夜寧靜';
+                break;
+            case 'symptom2':
+                chineseSymptom = '宵福調和';
+                break;
+            case 'symptom3':
+                chineseSymptom = '鼻福寧茶';
+                break;
+            case 'symptom4':
+                chineseSymptom = '悅膚寧茶';
+                break;
+            case 'symptom5':
+                chineseSymptom = '慰胃來茶';
+                break;
+            case 'symptom6':
+                chineseSymptom = '月悅茶';
+                break;
+            default:
+                chineseSymptom = '未知症狀';
+        }
+        const items = document.querySelectorAll('.item');
+        items.forEach(item => {
+            item.classList.remove('selected');
+        });
+        const selectedSymptom = document.getElementById(symptom);
+        selectedSymptom.classList.add('selected');
+    }
+
+
+    // 甜度或冰塊的選擇狀態
+    function setSelected(element) {
+        const group = element.parentElement.querySelectorAll('.option');
+        group.forEach(option => {
+            if (option !== element) {
+                option.classList.remove('selected');
+            }
+        });
+        element.classList.toggle('selected');
+    }
+
+    // 獲取所選甜度或冰塊的值
+    function getSelectedOption(options) {
+        let selectedOption = null;
+        options.forEach(option => {
+            if (option.classList.contains('selected')) {
+                selectedOption = option.getAttribute('data-value');
+            }
+        });
+        return selectedOption;
+    }
+
+
+    let orders = [];  // 儲存訂單的陣列
+    // 用戶點擊確定按鈕時被調用
+    function onSubmit() { //添加至購物車按鍵
+        const selectedSweetness = getSelectedOption(document.querySelectorAll('.sweetnessOptions .option'));
+        const selectedIce = getSelectedOption(document.querySelectorAll('.iceOptions .option'));
+
+        // 獲取選定的症狀元素
+        const selectedSymptomElement = document.querySelector('.item.selected');
+
+        // 檢查是否選擇了症狀、甜度和冰塊。
+        if (!selectedSymptomElement) {
+            alert("請選擇飲品");
+            return;
+        }
+        if (selectedSweetness === null) {
+            alert("請選擇甜度");
+            return;
+        }
+        if (selectedIce === null) {
+            alert("請選擇冰塊");
+            return;
+        }
+
+        const selectedSymptom = selectedSymptomElement.textContent.trim();
+        const productQuantity = document.querySelector('.productQuantityInput').value.trim();
+
+        // 檢查產品數量是否為空或負數。
+        if (productQuantity === '') {
+            alert('請輸入產品數量');
+            return;
+        }
+        if (productQuantity < 1) {
+            alert('請輸入有效的產品數量');
+            return;
+        }
+
+        // 將訂單資料儲存為物件
+        const order = {
+            symptom: selectedSymptom,
+            sweetness: selectedSweetness,
+            ice: selectedIce,
+            quantity: productQuantity
+        };
+
+        // 將訂單物件推送到 orders 陣列中
+        orders.push(order);
+
+        // 建立新的 li 元素來顯示使用者選擇的產品訊息
+        const li = document.createElement('li');
+        const ul = document.createElement('u1');
+        li.textContent = `${selectedSymptom}，甜度：${selectedSweetness}，冰塊：${selectedIce}，數量：${productQuantity}`;
+        document.body.prepend(li)
+        li.after(ul)
+        //刪除鍵
+        li.insertAdjacentHTML('beforeend',`<button onclick="removeItem(this)">刪除</button>`)
+
+
+        document.getElementById('productList').appendChild(li);
+
+        // 清空输入框中的值
+        document.querySelector('.productQuantityInput').value = '';
+
+        // 顯示使用者選擇的結果
+        document.querySelector('.resultContainer').style.display = 'block';
+        }
+
+    // 刪除項目
+    function removeItem(item) {
+        const index = item.parentNode.index;
+        orders.splice(index, 1);  // 從 orders 陣列中刪除對應索引的訂單資料
+        item.parentNode.remove();  // 從 UI 中刪除對應的訂單項目
+    }
+
+    function sendOrdersToDjango() {
+        fetch('/pos/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),  // 請確保您有正確取得 CSRF token
+            },
+            body: JSON.stringify({ orders: orders }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);  // 可以根據後端返回的訊息進行不同的提示
+            // 清空 orders 陣列
+            orders = [];
+            // 清空 UI 中的訂單列表
+            document.getElementById('productList').innerHTML = '';
+            // 隱藏結果容器
+            document.querySelector('.resultContainer').style.display = 'none';
+            if (data.refresh) {
+                // 如果包含重整的指示，則重新整理網頁
+                window.location.reload();
+        }
+        })
+        .catch(error => console.error('Error submitting order:', error));
+    }
+
+    // 用來獲取 CSRF token 的函數，以便於在 POST 請求中使用
+    function getCookie(name) {
+        const cookieValue = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return cookieValue ? cookieValue[2] : null;
+    }
+</script>
+</body>
+</html>
