@@ -206,8 +206,6 @@ def pos(request):
             # 解析 JSON 資料，注意要使用 request.body
             data = json.loads(request.body)
             orders = data.get('orders', [])  # 獲取 orders 陣列
-            # 在這裡處理 orders 陣列，例如將其儲存到資料庫中
-            # 假設 orders 是一個包含訂單資料的陣列
             for order in orders:
                 symptom=order.get('symptom')
                 quantity=order.get('quantity')
@@ -381,8 +379,13 @@ def check_inventory(request):
 #----------------------------------------銷售表單
 
 def salelist(request): #庫存表單設定
-    sales = Sale.objects.all().order_by('sale_id')
-    return render(request, "salelist.html", locals())
+    sort_order = request.GET.get('saleid')
+    if sort_order == 'ascending':
+        sales = Sale.objects.all().order_by('sale_id')
+    else:
+        sales = Sale.objects.all().order_by('-sale_id')
+    return render(request, "salelist.html", {'sales': sales})
+
 
         
 

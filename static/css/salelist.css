@@ -54,3 +54,16 @@ a {
 a:hover {
     text-decoration: underline; /* 添加下劃線 */
 }
+
+#sort_order {
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 200px;
+    margin-left: 5px;
+}
+
+#sort_order option {
+    font-size: 14px;
+}

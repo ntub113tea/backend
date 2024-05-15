@@ -4,11 +4,32 @@
     <title>銷售資料表</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/salelist.css' %}">
+    <style>
+        #sort_order {
+            padding: 3px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 200px;
+            margin-left: 5px;
+        }
+
+        #sort_order option {
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
     <h2>銷售資料</h2><h3><a href="/manage/">員工首頁</a></h3><!-- <h3><a href="/purchasepostform/">新增資料</a></h3> -->
     <table border="1" cellpadding="4" cellspacing="1">
-        <th>銷售id</th><th>顧客id</th><th>商品名稱</th><th>使用藥草料號</th><th>使用量(g)</th><th>點餐時間</th>
+        <th>銷售id
+            <select id="sort_order">
+                <option>選擇升序降序</option>
+                <option value="ascending">升序</option>
+                <option value="descending">倒序</option>
+            </select>
+        </th>
+        <th>顧客id</th><th>商品名稱</th><th>使用藥草料號</th><th>使用量(g)</th><th>點餐時間</th>
         {% for Sale in sales %}
             <tr>
                 <td>{{ Sale.sale_id }}</td>
@@ -24,5 +45,12 @@
             </tr>
         {% endfor %}
     </table> 
+    <script>
+        document.getElementById('sort_order').addEventListener('change', function() {
+            var selectedOrder = this.value;
+            var url = "{% url 'salelist' %}?saleid=" + selectedOrder;
+            window.location.href = url;
+        });
+    </script>
 </body>
 </html>
