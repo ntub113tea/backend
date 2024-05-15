@@ -116,7 +116,7 @@ class Sale2(models.Model):
 
 class SymptomOfQuestion(models.Model):
     customer = models.OneToOneField(Customer,on_delete=models.CASCADE, primary_key=True,related_name='symptom_questions')
-    question_time = models.ForeignKey(Sale,on_delete=models.CASCADE, db_column='question_time',related_name='questions')
+    question_time =models.DateTimeField()
     q1 = models.IntegerField(db_column='Q1', blank=True, null=True)  # Field name made lowercase.
     q2 = models.IntegerField(db_column='Q2', blank=True, null=True)  # Field name made lowercase.
     q3 = models.IntegerField(db_column='Q3', blank=True, null=True)  # Field name made lowercase.

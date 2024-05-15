@@ -22,7 +22,7 @@
                     顧客：{{request.user.customer_name}} 
                     <br>電話號碼：{{request.user.customer_id|mask_phone}} 
                     <br>您已經登入囉
-                    <br><a href="">歷史紀錄</a>
+                    <br><a href="/history/">歷史紀錄</a>
                     <br><a href="/accounts/logout/">登出</a></p>
             {% else %}
                 <p align="right">
@@ -141,14 +141,15 @@
 
         <!-- 確認按鈕 -->
         
-            <button onclick="javascript:window.location.reload()" id="submitButton" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
-        </div>
+        <form method="post" name="question">
+            {% csrf_token %}
+            <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
+        </form>
 
             <h1>問卷結果</h1>
             <ul>
-                {% for item in result %}
-                    <li>{{ item }}</li>
-                {% endfor %}
+                    <li>{{ herbs }}</li>
+                    <li>{{ dosages }}</li>
             </ul>
         
 
