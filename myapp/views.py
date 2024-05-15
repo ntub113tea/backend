@@ -142,7 +142,7 @@ def question(request):
                     "早上哈啾": "金銀花",
                     "癢癢": "忍冬",
                     "胃生氣": "積雪草",
-                    "厭世生理期": ["鴨舌黃", "益母草"]
+                    "厭世生理期": ["鴨舌黃(不苦)", "益母草(苦)"]
                 }
 
                 dosage = {
@@ -179,8 +179,24 @@ def question(request):
                 parts = item.split()
                 herbs.append(parts[0])
                 dosages.append(float(parts[1][:-1]))
+            herbs_mapping = {
+            "魚腥草": 1, "白鶴靈芝(不苦)": 2,"積雪草": 3, 
+            "金銀花": 4,"蒲公英(苦)": 5,  "忍冬": 6, '野茄樹':7,'金錢薄荷':8,
+            '紫蘇':9,"鴨舌黃(不苦)": 10, "益母草(苦)": 11,'薄荷':12,
+            '甜菊':13,'咸豐草':14
+            }
+            customer_id = request.user.customer_id if request.user.is_authenticated else 0
+            product_name = "客製化"  # 改成客製化
+            order_time = utc_now  # 現在時間
+            for i in range(len(herbs)):
+                Sale.objects.create(
+                customer_id=customer_id,
+                product_name=product_name,
+                herbs_id=herbs_mapping.get(herbs[i]),
+                sales_value=dosages[i],
+                order_time=order_time
+            )
             return render(request, "question.html", {'result': result, 'herbs': herbs, 'dosages': dosages})
-
     return render(request, "question.html")
 
 

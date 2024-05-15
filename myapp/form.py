@@ -45,6 +45,10 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
         }
     def clean_customer_id(self):
         customer_id = self.cleaned_data['customer_id']
+        if not re.match(r'^\d{10}$', customer_id):
+            raise forms.ValidationError("請輸入10位電話號碼")
+        if not customer_id.startswith('09'):
+            raise forms.ValidationError("電話號碼必須為09開頭")
         if Customer.objects.filter(customer_id=customer_id).exists():
             raise ValidationError("此電話號碼已被註冊。")
         return customer_id

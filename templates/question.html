@@ -140,20 +140,34 @@
 </div>
 
         <!-- 確認按鈕 -->
-        
         <form method="post" name="question">
             {% csrf_token %}
-            <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
+            <button type="button" onclick="selectPreference('bitter')">接受苦味</button>
+            <button type="button" onclick="selectPreference('not-bitter')">不能接受苦味</button>
+            <button type="submit" name="confirm_button" value="confirm" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
         </form>
 
-            <h1>問卷結果</h1>
-            <ul>
-                    <li>{{ herbs }}</li>
-                    <li>{{ dosages }}</li>
-            </ul>
-        
-
 <script>
+var preference = ""; // 全局變量，用於存儲偏好值
+
+function selectPreference(preferenceValue) {
+    preference = preferenceValue; // 將按鈕點擊時的值存儲在全局變量中
+
+    // 獲取當前按鈕和它的父元素
+    var currentButton = event.target;
+    var parent = currentButton.parentElement;
+
+    // 清除同一行中所有按鈕的選擇狀態
+    var buttons = parent.querySelectorAll('button');
+    buttons.forEach(function(button) {
+        button.classList.remove('active');
+    });
+
+    // 將當前按鈕標記為選擇狀態
+    currentButton.classList.add('active');
+}
+
+
     var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish
     document.getElementById('submitButton').addEventListener('click', function() {
             // 发送请求到 Django 后端
@@ -300,9 +314,38 @@
 
             // alert('Cookie 已刪除！');
         }
+        function submitForm(preference) {
+        document.getElementsByName('confirm_button')[0].value = preference;
+        document.forms['question'].submit();
+    }
+    function submitForm() {
+    // 檢查使用者的選擇偏好
+    var preference = document.getElementsByName('confirm_button')[0].value;
 
-
-
+    if (preference === 'bitter') { // 如果選擇了「接受苦味」
+        // 將選項「白鶴靈芝(不苦),蒲公英(苦)」變更為「蒲公英(苦)」
+        var herbs = document.querySelectorAll('.herb-option');
+        herbs.forEach(function(herb) {
+            var herbName = herb.textContent;
+            if (herbName === '白鶴靈芝(不苦),蒲公英(苦)') {
+                herb.textContent = '蒲公英(苦)';
+            } else if (herbName === '鴨舌黃(不苦),益母草(苦)') {
+                herb.textContent = '益母草(苦)';
+            }
+        });
+    }
+    if (preference === 'not-bitter') { // 如果選擇了「不接受苦味」
+        var herbs = document.querySelectorAll('.herb-option');
+        herbs.forEach(function(herb) {
+            var herbName = herb.textContent;
+            if (herbName === '白鶴靈芝(不苦),蒲公英(苦)') {
+                herb.textContent = '白鶴靈芝(不苦)';
+            } else if (herbName === '鴨舌黃(不苦),益母草(苦)') {
+                herb.textContent = '鴨舌黃(不苦)';
+            }
+        });
+    }
+}
 </script>
 </body>
 </html>
