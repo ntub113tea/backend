@@ -59,15 +59,6 @@ class Customer(AbstractBaseUser,PermissionsMixin):
         verbose_name = 'User'
 
 
-class Employee(models.Model):
-    account = models.CharField(primary_key=True, max_length=20)
-    password = models.CharField(max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'employee'
-
-
 class HerbStock(models.Model):
     herbs_id = models.IntegerField(primary_key=True)
     herbs_name = models.CharField(max_length=10)
@@ -94,7 +85,7 @@ class Sale(models.Model):
     sale_id = models.IntegerField(primary_key=True,editable=False)
     customer_id = models.CharField(max_length=15)
     product_name = models.CharField(max_length=10)
-    herbs = models.OneToOneField('HerbStock', on_delete=models.CASCADE,)
+    herbs = models.IntegerField()
     sales_value = models.FloatField()
     order_time = models.DateTimeField()
 
