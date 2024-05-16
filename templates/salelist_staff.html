@@ -9,7 +9,7 @@
     {% load static %}
     <h2>銷售資料</h2>
     <ul style="margin-left: 80px;">
-        <li><a href="/manage/">員工首頁</a></li>
+        <li><a href="/staff/">員工首頁</a></li>
     </ul>
     <table border="1" cellpadding="4" cellspacing="1">
         <th>銷售id
@@ -28,10 +28,6 @@
                 <td>{{ Sale.herbs_id }}</td>
                 <td>{{ Sale.sales_value }}</td>
                 <td>{{ Sale.order_time }}</td>
-                <!-- <td>
-                    <a href="/edit/{{HerbStock.herbs_id}}/" title="編輯"> 編輯 </a>
-                    <a href="/delete/{{HerbStock.herbs_id}}" title="刪除"> 刪除 </a>
-                </td> -->
             </tr>
         {% endfor %}
     </table> 

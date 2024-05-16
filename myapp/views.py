@@ -29,31 +29,8 @@ def url(request):
 
 def index(request):
     return render(request,"index.html")
-
-def manage_users(request):
-    user_form = UserCreationForm(request.POST or None)
-    Customer = get_user_model()
-    users = Customer.objects.all()
     
-    if request.method == 'POST':
-        if user_form.is_valid():
-            user_form.save()
-            return redirect('manage_users')
-
-    return render(request, 'manage_users.html', {'user_form': user_form, 'users': users})
-
-def manage_groups(request):
-    if request.method == 'POST':
-        # 处理表单提交，创建/编辑用户组
-        # 分配权限等操作
-        pass
-    else:
-        groups = Group.objects.all()
-        permissions = Permission.objects.all()
-        context = {'groups': groups, 'permissions': permissions}
-        return render(request, 'manage_groups.html', context)
-    
-#---------------------------------------------------------------
+#---------------------------------------------------------------客製化表單
 
 def question(request):
     if request.method == 'POST' and 'confirm_button' in request.POST: #新增按下按鈕才能更改資料庫中的數值
@@ -423,6 +400,14 @@ def salelist(request): #庫存表單設定
     else:
         sales = Sale.objects.all().order_by('-sale_id')
     return render(request, "salelist.html", {'sales': sales})
+
+def salelist_staff(request): #庫存表單(員工)設定
+    sort_order = request.GET.get('saleid')
+    if sort_order == 'ascending':
+        sales = Sale.objects.all().order_by('sale_id')
+    else:
+        sales = Sale.objects.all().order_by('-sale_id')
+    return render(request, "salelist_staff.html", {'sales': sales})
 
 
         

@@ -26,8 +26,6 @@ urlpatterns = [
     path('staff/',views.staff),
     path("pos/", views.pos),
     path('question/', views.question),
-    path('usermanage/', views.manage_users),
-    path('groups/', views.manage_groups),
     path('accounts/login/', views.login_view, name='login'),
     path('accounts/logout/', views.logout),
     path('accounts/profile/', views.index),
@@ -38,6 +36,7 @@ urlpatterns = [
     path('edit/<int:id>/', views.edit),
     path('herbstocklist/',views.herbstocklist),
     path('salelist/',views.salelist,name='salelist'),
+    path('salelist_staff/',views.salelist_staff,name='salelist'),
     path('check_inventory/', views.check_inventory),
     path('history/', views.history_view, name='history'),
 ]

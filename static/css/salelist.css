@@ -1,12 +1,7 @@
 /* 重置默認的邊距和填充 */
 body, h2, table {
     margin: 0;
-    padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
-}
-
-/* 在表格周圍添加一些間距 */
-table {
-    margin: 20px;
+    padding: 20px 5%;
 }
 
 /* 美化表頭 */
@@ -27,7 +22,8 @@ tr {
 
 /* 添加表格邊框 */
 table {
-    width: 100%;
+    margin: auto;
+    width: 90%;
     border-collapse: collapse; /* 合併表格邊框 */
     table-layout: fixed; /* 使用固定表格布局 */
 }
@@ -61,10 +57,15 @@ a:hover {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 14px;
-    width: 200px;
+    width: 140px;
     margin-left: 5px;
 }
 
 #sort_order option {
     font-size: 14px;
+}
+
+#wrapper {
+    width: 1500px;
+    margin: 0 auto;
 }

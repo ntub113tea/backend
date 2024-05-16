@@ -1,55 +1,71 @@
-body {
-    font-family: Arial, sans-serif;
+/* 重置默認的邊距和填充 */
+body, h2, table {
     margin: 0;
-    padding: 20px 5%; /* 頁面添加上下各 20px，左右各為畫面寬度的5% */
-    background-color: #f4f4f4;
+    padding: 20px 5%; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
 }
 
-h2 { /* 進貨資料 */
-    text-align: center;
-    color: #333;
-    font-size: 30px; /* 可以調整文字大小 */
-}
-
-table { /* 名字格子 */
-    width: 90%; /* 表格寬度為畫面寬度的90% */
-    margin: 20px auto;
-    border-collapse: collapse;
-    background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-th, td { /* 名字格子外框 */
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #000000;
-    width: 20%; /* 每個格子寬度為表格寬度的20% */
-}
-
+/* 美化表頭 */
 th {
-    background-color: #4a69bd;
-    color: #333;
+    background-color: #4a69bd; /* 背景顏色 */
+    padding: 10px; /* 填充 */
 }
 
-a { /* 新增資料 */
-    display: block;
-    text-decoration: none;
-    color: #047bfa;
-    font-size: 30px; /* 可以調整文字大小 */
-    margin-bottom: 5px; /* 可以調整連結之間的間距 */
-}
-
-a:hover { /* 新增資料滑鼠 */
-    text-decoration: underline;
-    color: #f8c291;
-}
-
-.add-link {
-    display: block;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
+/* 美化表格單元格 */
 td {
-    white-space: nowrap;
+    padding: 10px; /* 填充 */
+}
+
+/* 在表格行之間添加一些間距 */
+tr {
+    margin-bottom: 10px;
+}
+
+/* 添加表格邊框 */
+table {
+    margin: auto;
+    width: 90%;
+    border-collapse: collapse; /* 合併表格邊框 */
+    table-layout: fixed; /* 使用固定表格布局 */
+}
+
+/* 添加表格單元格邊框 */
+td, th { /*格字框*/
+    border: 1px solid #000000; /* 邊框 */
+    text-align: center; /* 文本對齊方式 */
+}
+
+/* 美化標題 */
+h2 {
+    margin: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+
+/* 美化連結 */
+a {
+    text-decoration: none; /* 去除下劃線 */
+    color: blue; /* 文本顏色 */
+}
+
+/* 懸停連結時的樣式 */
+a:hover {
+    text-decoration: underline; /* 添加下劃線 */
+}
+
+#sort_order {
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 140px;
+    margin-left: 5px;
+}
+
+#sort_order option {
+    font-size: 14px;
+}
+
+#wrapper {
+    width: 1500px;
+    margin: 0 auto;
 }

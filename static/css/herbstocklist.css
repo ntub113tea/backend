@@ -1,64 +1,54 @@
-/* 重置默認樣式 */
-body {
-    font-family: Arial, sans-serif;
+/* 重置默認的邊距和填充 */
+body, h2, table {
     margin: 0;
-    padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
-    
-    background-color: #f4f4f4;
+    padding: 20px 5%;
 }
 
-/* 容器樣式 */
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    /* 添加內邊距以在容器周圍創建空間 */
-    padding: 30px; /* 您可以根據需要調整此值 */
+/* 美化表頭 */
+th {
+    background-color: #4a69bd; /* 背景顏色 */
+    padding: 10px; /* 填充 */
 }
 
-/* 標題樣式 */
+/* 美化表格單元格 */
+td {
+    padding: 10px; /* 填充 */
+}
+
+/* 在表格行之間添加一些間距 */
+tr {
+    margin-bottom: 10px;
+}
+
+/* 添加表格邊框 */
+table {
+    margin: auto;
+    width: 70%;
+    border-collapse: collapse; /* 合併表格邊框 */
+    table-layout: fixed; /* 使用固定表格布局 */
+}
+
+/* 添加表格單元格邊框 */
+td, th { /*格字框*/
+    border: 1px solid #000000; /* 邊框 */
+    text-align: center; /* 文本對齊方式 */
+}
+
+/* 美化標題 */
 h2 {
-    color: #333;
+    margin: 20px;
     font-size: 30px;
     text-align: center;
 }
 
-/* 表格樣式 */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-/* 表頭樣式 */
-th, td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-}
-
-/* 表頭樣式 */
-th {
-    background-color: #4a69bd;
-    font-weight: normal;
-    color: #000000;
-}
-
-/* 表格行懸停效果 */
-tr:hover {
-    background-color: #f9f9f9;
-}
-
-/* 鏈接樣式 */
+/* 美化連結 */
 a {
-    text-decoration: none;
-    color: #007bff;
+    text-decoration: none; /* 去除下劃線 */
+    color: blue; /* 文本顏色 */
 }
 
-/* 鏈接懸停效果 */
+/* 懸停連結時的樣式 */
 a:hover {
-    text-decoration: underline;
+    text-decoration: underline; /* 添加下劃線 */
 }
+
