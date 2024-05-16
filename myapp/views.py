@@ -14,7 +14,7 @@ from .form import PostForm,CustomerRegistrationForm,LoginForm
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
 from datetime import datetime, timedelta
-import pytz
+import pytz,json
 
 @user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
 def manage(request):
@@ -196,12 +196,49 @@ def history_view(request):
     history_records = SymptomOfQuestion.objects.filter(customer_id=customer_id)
 
     return render(request, 'history.html', {'history_records': history_records})
+
 #--------------------------------------------pos系統(非客製化)
 
 @user_passes_test(lambda user:user.is_staff,login_url='/accounts/login/')
 def pos(request):
+    if request.method == 'POST':
+        try:
+            # 解析 JSON 資料，注意要使用 request.body
+            data = json.loads(request.body)
+            orders = data.get('orders', [])  # 獲取 orders 陣列
+            for order in orders:
+                symptom=order.get('symptom')
+                quantity=order.get('quantity')
+                customer = 0
+                sale_value = 2.5*int(quantity)
+                time = datetime.now().strftime("%Y-%m-%d %H:%M")
+                if symptom == "星夜寧靜":
+                    product = "星夜寧靜"
+                    herb = 1
+                elif symptom == "宵福調和":
+                    product = "宵福調和"
+                    herb = 2
+                elif symptom == "鼻福寧茶":
+                    product = "鼻福寧茶"
+                    herb = 4
+                elif symptom == "悅膚寧茶":
+                    product = "悅膚寧茶"
+                    herb = 6
+                elif symptom == "慰胃來茶":
+                    product = "慰胃來茶"
+                    herb = 3
+                else: #月悅茶
+                    product = "月悅茶" 
+                    herb = 10
+                Sale.objects.create(customer_id=customer,product_name=product,herbs_id=herb,sales_value=sale_value,order_time=time)
 
-    symptom = request.COOKIES.get('finalsymptom')
+            return JsonResponse({'message': '點餐成功！','refresh': True})
+        except json.JSONDecodeError as e:
+            return JsonResponse({'error': '無效的 JSON 資料'}, status=400)
+    
+    return render(request,"POS介面  new.html",locals())
+
+    """ symptom = request.COOKIES.get('finalsymptom')
 
     if symptom:
         customer = 0
@@ -229,8 +266,8 @@ def pos(request):
         Sale.objects.create(customer_id=customer,product_name=product,herbs_id=herb,sales_value=sale_value,order_time=time)
         return redirect('/manage/')
     else:
-        message = '請輸入資料'
-    return render(request,"POS介面.html",locals())
+        message = '請輸入資料' """
+    
 
 #----------------------------------------------------登入登出註冊
 
@@ -342,8 +379,13 @@ def check_inventory(request):
 #----------------------------------------銷售表單
 
 def salelist(request): #庫存表單設定
-    sales = Sale.objects.all().order_by('sale_id')
-    return render(request, "salelist.html", locals())
+    sort_order = request.GET.get('saleid')
+    if sort_order == 'ascending':
+        sales = Sale.objects.all().order_by('sale_id')
+    else:
+        sales = Sale.objects.all().order_by('-sale_id')
+    return render(request, "salelist.html", {'sales': sales})
+
 
         
 

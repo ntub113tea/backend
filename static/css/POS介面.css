@@ -19,6 +19,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin-top: 50px;
+    overflow: hidden;
 }
 
 h1 {
@@ -91,4 +92,51 @@ h1 {
     background-color: #007bff;
     color: #fff;
     border: 1px solid #007bff;
+}
+
+.lowInventoryList {  /* 庫存警告 */
+    display: block;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    width: 200px; /* 固定寬度 */
+    height: 200px; /* 固定高度 */
+    overflow: auto; /* 如果內容超出框架大小，則添加滾動條 */
+    word-wrap: break-word; /* 將長的單詞或 URL 換行 */
+    white-space: pre-wrap;
+    margin-right: -250px;
+}
+
+input {padding:10px 10px; border:1px black solid;
+    text-align:center;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+button { /*加入購物車 確認訂單*/
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+}
+
+.resultbox { /*購物車區塊*/
+    margin: 10px;
+    max-width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 50px;
+    float: left;
 }
