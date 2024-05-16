@@ -162,6 +162,30 @@
 
 
 <script>
+document.querySelector('form[name="question"]').addEventListener('submit', function(event) {
+    var allSymptomsSelected = true;
+
+    // 檢查是否所有症狀按鈕都被選中
+    document.querySelectorAll('.item').forEach(function(item) {
+        if (item.querySelectorAll('button.active').length < 1) {
+            allSymptomsSelected = false;
+        }
+    });
+
+    // 檢查是否選擇了接受苦的程度按鈕
+    if (!document.getElementById('bitterness-btn-yes').classList.contains('active') &&
+        !document.getElementById('bitterness-btn-no').classList.contains('active')) {
+        allSymptomsSelected = false;
+    }
+
+    if (!allSymptomsSelected) {
+        event.preventDefault(); // 防止表單提交
+        alert('請為每個症狀選擇一個強度和接受苦的程度。');
+    }
+});
+
+
+
     var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bitter_btn
     document.getElementById('submitButton').addEventListener('click', function() {
             // 发送请求到 Django 后端
