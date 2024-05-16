@@ -142,9 +142,9 @@
 
     <div class="row" style="text-align: center;"></div>
         <div class="item" id="symptom7">
-            <div class="title">接受苦的程度</div>
-            <button onclick="updateStrength('bitterness-btn-yes')" id="bitterness-btn-yes">可以</button>
-            <button onclick="updateStrength('bitterness-btn-no')" id="bitterness-btn-no">不行</button>
+            <div class="title">接受苦的程度</div>  
+                <button onclick="updateStrength('bitterness-btn-yes')" id="bitterness-btn-yes" name="bitter-btn" value="bitterness-btn-yes">可以</button>
+                <button onclick="updateStrength('bitterness-btn-no')" id="bitterness-btn-no" name="bitter-btn" value="bitterness-btn-no">不行</button>
         </div>
     </div>
 </div>
@@ -159,28 +159,10 @@
                 </form>
             </div>
         </div>
+
+
 <script>
-var preference = ""; // 全局變量，用於存儲偏好值
-
-function selectPreference(preferenceValue) {
-    preference = preferenceValue; // 將按鈕點擊時的值存儲在全局變量中
-
-    // 獲取當前按鈕和它的父元素
-    var currentButton = event.target;
-    var parent = currentButton.parentElement;
-
-    // 清除同一行中所有按鈕的選擇狀態
-    var buttons = parent.querySelectorAll('button');
-    buttons.forEach(function(button) {
-        button.classList.remove('active');
-    });
-
-    // 將當前按鈕標記為選擇狀態
-    currentButton.classList.add('active');
-}
-
-
-    var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish
+    var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bitter_btn
     document.getElementById('submitButton').addEventListener('click', function() {
             // 发送请求到 Django 后端
             fetch('/question/', {
@@ -288,10 +270,12 @@ function selectPreference(preferenceValue) {
             case 'menstrual-anguish-btn-5':
                 menstrual_anguish=5;
                 break;
-            
-            case 'bitterness-btn-yes': bitterness = "敢"; break;
-            
-            case 'bitterness-btn-no': bitterness = "不敢"; break;
+            case 'bitterness-btn-yes':
+                bitter_btn="True";
+                break;
+            case 'bitterness-btn-no':
+                bitter_btn="False";
+                break;
         }
         
         var expirationDate = new Date();
@@ -307,6 +291,7 @@ function selectPreference(preferenceValue) {
         document.cookie = "itchiness=" + itchiness +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "stomach_anger=" + stomach_anger +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "menstrual_anguish=" + menstrual_anguish +"; expires=" + expiresUTC + "; path=/question/";
+        document.cookie = "bitter=" + bitter_btn +"; expires=" + expiresUTC + "; path=/question/";
 
         // 獲取當前按鈕和它的父元素
         var currentButton = document.getElementById(buttonId);
@@ -327,43 +312,9 @@ function selectPreference(preferenceValue) {
                 // 將每個 cookie 的過期時間設定為過去的日期，使其被刪除
                 // document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/question/';
             });
-            
-
             // alert('Cookie 已刪除！');
         }
-        function submitForm(preference) {
-        document.getElementsByName('confirm_button')[0].value = preference;
-        document.forms['question'].submit();
-    }
-    function submitForm() {
-    // 檢查使用者的選擇偏好
-    var preference = document.getElementsByName('confirm_button')[0].value;
 
-    if (preference === 'bitter') { // 如果選擇了「接受苦味」
-        // 將選項「白鶴靈芝(不苦),蒲公英(苦)」變更為「蒲公英(苦)」
-        var herbs = document.querySelectorAll('.herb-option');
-        herbs.forEach(function(herb) {
-            var herbName = herb.textContent;
-            if (herbName === '白鶴靈芝(不苦),蒲公英(苦)') {
-                herb.textContent = '蒲公英(苦)';
-            } else if (herbName === '鴨舌黃(不苦),益母草(苦)') {
-                herb.textContent = '益母草(苦)';
-            }
-        });
-    }
-    if (preference === 'not-bitter') { // 如果選擇了「不接受苦味」
-        var herbs = document.querySelectorAll('.herb-option');
-        herbs.forEach(function(herb) {
-            var herbName = herb.textContent;
-            if (herbName === '白鶴靈芝(不苦),蒲公英(苦)') {
-                herb.textContent = '白鶴靈芝(不苦)';
-            } else if (herbName === '鴨舌黃(不苦),益母草(苦)') {
-                herb.textContent = '鴨舌黃(不苦)';
-            }
-        });
-    }
-}
 </script>
 </body>
 </html>
-{% csrf_token %}

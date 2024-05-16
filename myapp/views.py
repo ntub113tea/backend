@@ -63,14 +63,13 @@ def question(request):
         itchiness = request.COOKIES.get('itchiness')
         stomach_anger = request.COOKIES.get('stomach_anger')
         menstrual_anguish = request.COOKIES.get('menstrual_anguish')
+        bitter = request.COOKIES.get('bitter')
         customer_id = request.user.customer_id if request.user.is_authenticated else 0
-
+        
         # 取得台北的時區
         taipei_tz = pytz.timezone('Asia/Taipei')
-
         # 獲取現在的台北時間
         taipei_now = datetime.now(taipei_tz)
-
         # 將台北時間轉換為 UTC 時間
         utc_now = taipei_now.astimezone(pytz.utc)
 
@@ -138,11 +137,11 @@ def question(request):
             def choose_herb(symptom, choice, total_weight):
                 herbs = {
                     "睏不好": "魚腥草",
-                    "半暝還在嗨": ["白鶴靈芝(不苦)", "蒲公英(苦)"],
+                    "半暝還在嗨": ["白鶴靈芝", "蒲公英"],
                     "早上哈啾": "金銀花",
                     "癢癢": "忍冬",
                     "胃生氣": "積雪草",
-                    "厭世生理期": ["鴨舌黃(不苦)", "益母草(苦)"]
+                    "厭世生理期": ["鴨舌黃", "益母草"]
                 }
 
                 dosage = {
@@ -180,11 +179,33 @@ def question(request):
                 herbs.append(parts[0])
                 dosages.append(float(parts[1][:-1]))
             herbs_mapping = {
-            "魚腥草": 1, "白鶴靈芝(不苦)": 2,"積雪草": 3, 
-            "金銀花": 4,"蒲公英(苦)": 5,  "忍冬": 6, '野茄樹':7,'金錢薄荷':8,
-            '紫蘇':9,"鴨舌黃(不苦)": 10, "益母草(苦)": 11,'薄荷':12,
+            "魚腥草": 1, "白鶴靈芝": 2,"積雪草": 3, 
+            "金銀花": 4,"蒲公英": 5,  "忍冬": 6, '野茄樹':7,'金錢薄荷':8,
+            '紫蘇':9,"鴨舌黃": 10, "益母草": 11,'薄荷':12,
             '甜菊':13,'咸豐草':14
             }
+            
+        # 根據按鈕值進行處理
+            if bitter == "True":
+                # 如果用户点击了"可以"按钮
+                herbs = [
+                    "魚腥草",
+                    "蒲公英",  # 修改此处为单一草药
+                    "金銀花",
+                    "忍冬",
+                    "積雪草",
+                    "益母草"  # 修改此处为单一草药
+                ]
+            elif bitter == "False":
+                # 如果用户点击了"不行"按钮
+                herbs = [
+                    "魚腥草",
+                    "白鶴靈芝",  # 修改此处为单一草药
+                    "金銀花",
+                    "忍冬",
+                    "積雪草",
+                    "鴨舌黃"  # 修改此处为单一草药
+                ]                  
             customer_id = request.user.customer_id if request.user.is_authenticated else 0
             product_name = "客製化"  # 改成客製化
             order_time = utc_now  # 現在時間
@@ -196,6 +217,7 @@ def question(request):
                 sales_value=dosages[i],
                 order_time=order_time
             )
+                
             return render(request, "question.html", {'result': result, 'herbs': herbs, 'dosages': dosages})
     return render(request, "question.html")
 
