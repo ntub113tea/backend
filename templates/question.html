@@ -138,23 +138,31 @@
         <button onclick="updateStrength('menstrual-anguish-btn-5')" id="menstrual-anguish-btn-5">5</button>
     </div>
 </div>
+<!-- 第四行，新增的項目 -->
+
+    <div class="row" style="text-align: center;"></div>
+        <div class="item" id="symptom7">
+            <div class="title">接受苦的程度</div>  
+                <button onclick="updateStrength('bitterness-btn-yes')" id="bitterness-btn-yes" name="bitter-btn" value="bitterness-btn-yes">可以</button>
+                <button onclick="updateStrength('bitterness-btn-no')" id="bitterness-btn-no" name="bitter-btn" value="bitterness-btn-no">不行</button>
+        </div>
+    </div>
+</div>
+
 
         <!-- 確認按鈕 -->
-        
-        <form method="post" name="question">
-            {% csrf_token %}
-            <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
-        </form>
+        <div style="display: flex; justify-content: center;">
+            <div class="row" style="text-align: center;">
+                <form method="post" name="question">
+                    {% csrf_token %}
+                    <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
+                </form>
+            </div>
+        </div>
 
-            <h1>問卷結果</h1>
-            <ul>
-                    <li>{{ herbs }}</li>
-                    <li>{{ dosages }}</li>
-            </ul>
-        
 
 <script>
-    var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish
+    var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bitter_btn
     document.getElementById('submitButton').addEventListener('click', function() {
             // 发送请求到 Django 后端
             fetch('/question/', {
@@ -262,7 +270,14 @@
             case 'menstrual-anguish-btn-5':
                 menstrual_anguish=5;
                 break;
+            case 'bitterness-btn-yes':
+                bitter_btn="True";
+                break;
+            case 'bitterness-btn-no':
+                bitter_btn="False";
+                break;
         }
+        
         var expirationDate = new Date();
         expirationDate.setTime(expirationDate.getTime() + 600000); // 设置为当前时间的600秒後
 
@@ -276,6 +291,7 @@
         document.cookie = "itchiness=" + itchiness +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "stomach_anger=" + stomach_anger +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "menstrual_anguish=" + menstrual_anguish +"; expires=" + expiresUTC + "; path=/question/";
+        document.cookie = "bitter=" + bitter_btn +"; expires=" + expiresUTC + "; path=/question/";
 
         // 獲取當前按鈕和它的父元素
         var currentButton = document.getElementById(buttonId);
@@ -296,14 +312,9 @@
                 // 將每個 cookie 的過期時間設定為過去的日期，使其被刪除
                 // document.cookie = cookieName + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/question/';
             });
-            
-
             // alert('Cookie 已刪除！');
         }
-
-
 
 </script>
 </body>
 </html>
-{% csrf_token %}
