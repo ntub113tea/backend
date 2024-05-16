@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>歷史紀錄</title>
-    <style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/history.css' %}">
+    <!-- <style>
         table {
             width: 100%;
             border-collapse: collapse; /* 合併表格邊框 */
@@ -20,7 +22,7 @@
         th {
             background-color: #f2f2f2;
         }
-    </style>
+    </style> -->
 </head>
 <body>
     <h1>顧客上次的點餐紀錄</h1>
