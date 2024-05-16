@@ -409,9 +409,4 @@ def salelist_staff(request): #庫存表單(員工)設定
         sales = Sale.objects.all().order_by('-sale_id')
     return render(request, "salelist_staff.html", {'sales': sales})
 
-
-        
-
-
-
 # Create your views here.
