@@ -1,0 +1,62 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.form-container {
+    width: 50%;
+    max-width: 600px;
+}
+.form-container h1 {
+    text-align: center;
+}
+.input-field {
+    margin-bottom: 20px;
+}
+.error-message {
+    color: red;
+    margin-left: 10px;
+}
+.toggle-password {
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    outline: none;
+    font-size: 14px;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0; /* 清除預設的邊距 */
+}
+.inline-radio label {
+    display: inline-block;
+    margin-right: 10px;
+}
+.input-field {
+    display: flex;
+    align-items: center; /* 輸入框跟提示訊息在同一線上 */
+    margin-bottom: 20px; 
+}
+.error-message {
+    color: red;
+    margin-left: 10px; 
+}
+p, .input-field {
+margin-bottom: 20px; 
+}
+.toggle-password {
+background-color: #000000;  
+color: white;               
+border: none;               
+border-radius: 5px;         
+padding: 5px 10px;         
+cursor: pointer;            
+outline: none;              
+font-size: 14px;            
+}

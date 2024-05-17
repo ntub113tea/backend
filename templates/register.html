@@ -1,39 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>註冊</title>
     <style>
-        .inline-radio label {
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .input-field {
-            display: flex;
-            align-items: center; /* 輸入框跟提示訊息在同一線上 */
-            margin-bottom: 20px; 
-        }
-        .error-message {
-            color: red;
-            margin-left: 10px; 
-        }
-        p, .input-field {
-        margin-bottom: 20px; 
-        }
-        .toggle-password {
-        background-color: #000000;  
-        color: white;               
-        border: none;               
-        border-radius: 5px;         
-        padding: 5px 10px;         
-        cursor: pointer;            
-        outline: none;              
-        font-size: 14px;            
-        }
+        
     </style>
+    
 </head>
 <body>
-    <h1>註冊新帳號</h1>
-    <form action="" method="post" >
+    
+
+    <div class="w3-container w3-half w3-margin-top centered" >
+        <div class="w3-container w3-teal">
+            
+            <h1>註冊新帳號</h1>
+
+        </div>
+    <form action="" method="post" class="w3-container w3-card-4" >
         {% csrf_token %}
         <div>
         {{ form.customer_id.label_tag }}
@@ -94,11 +80,13 @@
             </div>
         </p>
         <p>
-            <input type="submit" value="註冊">
-            <button type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
+            <input class="w3-button w3-section w3-teal w3-ripple" type="submit" value="註冊">
+            <button class="w3-button w3-section w3-teal w3-ripple" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
         </p>
         
     </form> 
+
+    </div>
     <script>
         function togglePassword() {
             var passwordInput = document.getElementById('password');
