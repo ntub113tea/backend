@@ -14,27 +14,31 @@
 {% load static%}
 <body>
 
+    <div class="header">
+        <img  src="{% static 'images/logo.png' %}">
     
-   
+
+
+    
         {% if request.user.is_authenticated %}
             {% csrf_token %}
                 <p align="right">
                     顧客：{{request.user.customer_name}} 
-                    <br>電話號碼：{{request.user.customer_id|mask_phone}} 
-                    <br>您已經登入囉
+                    電話號碼：{{request.user.customer_id|mask_phone}} 
                     <br><a href="/history/">歷史紀錄</a>
                     <br><a href="/accounts/logout/">登出</a></p>
             {% else %}
                 <p align="right">
                     您尚未登入喔~<a href="/accounts/login/">登入</a>
-                    若您還沒有帳號，請<a href="/accounts/register/">註冊</a><br>
+                    若您還沒有帳號，請<a href="/accounts/register/">註冊</a>
                     請先登入再做問卷,若沒有登入,無法儲存紀錄哦～
                 </p>
             {% endif %}
-        
-    
+    </div>    
+    <h1>選擇您的症狀 (1症狀最輕 5症狀最重)</h1>
 
-            <h1>選擇您的症狀 (1症狀最輕 5症狀最重)</h1>  
+                    
+                 
         
 <div class="container">
        

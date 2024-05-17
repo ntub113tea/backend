@@ -1,10 +1,17 @@
 
 body { 
     font-family: Arial, sans-serif;
-    background-color: #d1f0c0;
+    background-color: #F5E8DD;
     
 }
-
+.header {
+    background-color: #EED3D9;
+    color: #0b0b0b;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 15px;
+    weight: 90%;
+}
 button.active {
     background-color: #007bff;
     color: #fff;
@@ -69,6 +76,10 @@ button.active {
     color: #fff;
 }
 
-
-
-
+.background-color{
+background-color: rgb(37, 44, 42);
+color: #000;
+text-align: center;
+padding: 10px;
+font-size: 30px;
+}
