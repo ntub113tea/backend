@@ -1,75 +1,64 @@
-/* 針對整個表單進行樣式設定 */
 body {
-    font-family: Arial, sans-serif; /* 使用非等寬字型 */
-    margin: 20px auto; /* 調整左右外邊距為自動並加入上下外邊距 */
+    font-family: Arial, sans-serif;
+    margin: 20px;
     padding: 20px 30px; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
     text-align: center; /* 將內容置中 */
 }
 
-form {
-    width: 300px; /* 表單寬度設置為固定值 */
-    margin: 0 auto; /* 讓表單水平居中對齊 */
-    padding: 20px; /* 增加內邊距來調整表單大小 */
-    box-sizing: border-box; /* 讓內邊距和邊框計算在內容的寬度之內 */
-
-}
 
 h2 {
-    text-align: center; /* 將標題置中 */
-    margin-bottom: 20px; /* 加入底部間距 */
+    text-align: center;
     font-size: 30px;
 }
 
-/* 藥草名稱標籤的樣式設定 */
+form {
+    width: 50%;
+    margin: 0 auto;
+    
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
 label {
-    display: block; /* 將標籤轉換為區塊元素 */
-    margin-bottom: 5px; /* 加入底部間距 */
+    font-weight: bold;
 }
 
-/* 選擇藥草下拉選單的樣式設定 */
-select {
-    width: 100%; /* 讓下拉選單填滿父元素的寬度 */
-    padding: 5px; /* 加入內邊距 */
-    margin-bottom: 10px; /* 加入底部間距 */
+/*按鈕和重置按鈕的樣式*/
+input[type="submit"], input[type="reset"], button[type="button"]{
+    padding: 8px 20px;
+    background-color: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
 }
 
-/* 數量輸入框的樣式設定 */
-input[type="text"] {
-    width: calc(100% - 12px); /* 考慮內邊距的寬度 */
-    padding: 5px; /* 加入內邊距 */
-    margin-bottom: 10px; /* 加入底部間距 */
+/*滑鼠懸停在提交按鈕或重置按鈕上時的樣式*/
+input[type="submit"]:hover, input[type="reset"]:hover {
+    background-color: #f8c291;
 }
 
-/* 時間標籤的樣式設定 */
-label[for="datetime"] {
-    display: block; /* 將標籤轉換為區塊元素 */
-    margin-bottom: 5px; /* 加入底部間距 */
-}
-
-/* 日期時間輸入框的樣式設定 */
-input[type="datetime-local"] {
-    width: calc(100% - 12px); /* 考慮內邊距的寬度 */
-    padding: 5px; /* 加入內邊距 */
-    margin-bottom: 10px; /* 加入底部間距 */
-}
-
-/* 提交按鈕和重設按鈕的樣式設定 */
-input[type="submit"],
-input[type="reset"] {
-    padding: 8px 20px; /* 加入內邊距 */
-    background-color: #4a69bd; /* 設定背景顏色 */
-    color: white; /* 設定文字顏色 */
-    border: none; /* 移除邊框 */
-    border-radius: 4px; /* 加入圓角 */
-    cursor: pointer; /* 變換游標形狀 */
-}
-
-/* 提交按鈕的懸停樣式 */
-input[type="submit"]:hover {
-    background-color: #f8c291; /* 懸停時的背景顏色 */
-}
-
-/* 重設按鈕的懸停樣式 */
-input[type="reset"]:hover {
-    background-color: #f8c291; /* 懸停時的背景顏色 */
+/*設定日期時間、數字、文字輸入框和下拉菜單的樣式*/
+input[type="datetime-local"], input[type="number"], input[type="text"], select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
 }
