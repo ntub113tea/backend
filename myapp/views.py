@@ -154,14 +154,13 @@ def question(request):
             for item in result:
                 parts = item.split()
                 herbs.append(parts[0])
-                dosages.append(float(parts[1][:-1]))
+                dosages.append(float(parts[1][:-1]))    
             herbs_mapping = {
-            "魚腥草": 1, "白鶴靈芝": 2,"積雪草": 3, 
-            "金銀花": 4,"蒲公英": 5,  "忍冬": 6, '野茄樹':7,'金錢薄荷':8,
-            '紫蘇':9,"鴨舌黃": 10, "益母草": 11,'薄荷':12,
-            '甜菊':13,'咸豐草':14
-            }
-            
+                "魚腥草": 1, "白鶴靈芝": 2,"積雪草": 3, 
+                "金銀花": 4,"蒲公英": 5,  "忍冬": 6, '野茄樹':7,'金錢薄荷':8,
+                '紫蘇':9,"鴨舌黃": 10, "益母草": 11,'薄荷':12,
+                '甜菊':13,'咸豐草':14
+            }        
         # 根據按鈕值進行處理
             if bitter == "True":
                 # 如果用户点击了"可以"按钮
@@ -191,6 +190,7 @@ def question(request):
                 customer_id=customer_id,
                 product_name=product_name,
                 herbs_id=herbs_mapping.get(herbs[i]),
+                herbs_name=herbs[i],
                 sales_value=dosages[i],
                 order_time=order_time
             )
@@ -229,24 +229,29 @@ def pos(request):
                 time = datetime.now().strftime("%Y-%m-%d %H:%M")
                 if symptom == "星夜寧靜":
                     product = "星夜寧靜"
-                    herb = 1
+                    herb = '魚腥草'
+                    herbs_id=1
                 elif symptom == "宵福調和":
                     product = "宵福調和"
-                    herb = 2
+                    herb = '白鶴靈芝'
+                    herbs_id=2
                 elif symptom == "鼻福寧茶":
                     product = "鼻福寧茶"
-                    herb = 4
+                    herb = '金銀花'
+                    herbs_id=4
                 elif symptom == "悅膚寧茶":
                     product = "悅膚寧茶"
-                    herb = 6
+                    herb = '忍冬'
+                    herbs_id=6
                 elif symptom == "慰胃來茶":
                     product = "慰胃來茶"
-                    herb = 3
+                    herb = '積雪草'
+                    herbs_id=3
                 else: #月悅茶
                     product = "月悅茶" 
-                    herb = 10
-                Sale.objects.create(customer_id=customer,product_name=product,herbs_id=herb,sales_value=sale_value,order_time=time)
-
+                    herb = '鴨舌癀'
+                    herbs_id=10
+                Sale.objects.create(customer_id=customer,product_name=product,herbs_id=herbs_id,herbs_name=herb,sales_value=sale_value,order_time=time)
             return JsonResponse({'message': '點餐成功！','refresh': True})
         except json.JSONDecodeError as e:
             return JsonResponse({'error': '無效的 JSON 資料'}, status=400)
@@ -344,14 +349,15 @@ def purchasepostform(request): #新增進貨資料
         postform=PostForm(request.POST)
         if postform.is_valid():
             herbs_id = postform.cleaned_data['herbs_name']
+            supply_id=postform.cleaned_data['supply_id']
             herbs_name = dict(PostForm.HERBS_CHOICES).get(herbs_id, "Unknown Herb")
             purchases_value = postform.cleaned_data['purchases_value']
             purchases_time =postform.cleaned_data['purchases_time']
             if herbs_id:  # 确保herbs_id非空
-                unit = Purchase.objects.create(herbs_name=herbs_name, herbs_id=herbs_id, purchases_value=purchases_value, purchases_time=purchases_time)
+                unit = Purchase.objects.create(herbs_name=herbs_name,supply_id=supply_id,herbs_id=herbs_id, purchases_value=purchases_value, purchases_time=purchases_time)
             return redirect('/perchaselist/')
         else:
-            message = postform.errors.get('herbs_name', ['請檢查輸入的數據'])[0]  # 藥草名稱錯誤訊息
+            message = postform.errors.get('herbs_name', ['請檢查輸入的資料'])[0]  # 藥草名稱錯誤訊息
     else:
         message = '請輸入進貨資料'
         postform=PostForm()
@@ -369,16 +375,42 @@ def delete(request,id=None): #刪除進貨資料
             message = "讀取錯誤！"
     return render(request, "delete.html", locals())
 
-def edit(request,id=None): #編輯進貨資料
+def edit(request, id=None):  # 編輯進貨資料
     if request.method == "POST":
         unit = Purchase.objects.get(purchases_id=id)
-        unit.herbs_name=request.POST['herbs']
-        unit.purchases_value=request.POST['value']
-        unit.purchases_time=request.POST['datetime']
+        herbs_id = request.POST['herbs_id']
+        herbs_name_mapping = {
+            '1': '魚腥草',
+            '2': '白鶴靈芝',
+            '3': '積雪草',
+            '4': '金銀花',
+            '5': '蒲公英',
+            '6': '忍冬',
+            '7': '野茄樹',
+            '8': '金錢薄荷',
+            '9': '紫蘇',
+            '10': '鴨舌癀',
+            '11': '益母草',
+            '12': '薄荷',
+            '13': '甜菊',
+            '14': '咸豐草',
+        }
+        unit.herbs_id = herbs_id
+        unit.herbs_name = herbs_name_mapping.get(herbs_id, '')
+        unit.supply_id = request.POST['supply_id']
+        unit.purchases_value = request.POST['value']
+        unit.purchases_time = request.POST['datetime']
         unit.save()
         message = '已修改'
         return redirect('/perchaselist/')
-    return render(request,"edit.html",locals())
+    else:
+        unit = Purchase.objects.get(purchases_id=id)
+        herbs_name = unit.herbs_name
+        supply_id = unit.supply_id
+        purchases_value = unit.purchases_value
+        purchases_time = unit.purchases_time
+    return render(request, "edit.html", locals())
+
 
 #----------------------------------------庫存表單
 

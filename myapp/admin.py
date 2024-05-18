@@ -19,7 +19,7 @@ class PurchaseAdmin(admin.ModelAdmin):
     ordering=('purchases_id',)
 
 class SaleAdmin(admin.ModelAdmin):
-    list_display=('sale_id','customer_id','herbs_id','product_name','order_time')
+    list_display=('sale_id','customer_id','herbs_id','herbs_name','product_name','order_time')
     ordering=('sale_id',)
 
 class CustomerAdmin(UserAdmin):

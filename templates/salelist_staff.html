@@ -19,13 +19,13 @@
                 <option value="descending">最新</option>
             </select>
         </th>
-        <th>顧客id</th><th>商品名稱</th><th>使用藥草料號</th><th>使用量(g)</th><th>點餐時間</th>
+        <th>顧客id</th><th>商品名稱</th><th>使用藥草</th><th>使用量(g)</th><th>點餐時間</th>
         {% for Sale in sales %}
             <tr>
                 <td>{{ Sale.sale_id }}</td>
                 <td>{{ Sale.customer_id }}</td>
                 <td>{{ Sale.product_name }}</td>
-                <td>{{ Sale.herbs_id }}</td>
+                <td>{{ Sale.herbs_name }}</td>
                 <td>{{ Sale.sales_value }}</td>
                 <td>{{ Sale.order_time }}</td>
             </tr>

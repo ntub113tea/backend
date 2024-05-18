@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+<html lang="zh-Hant">
 <head>
+    <meta charset="UTF-8">
     <title>資料修改(進貨)</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/edit.css' %}">
@@ -13,31 +15,42 @@
                 <th>藥草名稱</th>
                 <td>
                     <label for="herbs">選擇藥草：</label>
-                        <select id="herbs" name="herbs">
-                            <option value="魚腥草">魚腥草</option>
-                            <option value="白鶴靈芝">白鶴靈芝</option>
-                            <option value="積雪草">積雪草</option>
-                            <option value="金銀花">金銀花</option>
-                            <option value="蒲公英">蒲公英</option>
-                            <option value="忍冬">忍冬</option>
-                            <option value="野茄樹">野茄樹</option>
-                            <option value="金錢薄荷">金錢薄荷</option>
-                            <option value="紫蘇">紫蘇</option>
-                            <option value="鴨舌癀">鴨舌癀</option>
-                            <option value="薄荷">薄荷</option>
-                            <option value="甜菊">甜菊</option>
-                            <option value="咸豐草">咸豐草</option>
-                        </select>
+                    <select id="herbs" name="herbs_id">
+                        <option value="">--- 請選擇藥草 ---</option>
+                        <option value="1">魚腥草</option>
+                        <option value="2">白鶴靈芝</option>
+                        <option value="3">積雪草</option>
+                        <option value="4">金銀花</option>
+                        <option value="5">蒲公英</option>
+                        <option value="6">忍冬</option>
+                        <option value="7">野茄樹</option>
+                        <option value="8">金錢薄荷</option>
+                        <option value="9">紫蘇</option>
+                        <option value="10">鴨舌癀</option>
+                        <option value="11">益母草</option>
+                        <option value="12">薄荷</option>
+                        <option value="13">甜菊</option>
+                        <option value="14">咸豐草</option>
+                    </select>
                 </td>
             </tr>
             <tr>
-                <th>數量(公克)</th><td><input type="text" id="value" name="value"></td>
+                <th>料號</th>
+                <td><input type="text" id="herbs_id_display" name="herbs_id_display" value="" readonly></td>
+            </tr>
+            <tr>
+                <th>供應商編號</th>
+                <td><input type="text" id="supply_id" name="supply_id" value=""></td>
+            </tr>
+            <tr>
+                <th>數量(公克)</th>
+                <td><input type="text" id="value" name="value" value=""></td>
             </tr>
             <tr>
                 <th>時間</th>
                 <td>
                     <label for="datetime">選擇日期＆時間：</label>
-                        <input type="datetime-local" id="datetime" name="datetime">
+                    <input type="datetime-local" id="datetime" name="datetime" value="">
                 </td>
             </tr>
             <tr>
@@ -47,6 +60,16 @@
                 </th>
             </tr>
         </table>
+        <script>
+            document.getElementById('herbs').addEventListener('change', function() {
+                var herbsId = this.value;
+                if (herbsId) {
+                    document.getElementById('herbs_id_display').value = herbsId;
+                } else {
+                    document.getElementById('herbs_id_display').value = '';  // 清空输入框
+                }
+            });
+        </script>
     </form>
 </body>
 </html>

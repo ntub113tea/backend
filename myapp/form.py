@@ -17,13 +17,15 @@ class PostForm(forms.Form):   #進貨資料驗證
         choices=HERBS_CHOICES,
         label='Herbs')
     herbs_id = forms.IntegerField(required=True,min_value=1)
-    purchases_value = forms.FloatField(required=True,min_value=0)
+    supply_id=forms.CharField(label='供應商編號', max_length=45)
+    purchases_value = forms.FloatField(required=True)
     purchases_time = forms.DateTimeField(required=True, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
     def clean_herbs_name(self):
         herbs_name = self.cleaned_data['herbs_name']
         if herbs_name == '':
             raise ValidationError("請選擇一種藥草")
         return herbs_name
+
 class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入）
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'id': 'password' }),label='密碼') 
     #autocomplete': 'new-password告訴瀏覽器這是新的密碼 不應該保存任何值
