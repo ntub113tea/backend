@@ -140,3 +140,13 @@ button { /*加入購物車 確認訂單*/
     margin-top: 50px;
     float: left;
 }
+.resultContainer {
+    display: block;
+    position: absolute;
+    top: 50px;
+    right: 0px;
+    width: 580px; 
+    overflow-y: auto; /* 垂直方向溢出時顯示滾動條 */
+    max-height: calc(100vh - 100px); /* 限制容器的最大高度，這樣當內容超出一定高度時就會顯示滾動條 */
+    /* 其他樣式屬性 */
+}
