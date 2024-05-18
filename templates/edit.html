@@ -17,46 +17,47 @@
                     <label for="herbs">選擇藥草：</label>
                     <select id="herbs" name="herbs_id">
                         <option value="">--- 請選擇藥草 ---</option>
-                        <option value="1">魚腥草</option>
-                        <option value="2">白鶴靈芝</option>
-                        <option value="3">積雪草</option>
-                        <option value="4">金銀花</option>
-                        <option value="5">蒲公英</option>
-                        <option value="6">忍冬</option>
-                        <option value="7">野茄樹</option>
-                        <option value="8">金錢薄荷</option>
-                        <option value="9">紫蘇</option>
-                        <option value="10">鴨舌癀</option>
-                        <option value="11">益母草</option>
-                        <option value="12">薄荷</option>
-                        <option value="13">甜菊</option>
-                        <option value="14">咸豐草</option>
+                        <option value="1"{% if unit.herbs_id == 1 %}selected{% endif %}>魚腥草</option>
+                        <option value="2"{% if unit.herbs_id == 2 %}selected{% endif %}>白鶴靈芝</option>
+                        <option value="3"{% if unit.herbs_id == 3 %}selected{% endif %}>積雪草</option>
+                        <option value="4"{% if unit.herbs_id == 4 %}selected{% endif %}>金銀花</option>
+                        <option value="5"{% if unit.herbs_id == 5 %}selected{% endif %}>蒲公英</option>
+                        <option value="6"{% if unit.herbs_id == 6 %}selected{% endif %}>忍冬</option>
+                        <option value="7"{% if unit.herbs_id == 7 %}selected{% endif %}>野茄樹</option>
+                        <option value="8"{% if unit.herbs_id == 8 %}selected{% endif %}>金錢薄荷</option>
+                        <option value="9"{% if unit.herbs_id == 9 %}selected{% endif %}>紫蘇</option>
+                        <option value="10"{% if unit.herbs_id == 10 %}selected{% endif %}>鴨舌癀</option>
+                        <option value="11"{% if unit.herbs_id == 11 %}selected{% endif %}>益母草</option>
+                        <option value="12"{% if unit.herbs_id == 12 %}selected{% endif %}>薄荷</option>
+                        <option value="13"{% if unit.herbs_id == 13 %}selected{% endif %}>甜菊</option>
+                        <option value="14"{% if unit.herbs_id == 14 %}selected{% endif %}>咸豐草</option>
                     </select>
                 </td>
             </tr>
             <tr>
                 <th>料號</th>
-                <td><input type="text" id="herbs_id_display" name="herbs_id_display" value="" readonly></td>
+                <td><input type="text" id="herbs_id_display" name="herbs_id_display"  value="{{ unit.herbs_id }}" readonly></td>
             </tr>
             <tr>
                 <th>供應商編號</th>
-                <td><input type="text" id="supply_id" name="supply_id" value=""></td>
+                <td><input type="text" id="supply_id" name="supply_id" value="{{ unit.supply_id }}"></td>
             </tr>
             <tr>
                 <th>數量(公克)</th>
-                <td><input type="text" id="value" name="value" value=""></td>
+                <td><input type="text" id="value" name="value" value="{{ unit.purchases_value }}"></td>
             </tr>
             <tr>
                 <th>時間</th>
                 <td>
                     <label for="datetime">選擇日期＆時間：</label>
-                    <input type="datetime-local" id="datetime" name="datetime" value="">
+                    <input type="datetime-local" id="datetime" name="datetime" value=''>
                 </td>
             </tr>
             <tr>
                 <th colspan="2" align="center">
                     <input type="submit" name="button" id="button" value="送出">
                     <input type="reset" name="button2" id="button2" value="重設">
+                    <button type="button" onclick="window.location.href='/perchaselist';">返回進貨首頁</button>
                 </th>
             </tr>
         </table>
