@@ -33,6 +33,7 @@ body {
     justify-content: center;
     align-items: center;
     margin: 0; /* 清除預設的邊距 */
+    background-color: #F5E8DD;
 }
 .inline-radio label {
     display: inline-block;

@@ -3,16 +3,24 @@
 <head>
     <title>播放影片</title>
     {% load static%}
-    <link rel="stylesheet" href="{% static 'css/AI影片.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
 <body>
 {% load static%}
-<video id="videoPlayer" controls>
+<div class="header">
+    <span>
+        <a href="/index/"><img src="{% static 'images/logo.png' %}" style="height: 90px; width: auto;"></a>
+    </span>
+</div>   
+<div class="vedio">
+    <video id="videoPlayer" controls>
     <source src="{% static 'images/AI Video .mp4' %}" type="video/mp4">
     Your browser does not support the video tag or the file format of this video. 
-</video>
+    </video>
+</div> 
 
-<div id="buttonContainer">
+
+<div class="buttonContainer">
     <button id="nextPageButton">開始填表單</button>
 </div>
 

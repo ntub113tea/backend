@@ -1,10 +1,27 @@
 body, html {
     height: 100%;
     margin: 0;
+    padding: 0;
+    background-color: #F5E8DD;
+}
+
+.header {
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    background-color: #EED3D9;
+    color: #0b0b0b;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 15px;
+    height: 100px;
+}
+
+.vedio {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #F5E8DD;
+    margin: 10px;
 }
 
 video {
@@ -13,9 +30,7 @@ video {
 }
 
 /* styles.css */
-#buttonContainer {
-    position: absolute;
-    bottom: 20px; /* 距離底部的距離 */
+.buttonContainer {
     text-align: center;
     width: 100%;
 }
