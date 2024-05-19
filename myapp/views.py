@@ -216,6 +216,7 @@ def question(request):
     return render(request, "question.html")
     
 
+#--------------------------------------------------歷史紀錄
 
 def history_view(request):
     # 確保只有登入的用戶才能訪問歷史記錄頁面

@@ -53,11 +53,12 @@ class Customer(AbstractBaseUser,PermissionsMixin):
     GENDER_CHOICES = (
         ('男', '男'),
         ('女', '女'),
+        ('不願透漏', '不願透漏'),
     )
     customer_id = models.CharField(primary_key=True,max_length=15,verbose_name="user_id")
     password = models.CharField(max_length=128)
     customer_name = models.CharField(max_length=10,verbose_name="name")
-    sex = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    sex = models.CharField(max_length=5, choices=GENDER_CHOICES)
     age = models.IntegerField()
     line_id = models.CharField(max_length=45, blank=True, null=True)
     last_login = models.DateTimeField('last login', default=timezone.now, blank=True, null=True)
