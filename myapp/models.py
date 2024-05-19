@@ -8,6 +8,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
+from django.db import transaction
 
 class CustomerManager(BaseUserManager):
     def create_user(self, customer_id, password=None, **extra_fields):
@@ -30,6 +31,23 @@ class CustomerManager(BaseUserManager):
     def has_module_perms(self, app_label):
         # 在这里实现 has_module_perms 方法逻辑
         return True
+    
+class DailyCounter(models.Model):
+    date = models.DateField(default=timezone.now)
+    counter = models.IntegerField(default=0)
+
+    class Meta:
+        db_table = 'dailycounter'
+        
+    @classmethod
+    @transaction.atomic
+    def get_next_counter(cls):
+        today = timezone.now().date()
+        counter_obj, created = cls.objects.select_for_update().get_or_create(date=today)
+        next_counter = counter_obj.counter + 1
+        counter_obj.counter = next_counter
+        counter_obj.save()
+        return next_counter
 
 class Customer(AbstractBaseUser,PermissionsMixin):
     GENDER_CHOICES = (
