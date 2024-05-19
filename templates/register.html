@@ -13,79 +13,80 @@
 <body>
     
 
-    <div class="w3-container w3-half w3-margin-top centered" >
-        <div class="w3-container w3-pale-red">
+    <div class="w3-container w3-half w3-margin centered" >
+        <div class="w3-container" style="background-color: #EED3D9;">
             
             <h1>註冊新帳號</h1>
 
         </div>
-    <form action="" method="post" class="w3-container w3-card-4" >
-        {% csrf_token %}
-        <div>
-        {{ form.customer_id.label_tag }}
-        </div>
-        <div class="input-field">
-        {{ form.customer_id }}
-        {% if form.customer_id.errors %}
-        <span class="error-message">{{ form.customer_id.errors.as_text }}</span>
-        {% endif %}
-        </div>
-        <p>
-            {{ form.password.label_tag }}<br>
-            {{ form.password}}
-            <button type="button" onclick="togglePassword()" class="toggle-password">查看密碼</button>
-        </p>
-        <div>
-            {{ form.password_confirmation.label_tag }}
-        </div>
-        <div class="input-field">
-            {{ form.password_confirmation }}
-            {% if form.password_confirmation.errors %}
-            <span class="error-message">{{ form.password_confirmation.errors}}</span>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.customer_name.label_tag }} 
-        </div>
-        <div class="input-field">
-            {{ form.customer_name }}
-            {% if form.customer_name.errors %}
-                <span class="error-message">{{ form.customer_name.errors }}</span>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.age.label_tag }} 
-        </div>
-        <div class="input-field">
-            {{ form.age }}
-            {% if form.age.errors %}
-                <span class="error-message">{{ form.age.errors }}</span>
-            {% endif %}
-        </div>
-        <p>
-            {{ form.line_id.label_tag }}<br>
-            {{ form.line_id }}
-        </p>
-        <p>
-            <div class="input-field">
-                {{ form.sex.label_tag }}
-                <div class="inline-radio">
-                    {% for radio in form.sex %}
-                        <label>
-                            {{ radio.tag }}
-                            {{ radio.choice_label }}
-                        </label>
-                    {% endfor %}
+        <div class="w3-container w3-card-4" style="background-color:white;">
+            <form action="" method="post" >
+                {% csrf_token %}
+                <div>
+                {{ form.customer_id.label_tag }}
                 </div>
-            </div>
-        </p>
-        <p>
-            <input class="w3-button w3-section w3-teal w3-ripple" type="submit" value="註冊">
-            <button class="w3-button w3-section w3-teal w3-ripple" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
-        </p>
-        
-    </form> 
-
+                <div class="input-field">
+                {{ form.customer_id }}
+                {% if form.customer_id.errors %}
+                <span class="error-message">{{ form.customer_id.errors.as_text }}</span>
+                {% endif %}
+                </div>
+                <p>
+                    {{ form.password.label_tag }}<br>
+                    {{ form.password}}
+                    <button type="button" onclick="togglePassword()" class="toggle-password">查看密碼</button>
+                </p>
+                <div>
+                    {{ form.password_confirmation.label_tag }}
+                </div>
+                <div class="input-field">
+                    {{ form.password_confirmation }}
+                    {% if form.password_confirmation.errors %}
+                    <span class="error-message">{{ form.password_confirmation.errors}}</span>
+                    {% endif %}
+                </div>
+                <div>
+                    {{ form.customer_name.label_tag }} 
+                </div>
+                <div class="input-field">
+                    {{ form.customer_name }}
+                    {% if form.customer_name.errors %}
+                        <span class="error-message">{{ form.customer_name.errors }}</span>
+                    {% endif %}
+                </div>
+                <div>
+                    {{ form.age.label_tag }} 
+                </div>
+                <div class="input-field">
+                    {{ form.age }}
+                    {% if form.age.errors %}
+                        <span class="error-message">{{ form.age.errors }}</span>
+                    {% endif %}
+                </div>
+                <p>
+                    {{ form.line_id.label_tag }}<br>
+                    {{ form.line_id }}
+                </p>
+                <p>
+                    <div class="input-field">
+                        {{ form.sex.label_tag }}
+                        <div class="inline-radio">
+                            {% for radio in form.sex %}
+                                <label>
+                                    {{ radio.tag }}
+                                    {{ radio.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </p>
+                <p>
+                    <input class="w3-button w3-section w3-teal w3-ripple" type="submit" value="註冊">
+                    <button class="w3-button w3-section w3-teal w3-ripple" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
+                </p>
+                
+            </form> 
+        </div>        
     </div>
     <script>
         function togglePassword() {

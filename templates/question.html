@@ -13,149 +13,147 @@
 </head>
 {% load static%}
 <body>
-
+<div>
     <div class="header">
-        <img  src="{% static 'images/logo.png' %}">
-    
-
-
-    
-        {% if request.user.is_authenticated %}
-            {% csrf_token %}
-                <p align="right">
-                    顧客：{{request.user.customer_name}} 
-                    電話號碼：{{request.user.customer_id|mask_phone}} 
-                    <br><a href="/history/">歷史紀錄</a>
-                    <br><a href="/accounts/logout/">登出</a></p>
-            {% else %}
-                <p align="right">
-                    您尚未登入喔~<a href="/accounts/login/">登入</a>
-                    若您還沒有帳號，請<a href="/accounts/register/">註冊</a>
-                    請先登入再做問卷,若沒有登入,無法儲存紀錄哦～
-                </p>
+        <span>
+            <a href="/index/"><img src="{% static 'images/logo.png' %}" style="height: 90px; width: auto;"></a>
+        </span>
+        <span class="header-right">
+            {% if request.user.is_authenticated %}
+                {% csrf_token %}
+                    <p align="right">
+                        顧客：{{request.user.customer_name}} 
+                        電話號碼：{{request.user.customer_id|mask_phone}} 
+                        <br><a href="/history/">歷史紀錄</a>
+                        <br><a href="/accounts/logout/">登出</a></p>
+                {% else %}
+                    <p align="right">
+                        您尚未登入喔~<a href="/accounts/login/">登入</a>
+                        若您還沒有帳號，請<a href="/accounts/register/">註冊</a>
+                        <br>建議您登入帳號,方便紀錄您前一次的症狀來推薦您
+                    </p>
             {% endif %}
-    </div>    
+        </span>           
+    </div>
+
     <h1>選擇您的症狀 (1症狀最輕 5症狀最重)</h1>
 
-                    
-                 
+    <div class="container"> <!-- 問卷區域 -->
         
-<div class="container">
-       
-    <!-- 第一行 -->
-<div class="row">
-    
-    <div class="item" id="symptom1"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
+        <!-- 第一行 -->
+        <div class="row">
+            
+            <div class="item" id="symptom1"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
 
-        <img src="{% static 'images/睡不好.jpg' %}" alt="Item 1"><!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
+                <img src="{% static 'images/睡不好.jpg' %}" alt="Item 1"><!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
 
-        <div class="title">睡不好</div> 
+                <div class="title">睡不好</div> 
 
-        <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
-        <button onclick="updateStrength('symptom-btn-1')" id="symptom-btn-1">1</button>
-        <button onclick="updateStrength('symptom-btn-2')" id="symptom-btn-2">2</button>
-        <button onclick="updateStrength('symptom-btn-3')" id="symptom-btn-3">3</button>
-        <button onclick="updateStrength('symptom-btn-4')" id="symptom-btn-4">4</button>
-        <button onclick="updateStrength('symptom-btn-5')" id="symptom-btn-5">5</button>
-    </div>
+                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+                <button onclick="updateStrength('symptom-btn-1')" id="symptom-btn-1">1</button>
+                <button onclick="updateStrength('symptom-btn-2')" id="symptom-btn-2">2</button>
+                <button onclick="updateStrength('symptom-btn-3')" id="symptom-btn-3">3</button>
+                <button onclick="updateStrength('symptom-btn-4')" id="symptom-btn-4">4</button>
+                <button onclick="updateStrength('symptom-btn-5')" id="symptom-btn-5">5</button>
+            </div>
 
-    <div class="item" id="symptom2"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
+            <div class="item" id="symptom2"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
 
-        <img src="{% static 'images/半暝還在嗨.jpg' %}" alt="Item 2"><!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
+                <img src="{% static 'images/半暝還在嗨.jpg' %}" alt="Item 2"><!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
+                
+                <div class="title">半暝還在嗨</div>
+
+                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+                <button onclick="updateStrength('semi-darkness-btn-1')" id="semi-darkness-btn-1">1</button>
+                <button result = main()  # 調用 main 函式獲取處理結果列表
+                onclick="updateStrength('semi-darkness-btn-2')" id="semi-darkness-btn-2">2</button>
+                <button onclick="updateStrength('semi-darkness-btn-3')" id="semi-darkness-btn-3">3</button>
+                <button onclick="updateStrength('semi-darkness-btn-4')" id="semi-darkness-btn-4">4</button>
+                <button onclick="updateStrength('semi-darkness-btn-5')" id="semi-darkness-btn-5">5</button>
+            </div>
+        </div>
+
+        <!-- 第二行 -->
+        <div class="row">
+            <div class="item" id="symptom3"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
+
+                <img src="{% static 'images/早上哈啾.jpg' %}" alt="Item 3">
+                <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
+
+                <div class="title">早上哈啾</div>
+
+                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+                <button onclick="updateStrength('sneezing-btn-1')" id="sneezing-btn-1">1</button>
+                <button onclick="updateStrength('sneezing-btn-2')" id="sneezing-btn-2">2</button>
+                <button onclick="updateStrength('sneezing-btn-3')" id="sneezing-btn-3">3</button>
+                <button onclick="updateStrength('sneezing-btn-4')" id="sneezing-btn-4">4</button>
+                <button onclick="updateStrength('sneezing-btn-5')" id="sneezing-btn-5">5</button>
+            </div>
+
+            <div class="item" id="symptom4"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
+
+                <img src="{% static 'images/癢癢.jpg' %}" alt="Item 4">
+                <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
+
+                <div class="title">癢癢</div>
+
+                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+                <button onclick="updateStrength('itchiness-btn-1')" id="itchiness-btn-1">1</button>
+                <button onclick="updateStrength('itchiness-btn-2')" id="itchiness-btn-2">2</button>
+                <button onclick="updateStrength('itchiness-btn-3')" id="itchiness-btn-3">3</button>
+                <button onclick="updateStrength('itchiness-btn-4')" id="itchiness-btn-4">4</button>
+                <button onclick="updateStrength('itchiness-btn-5')" id="itchiness-btn-5">5</button>
+            </div>
+        </div>
+
+        <!-- 第三行 -->
+        <div class="row">
+            <div class="item" id="symptom5">
+                <!-- 表示症狀項目的整個區塊，具有獨特的ID -->
+
+                <img src="{% static 'images/胃生氣.jpg' %}" alt="Item 5">
+                <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
+
+                <div class="title">胃生氣</div>
+
+                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+                <button onclick="updateStrength('stomach-anger-btn-1')" id="stomach-anger-btn-1">1</button>
+                <button onclick="updateStrength('stomach-anger-btn-2')" id="stomach-anger-btn-2">2</button>
+                <button onclick="updateStrength('stomach-anger-btn-3')" id="stomach-anger-btn-3">3</button>
+                <button onclick="updateStrength('stomach-anger-btn-4')" id="stomach-anger-btn-4">4</button>
+                <button onclick="updateStrength('stomach-anger-btn-5')" id="stomach-anger-btn-5">5</button>
+            </div>
+
+            <div class="item" id="symptom6">
+                <!-- 表示症狀項目的整個區塊，具有獨特的ID -->
+
+                <img src="{% static 'images/生理期.jpg' %}" alt="Item 6">
+                <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
+                
+                <div class="title">厭世生理期</div>
+
+                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+                <button onclick="updateStrength('menstrual-anguish-btn-1')" id="menstrual-anguish-btn-1">1</button>
+                <button onclick="updateStrength('menstrual-anguish-btn-2')" id="menstrual-anguish-btn-2">2</button>
+                <button onclick="updateStrength('menstrual-anguish-btn-3')" id="menstrual-anguish-btn-3">3</button>
+                <button onclick="updateStrength('menstrual-anguish-btn-4')" id="menstrual-anguish-btn-4">4</button>
+                <button onclick="updateStrength('menstrual-anguish-btn-5')" id="menstrual-anguish-btn-5">5</button>
+            </div>
+        </div>
         
-        <div class="title">半暝還在嗨</div>
-
-        <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
-        <button onclick="updateStrength('semi-darkness-btn-1')" id="semi-darkness-btn-1">1</button>
-        <button result = main()  # 調用 main 函式獲取處理結果列表
-        onclick="updateStrength('semi-darkness-btn-2')" id="semi-darkness-btn-2">2</button>
-        <button onclick="updateStrength('semi-darkness-btn-3')" id="semi-darkness-btn-3">3</button>
-        <button onclick="updateStrength('semi-darkness-btn-4')" id="semi-darkness-btn-4">4</button>
-        <button onclick="updateStrength('semi-darkness-btn-5')" id="semi-darkness-btn-5">5</button>
-    </div>
-</div>
-
-<!-- 第二行 -->
-<div class="row">
-    <div class="item" id="symptom3"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
-        <img src="{% static 'images/早上哈啾.jpg' %}" alt="Item 3">
-        <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-
-        <div class="title">早上哈啾</div>
-
-        <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
-        <button onclick="updateStrength('sneezing-btn-1')" id="sneezing-btn-1">1</button>
-        <button onclick="updateStrength('sneezing-btn-2')" id="sneezing-btn-2">2</button>
-        <button onclick="updateStrength('sneezing-btn-3')" id="sneezing-btn-3">3</button>
-        <button onclick="updateStrength('sneezing-btn-4')" id="sneezing-btn-4">4</button>
-        <button onclick="updateStrength('sneezing-btn-5')" id="sneezing-btn-5">5</button>
-    </div>
-
-    <div class="item" id="symptom4"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
-        <img src="{% static 'images/癢癢.jpg' %}" alt="Item 4">
-        <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-
-        <div class="title">癢癢</div>
-
-        <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
-        <button onclick="updateStrength('itchiness-btn-1')" id="itchiness-btn-1">1</button>
-        <button onclick="updateStrength('itchiness-btn-2')" id="itchiness-btn-2">2</button>
-        <button onclick="updateStrength('itchiness-btn-3')" id="itchiness-btn-3">3</button>
-        <button onclick="updateStrength('itchiness-btn-4')" id="itchiness-btn-4">4</button>
-        <button onclick="updateStrength('itchiness-btn-5')" id="itchiness-btn-5">5</button>
-    </div>
-</div>
-
-<!-- 第三行 -->
-<div class="row">
-    <div class="item" id="symptom5">
-        <!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
-        <img src="{% static 'images/胃生氣.jpg' %}" alt="Item 5">
-        <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-
-        <div class="title">胃生氣</div>
-
-        <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
-        <button onclick="updateStrength('stomach-anger-btn-1')" id="stomach-anger-btn-1">1</button>
-        <button onclick="updateStrength('stomach-anger-btn-2')" id="stomach-anger-btn-2">2</button>
-        <button onclick="updateStrength('stomach-anger-btn-3')" id="stomach-anger-btn-3">3</button>
-        <button onclick="updateStrength('stomach-anger-btn-4')" id="stomach-anger-btn-4">4</button>
-        <button onclick="updateStrength('stomach-anger-btn-5')" id="stomach-anger-btn-5">5</button>
-    </div>
-
-    <div class="item" id="symptom6">
-        <!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
-        <img src="{% static 'images/生理期.jpg' %}" alt="Item 6">
-        <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-        
-        <div class="title">厭世生理期</div>
-
-        <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
-        <button onclick="updateStrength('menstrual-anguish-btn-1')" id="menstrual-anguish-btn-1">1</button>
-        <button onclick="updateStrength('menstrual-anguish-btn-2')" id="menstrual-anguish-btn-2">2</button>
-        <button onclick="updateStrength('menstrual-anguish-btn-3')" id="menstrual-anguish-btn-3">3</button>
-        <button onclick="updateStrength('menstrual-anguish-btn-4')" id="menstrual-anguish-btn-4">4</button>
-        <button onclick="updateStrength('menstrual-anguish-btn-5')" id="menstrual-anguish-btn-5">5</button>
-    </div>
-</div>
-<!-- 第四行，新增的項目 -->
-
-    <div class="row" style="text-align: center;"></div>
-        <div class="item" id="symptom7">
-            <div class="title">接受苦的程度</div>  
-                <button onclick="updateStrength('bitterness-btn-yes')" id="bitterness-btn-yes" name="bitter-btn" value="bitterness-btn-yes">可以</button>
-                <button onclick="updateStrength('bitterness-btn-no')" id="bitterness-btn-no" name="bitter-btn" value="bitterness-btn-no">不行</button>
+        <!-- 第四行，新增的項目 -->
+        <div class="bitter" style="text-align: center;">
+            <div class="item" id="symptom7">
+                <div class="title">接受苦的程度</div>  
+                    <button onclick="updateStrength('bitterness-btn-yes')" id="bitterness-btn-yes" name="bitter-btn" value="bitterness-btn-yes">可以</button>
+                    <button onclick="updateStrength('bitterness-btn-no')" id="bitterness-btn-no" name="bitter-btn" value="bitterness-btn-no">不行</button>
+            </div>
         </div>
     </div>
-</div>
 
 
         <!-- 確認按鈕 -->
-        <div style="display: flex; justify-content: center;">
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
             <div class="row" style="text-align: center;">
                 <form method="post" name="question">
                     {% csrf_token %}
@@ -163,7 +161,7 @@
                 </form>
             </div>
         </div>
-
+</div>
 
 <script>
 document.querySelector('form[name="question"]').addEventListener('submit', function(event) {

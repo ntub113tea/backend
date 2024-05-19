@@ -12,6 +12,7 @@
     </style>
 </head>
 <body>
+<div class="main">
     <!-- 提示存貨不足 -->
     <div id="lowInventoryList" class="lowInventoryList">庫存不足警示</div>
 
@@ -66,7 +67,7 @@
             <button onclick="sendOrdersToDjango()">確認訂單</button>
         </div>
     </div>
-    
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() { //庫存不足顯示在pos上
@@ -224,7 +225,7 @@
         document.querySelector('.productQuantityInput').value = '';
 
         // 顯示使用者選擇的結果
-        document.querySelector('.resultContainer').style.display = 'block';
+        document.querySelector('.resultContainer').style.display = 'inline-block';
         }
 
     // 刪除項目

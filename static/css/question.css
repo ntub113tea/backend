@@ -2,16 +2,27 @@
 body { 
     font-family: Arial, sans-serif;
     background-color: #F5E8DD;
-    
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 .header {
+    margin: 0px;
+    display: flex;
+    align-items: center;
     background-color: #EED3D9;
     color: #0b0b0b;
     text-align: center;
     padding: 10px 0;
     font-size: 15px;
-    weight: 90%;
+    height: 100px;
 }
+
+.header-right {
+    position: absolute;
+    right: 10px;
+}
+
 button.active {
     background-color: #007bff;
     color: #fff;
@@ -25,8 +36,6 @@ button.active {
     padding: 20px;
     text-align: center;
     }
-
-
 
 h1 {    /*選擇您的症狀 (1症狀最輕 5症狀最重)*/
     text-align: center;
@@ -82,4 +91,8 @@ color: #000;
 text-align: center;
 padding: 10px;
 font-size: 30px;
+}
+
+.bitter {
+    margin: 30px auto;
 }
