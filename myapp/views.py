@@ -43,17 +43,16 @@ def question(request):
         stomach_anger = request.COOKIES.get('stomach_anger')
         menstrual_anguish = request.COOKIES.get('menstrual_anguish')
         bitter = request.COOKIES.get('bitter')
-        customer_id = request.user.customer_id if request.user.is_authenticated else 0
         
         # 获取顾客编号
-        # customer_id = None
-        # if request.user.is_authenticated:
-        #     customer_id = request.user.customer_id
-        #     id_result = customer_id
-        # else:
-        #     next_counter = DailyCounter.get_next_counter()
-        #     customer_id = f'{next_counter:03d}'
-        #     id_result = customer_id
+        customer_id = None
+        if request.user.is_authenticated:
+            customer_id = request.user.customer_id
+            id_result = customer_id
+        else:
+            next_counter = DailyCounter.get_next_counter()
+            customer_id = f'{next_counter:03d}'
+            id_result = customer_id
 
         
         # 取得台北的時區
@@ -62,26 +61,13 @@ def question(request):
         taipei_now = datetime.now(taipei_tz)
         # 將台北時間轉換為 UTC 時間
         utc_now = taipei_now.astimezone(pytz.utc)
-        
-        # 检查是否有相同时间的记录
-        """ same_time_records = Sale.objects.filter(order_time=utc_now)
-        if same_time_records.exists():
-            # 使用相同时间的记录的顾客编号
-            customer_id = same_time_records.first().customer_id
-        else:
-            # 生成新的顾客编号，仅在用户未登录时执行
-            if not request.user.is_authenticated:
-                # 生成新的顾客编号
-                next_counter = DailyCounter.get_next_counter()
-                customer_id = f'{next_counter:03d}' """
-                #request.session['customer_id'] = customer_id
 
         # 將症狀資料存入資料庫         
         try:          
             # 如果用户已经登录，则将 customer_id 设置为当前用户的 customer_id
             # 如果用户未登录，则将 customer_id 设置为 0
-            # symptom_customer_id = request.user.customer_id if request.user.is_authenticated else 0
-            symptom = SymptomOfQuestion.objects.get(customer_id=customer_id)
+            symptom_customer_id = request.user.customer_id if request.user.is_authenticated else 0
+            symptom = SymptomOfQuestion.objects.get(customer_id=symptom_customer_id)
 
             # 如果找到現有的記錄，則更新問題資料
             symptom.question_time = utc_now
@@ -95,7 +81,7 @@ def question(request):
         except SymptomOfQuestion.DoesNotExist:
             # 如果不存在，則創建一個新的記錄
             SymptomOfQuestion.objects.create(
-                customer_id=customer_id,
+                customer_id=symptom_customer_id,
                 question_time=utc_now,
                 q1=nosleep,
                 q2=semi_darkness,
@@ -215,7 +201,7 @@ def question(request):
            
             product_name = "客製化"  # 改成客製化
             order_time = utc_now  # 現在時間
-            customer_id = request.user.customer_id if request.user.is_authenticated else 0
+            customer_id = request.user.customer_id if request.user.is_authenticated else id_result
             for i in range(len(herbs)):
                 Sale.objects.create(
                 customer_id=customer_id,
@@ -226,7 +212,7 @@ def question(request):
                 order_time=order_time
             )
                 
-            return render(request, "question.html", {'result': result, 'herbs': herbs, 'dosages': dosages})
+            return redirect('/question/')
     return render(request, "question.html")
     
 
