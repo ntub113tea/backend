@@ -30,6 +30,7 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'id': 'password' }),label='密碼') 
     #autocomplete': 'new-password告訴瀏覽器這是新的密碼 不應該保存任何值
     password_confirmation = forms.CharField(widget=forms.PasswordInput(), label='確認密碼')
+
     sex = forms.ChoiceField(
         choices=Customer.GENDER_CHOICES,
         widget=forms.RadioSelect,
