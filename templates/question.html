@@ -157,7 +157,7 @@
             <div class="row" style="text-align: center;">
                 <form method="post" name="question">
                     {% csrf_token %}
-                    <button onclick="showAlert()" type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
+                    <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
                 </form>
             </div>
         </div>
@@ -166,7 +166,7 @@
 <script>
 document.querySelector('form[name="question"]').addEventListener('submit', function(event) {
     var allSymptomsSelected = true;
-
+    var isAuthenticated = "{{ request.user.is_authenticated }}";
     // 檢查是否所有症狀按鈕都被選中
     document.querySelectorAll('.item').forEach(function(item) {
         if (item.querySelectorAll('button.active').length < 1) {
@@ -183,6 +183,13 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
     if (!allSymptomsSelected) {
         event.preventDefault(); // 防止表單提交
         alert('請為每個症狀選擇一個強度和接受苦的程度。');
+    }else {
+        if (isAuthenticated == 'True') {
+            alert('已收到表單！');
+        }else {
+            alert('已收到表單！\n建議您登入帳號,方便紀錄您前一次的症狀來推薦您');
+        }
+        
     }
 });
 
@@ -203,6 +210,7 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
                 }
             })
             .catch(error => console.error('Error:', error));
+            
         });
     function updateStrength(buttonId) {
         switch (buttonId) {
@@ -334,8 +342,21 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
     }
 
     function showAlert(){
-        alert('已收到表單！');
-        window.location.reload();
+        fetch('/question/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred.');
+        });
     }
     
     function deleteCookie(cookieNames) {
