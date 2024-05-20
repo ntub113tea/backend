@@ -33,21 +33,18 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
     sex = forms.ChoiceField(
         choices=Customer.GENDER_CHOICES,
         widget=forms.RadioSelect,
-        label='性別'
-        
+        label='性別'  
     )
+    customer_id = forms.CharField(label='電話號碼', max_length=10,)
     class Meta:
         model = Customer
         fields = ['customer_id', 'password', 'customer_name', 'sex','line_id',]
         labels = {
-            'customer_id': '電話號碼',
             'customer_name': '姓名',
             'line_id': 'LINE ID（可選填）'
         }
     def clean_customer_id(self):
         customer_id = self.cleaned_data['customer_id']
-        if not re.match(r'^\d{10}$', customer_id):
-            raise forms.ValidationError("請輸入10位電話號碼")
         if not customer_id.startswith('09'):
             raise forms.ValidationError("電話號碼必須為09開頭")
         if Customer.objects.filter(customer_id=customer_id).exists():
