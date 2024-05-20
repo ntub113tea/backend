@@ -1,6 +1,6 @@
 body {
     font-family: Microsoft JhengHei;
-    margin: 0; /* 清除預設的邊距 */
+    margin: 0;
     padding: 5% 35%;
     height: 100%;
     background-color: #F5E8DD;
@@ -26,9 +26,9 @@ h1 {
 .main {
     margin: 0 auto;
     display: flex;
-    flex-direction: column; /* 子元素上下排列 */
-    justify-content: center; /* 垂直居中 */
-    align-items: center; /* 水平居中 */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: left;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
