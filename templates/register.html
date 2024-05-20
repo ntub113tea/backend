@@ -30,11 +30,17 @@
                 <span class="error-message">{{ form.customer_id.errors.as_text }}</span>
                 {% endif %}
                 </div>
-                <p>
-                    {{ form.password.label_tag }}<br>
-                    {{ form.password}}
+                <div>
+                    {{ form.password.label_tag }}
+                    </div>
+                <div class="input-field">
+                    {{ form.password }}
                     <button type="button" onclick="togglePassword()" class="toggle-password">查看密碼</button>
-                </p>
+                    {% if form.password.errors %}
+                    <span class="error-message">{{ form.password.errors.as_text }}</span>
+                    {% endif %}
+                    </div>
+                <p>範例:099/01/01 生日:0990101</p>
                 <div>
                     {{ form.password_confirmation.label_tag }}
                 </div>
@@ -51,15 +57,6 @@
                     {{ form.customer_name }}
                     {% if form.customer_name.errors %}
                         <span class="error-message">{{ form.customer_name.errors }}</span>
-                    {% endif %}
-                </div>
-                <div>
-                    {{ form.age.label_tag }} 
-                </div>
-                <div class="input-field">
-                    {{ form.age }}
-                    {% if form.age.errors %}
-                        <span class="error-message">{{ form.age.errors }}</span>
                     {% endif %}
                 </div>
                 <p>

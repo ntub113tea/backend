@@ -24,16 +24,16 @@ class SaleAdmin(admin.ModelAdmin):
 
 class CustomerAdmin(UserAdmin):
     model = Customer
-    list_display=('customer_id','customer_name','sex','age','line_id')
+    list_display=('customer_id','customer_name','sex','birthday','line_id')
     fieldsets= (
-        (None, {'fields': ('customer_id', 'password', 'customer_name', 'sex', 'age', 'line_id' , 'is_active', 'is_staff', 'is_superuser',)}),
+        (None, {'fields': ('customer_id', 'password', 'customer_name', 'sex', 'birthday', 'line_id' , 'is_active', 'is_staff', 'is_superuser',)}),
         ('Permissions', {'fields': ('groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('customer_id', 'password1', 'password2', 'customer_name', 'sex', 'age', 'line_id', 'is_active', 'is_staff', 'is_superuser'),
+            'fields': ('customer_id', 'password1', 'password2', 'customer_name', 'sex', 'birthday', 'line_id', 'is_active', 'is_staff', 'is_superuser'),
         }),
     )
     ordering=('customer_id',)
