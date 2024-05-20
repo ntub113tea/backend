@@ -30,6 +30,21 @@ def url(request):
 
 def index(request):
     return render(request,"index.html")
+
+def rgst(request):
+    if request.method == 'POST':
+        form = CustomerRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.password = make_password(form.cleaned_data['password'])
+            user.save()
+            return HttpResponseRedirect('/question/')
+        else:
+            # 如果表單無效，模板中顯示錯誤
+            return render(request, 'rgst.html', {'form': form})
+    else:
+        form = CustomerRegistrationForm()
+    return render(request, 'rgst.html', {'form': form})
     
 #---------------------------------------------------------------客製化表單
 
@@ -212,7 +227,7 @@ def question(request):
                 order_time=order_time
             )
                 
-            return redirect('/question/')
+            return redirect ('/question/')
     return render(request, "question.html")
     
 
@@ -372,9 +387,6 @@ def register(request): #用戶註冊
     else:
         form = CustomerRegistrationForm()
     return render(request, 'register.html', {'form': form})
-    
-def CustomizationForm(request): #客製化表單
-    return render(request,"使用者表單.html")
 
 #--------------------------------------------------------------------------進貨表單
 

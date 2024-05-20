@@ -1,0 +1,33 @@
+body {
+    margin: 0; /* 清除預設的邊距 */
+    padding: 0;
+    height: 100%;
+    background-color: #F5E8DD;
+}
+.container {
+    padding: 5% 35%;
+}
+
+.top {
+    margin: 0 auto;
+    text-align: center;
+    padding: 5px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+}
+
+.main {
+    margin: 0 auto;
+    padding: 10px 0px 10px 33%;
+    text-align: left;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.error-message {
+    color: red;
+    margin-left: 10px; 
+}

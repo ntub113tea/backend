@@ -2,8 +2,7 @@
 <html>
 <head>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/rgst.css' %}">
     <title>註冊</title>
     <style>
         
@@ -12,13 +11,13 @@
 </head>
 <body>
 
-    <div class="w3-container w3-half w3-margin centered" >
-        <div class="w3-container" style="background-color: #EED3D9;">
+    <div class="container" >
+        <div class="top" style="background-color: #EED3D9;">
             
             <h1>註冊新帳號</h1>
 
         </div>
-        <div class="w3-container w3-card-4" style="background-color:white;">
+        <div class="main" style="background-color:white;">
             <form action="" method="post" >
                 {% csrf_token %}
                 <div>
@@ -30,17 +29,11 @@
                 <span class="error-message">{{ form.customer_id.errors.as_text }}</span>
                 {% endif %}
                 </div>
-                <div>
-                    {{ form.password.label_tag }}
-                    </div>
-                <div class="input-field">
-                    {{ form.password }}
-                    <button type="button" onclick="togglePassword()" class="toggle-password">查看密碼</button>
-                    {% if form.password.errors %}
-                    <span class="error-message">{{ form.password.errors.as_text }}</span>
-                    {% endif %}
-                    </div>
-                <p>範例:099/01/01 生日:0990101</p>
+                <p>
+                    {{ form.password.label_tag }}<br>
+                    {{ form.password}}
+                    <button type="button" class="pwd-btn" onclick="togglePassword()" class="toggle-password">查看密碼</button>
+                </p>
                 <div>
                     {{ form.password_confirmation.label_tag }}
                 </div>
@@ -57,6 +50,15 @@
                     {{ form.customer_name }}
                     {% if form.customer_name.errors %}
                         <span class="error-message">{{ form.customer_name.errors }}</span>
+                    {% endif %}
+                </div>
+                <div>
+                    {{ form.age.label_tag }} 
+                </div>
+                <div class="input-field">
+                    {{ form.age }}
+                    {% if form.age.errors %}
+                        <span class="error-message">{{ form.age.errors }}</span>
                     {% endif %}
                 </div>
                 <p>

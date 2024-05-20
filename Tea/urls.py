@@ -20,6 +20,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('rgst/', views.rgst),
     path('index/', views.index),
     path('',views.url),
     path("manage/", views.manage),
