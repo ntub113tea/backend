@@ -45,6 +45,7 @@ video {
     border-radius: 5px; /* 圓角 */
     cursor: pointer; /* 滑鼠懸停時顯示指針 */
     transition: background-color 0.3s; /* 平滑過渡 */
+    margin: 0px auto 10px;
 }
 
 #nextPageButton:hover {
