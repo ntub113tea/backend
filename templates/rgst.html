@@ -12,76 +12,69 @@
 <body>
 
     <div class="container" >
-        <div class="top" style="background-color: #EED3D9;">
+        <div class="top">
             
             <h1>註冊新帳號</h1>
 
         </div>
-        <div class="main" style="background-color:white;">
+        <div class="main">
             <form action="" method="post" >
                 {% csrf_token %}
-                <div>
-                {{ form.customer_id.label_tag }}
-                </div>
-                <div class="input-field">
+                <div class="input-field"> 
+                {{ form.customer_id.label_tag }}<br>
                 {{ form.customer_id }}
                 {% if form.customer_id.errors %}
-                <span class="error-message">{{ form.customer_id.errors.as_text }}</span>
+                <br><span class="error-message">{{ form.customer_id.errors.as_text }}</span>
                 {% endif %}
                 </div>
-                <p>
-                    {{ form.password.label_tag }}<br>
-                    {{ form.password}}
-                    <button type="button" class="pwd-btn" onclick="togglePassword()" class="toggle-password">查看密碼</button>
-                </p>
-                <div>
-                    {{ form.password_confirmation.label_tag }}
-                </div>
+
                 <div class="input-field">
+                    {{ form.password.label_tag }}<br>
+                    {{ form.password }}
+                    <button class="pwd-btn" type="button" onclick="togglePassword()" class="toggle-password">查看密碼</button>
+                    {% if form.password.errors %}
+                    <br><span class="error-message">{{ form.password.errors.as_text }}</span>
+                    {% endif %}
+                    <br>範例:099/01/01 生日:0990101
+                </div>
+
+                <div class="input-field">
+                    {{ form.password_confirmation.label_tag }}<br>
                     {{ form.password_confirmation }}
                     {% if form.password_confirmation.errors %}
                     <span class="error-message">{{ form.password_confirmation.errors}}</span>
                     {% endif %}
                 </div>
-                <div>
-                    {{ form.customer_name.label_tag }} 
-                </div>
+
                 <div class="input-field">
+                    {{ form.customer_name.label_tag }}<br>
                     {{ form.customer_name }}
                     {% if form.customer_name.errors %}
                         <span class="error-message">{{ form.customer_name.errors }}</span>
                     {% endif %}
                 </div>
-                <div>
-                    {{ form.age.label_tag }} 
-                </div>
+
                 <div class="input-field">
-                    {{ form.age }}
-                    {% if form.age.errors %}
-                        <span class="error-message">{{ form.age.errors }}</span>
-                    {% endif %}
-                </div>
-                <p>
                     {{ form.line_id.label_tag }}<br>
                     {{ form.line_id }}
-                </p>
-                <p>
-                    <div class="input-field">
-                        {{ form.sex.label_tag }}
-                        <div class="inline-radio">
-                            {% for radio in form.sex %}
-                                <label>
-                                    {{ radio.tag }}
-                                    {{ radio.choice_label }}
-                                </label>
-                            {% endfor %}
-                        </div>
+                </div>
+
+                <div class="input-field">
+                    {{ form.sex.label_tag }}
+                    <div class="inline-radio">
+                        {% for radio in form.sex %}
+                            <label>
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </label>
+                        {% endfor %}
                     </div>
-                </p>
-                <p>
-                    <input class="w3-button w3-section w3-teal w3-ripple" type="submit" value="註冊">
-                    <button class="w3-button w3-section w3-teal w3-ripple" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
-                </p>
+                </div>
+                
+                <div class="input-field">
+                    <input class="bottom-btn" type="submit" value="註冊">
+                    <button class="bottom-btn" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
+                </div>
                 
             </form> 
         </div>        

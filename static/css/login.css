@@ -1,74 +1,68 @@
 body {
-    background-color: #f7f7f7;
-    font-family: Arial, sans-serif;
+    font-family: Microsoft JhengHei;
+    margin: 0; /* 清除預設的邊距 */
+    padding: 5% 35%;
+    height: 100%;
+    background-color: #F5E8DD;
+}
+.container {
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px 0px gray;
+}
+
+h1 {
+    font-family: Microsoft JhengHei;
+}
+
+.top {
+    margin: 0 auto;
+    text-align: center;
+    padding: 5px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    background-color: #EED3D9;
+}
+
+.main {
+    margin: 0 auto;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
-
-.login-container {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 40px;
-    width: 500px; /* 調整為更寬的寬度，例如 500px */
-    margin: 0 auto; /* 將容器水平置中 */
-}
-
-.login-container h1 {
-    color: #333;
-    margin-bottom: 30px;
-}
-
-.login-form {
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: left;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
     display: flex;
     flex-direction: column;
-}
-
-.login-form input[type="text"],
-.login-form input[type="password"] {
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-.login-form button {
-    padding: 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.login-form button:hover {
-    background-color: #45a049;
+    justify-content: space-around;
+    background-color:white;
 }
 
 .error-message {
     color: red;
-    margin-top: 10px;
+    margin: 0 auto 20px;
+    text-align: center;
 }
 
-.back-button {
-    margin-top: 20px;
+.input-field {
+    margin: 20px auto 10px;
 }
 
-.back-button button {
-    background-color: #ddd;
-    color: #333;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
+button, input{
+    margin: 5px;
+    border-radius: 10px;
+    font-size: large;
 }
 
-.back-button button:hover {
-    background-color: #ccc;
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom-btn {
+    background-color: #EED3D9;
+    border-color: #EED3D9;
+    margin: 0px 10px 20px;
+    padding: 10px;
 }

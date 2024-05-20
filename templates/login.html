@@ -3,29 +3,39 @@
 <head>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <title>登入</title>
     <style>
         
     </style>
     
 </head>
+<body>
+    
+    <div class="container">
+    {% block content %} 
+        <div class="top">
+            <h1>登入</h1>
+        </div>
+        <div class="main">
+            <form method="post" action="{% url 'login' %}" >
+                <div class="input-field">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </div>
+                {% if error %}
+                    <div class="error-message">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                
+                <div class="btn-container">
+                    <button type="submit" class="bottom-btn">登入</button>
+                    <button type="button" onclick="window.location.href='/question/';" class="bottom-btn">返回問卷表單</button>
+                </div>
+            </form>
 
-<div class="w3-container w3-half w3-margin-top" style="margin: 0 auto; text-align: center;">
-
-
-{% block content %}
-<h1 class="w3-container w3-teal" id="">登入</h1>
-
-<form method="post" action="{% url 'login' %}" class="w3-container w3-card-4" >
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="w3-button w3-section w3-teal w3-ripple">登入</button>
-    <button type="button" onclick="window.location.href='/question/';" class="w3-button w3-section w3-teal w3-ripple">返回問卷表單</button>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-</form>
-{% endblock %}
-
-</div>
+            
+        </div>
+    {% endblock %}
+    </div>
+</body>
