@@ -51,7 +51,7 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
         if not customer_id.startswith('09'):
             raise forms.ValidationError("電話號碼必須為09開頭")
         if Customer.objects.filter(customer_id=customer_id).exists():
-            raise ValidationError("此電話號碼已被註冊。")
+            raise ValidationError("此電話號碼已被註冊")
         return customer_id
 
     def clean_customer_name(self):
@@ -62,7 +62,7 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
     def clean_password(self):
         password = self.cleaned_data.get('password')
         if not re.match(r'^\d{7}$', password):  # 確保密碼為7位數字
-            raise ValidationError("密碼必須是7位數字")
+            raise ValidationError("生日必須是7位數字")
         month = int(password[3:5])
         day = int(password[5:7])
 
@@ -92,5 +92,5 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
         return customer
     
 class LoginForm(forms.Form): #登入系統
-    username = forms.CharField(label='電話號碼', max_length=100,)
+    username = forms.CharField(label='電話號碼', max_length=10,)
     password = forms.CharField(label='　　生日', widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))

@@ -1,64 +1,74 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    
-}
-.form-container {
-    width: 50%;
-    max-width: 600px;
-}
-.form-container h1 {
-    text-align: center;
-}
-.input-field {
-    margin-bottom: 20px;
-}
-.error-message {
-    color: red;
-    margin-left: 10px;
-}
-.toggle-password {
-    background-color: #000000;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    outline: none;
-    font-size: 14px;
-}
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: Microsoft JhengHei;
     margin: 0; /* 清除預設的邊距 */
+    padding: 5% 35%;
+    height: 100%;
     background-color: #F5E8DD;
 }
-.inline-radio label {
-    display: inline-block;
-    margin-right: 10px;
+.container {
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px 0px gray;
 }
-.input-field {
+
+h1 {
+    font-family: Microsoft JhengHei;
+}
+
+.top {
+    margin: 0 auto;
+    text-align: center;
+    padding: 5px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    background-color: #EED3D9;
+}
+
+.main {
+    margin: 0 auto;
     display: flex;
-    align-items: center; /* 輸入框跟提示訊息在同一線上 */
-    margin-bottom: 20px; 
+    flex-direction: column; /* 子元素上下排列 */
+    justify-content: center; /* 垂直居中 */
+    align-items: center; /* 水平居中 */
+    text-align: left;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color:white;
 }
+
 .error-message {
     color: red;
     margin-left: 10px; 
 }
-p, .input-field {
-margin-bottom: 20px; 
+
+.input-field {
+    margin: 20px;
 }
-.toggle-password {
-background-color: #000000;  
-color: white;               
-border: none;               
-border-radius: 5px;         
-padding: 5px 10px;         
-cursor: pointer;            
-outline: none;              
-font-size: 14px;            
+
+button, input{
+    margin: 5px;
+    border-radius: 10px;
+    font-size: large;
+}
+
+.pwd-btn {
+    background-color: #EED3D9;
+    border-color: #EED3D9;
+    margin: 0px 10px 20px;
+    padding: 5px;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom-btn {
+    background-color: #EED3D9;
+    border-color: #EED3D9;
+    margin: 0px 10px 20px;
+    padding: 10px;
 }
