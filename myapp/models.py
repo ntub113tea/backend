@@ -58,7 +58,7 @@ class Customer(AbstractBaseUser,PermissionsMixin):
     password = models.CharField(max_length=128)
     customer_name = models.CharField(max_length=10,verbose_name="name")
     sex = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    age = models.IntegerField()
+    birthday = models.CharField(max_length=7)
     line_id = models.CharField(max_length=45, blank=True, null=True)
     last_login = models.DateTimeField('last login', default=timezone.now, blank=True, null=True)
     is_active = models.BooleanField(default=True)
@@ -68,7 +68,7 @@ class Customer(AbstractBaseUser,PermissionsMixin):
     objects = CustomerManager()
 
     USERNAME_FIELD = 'customer_id'
-    REQUIRED_FIELDS = ['customer_name', 'sex', 'age']  #  password 不能列在這
+    REQUIRED_FIELDS = ['customer_name', 'sex', 'birthday']  #  password 不能列在這
     def __str__(self):
         return f"{self.customer_name} ({self.customer_id})"
     class Meta:
