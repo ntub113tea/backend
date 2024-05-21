@@ -23,8 +23,9 @@ class SaleAdmin(admin.ModelAdmin):
     ordering=('sale_id',)
 
 class CustomerAdmin(UserAdmin):
+    
     model = Customer
-    list_display=('customer_id','customer_name','sex','birthday','line_id')
+    list_display=('customer_id','customer_name','sex','birthday','line_id','is_active','is_staff','is_superuser')
     fieldsets= (
         (None, {'fields': ('customer_id', 'password', 'customer_name', 'sex', 'birthday', 'line_id' , 'is_active', 'is_staff', 'is_superuser',)}),
         ('Permissions', {'fields': ('groups', 'user_permissions')}),
@@ -37,6 +38,7 @@ class CustomerAdmin(UserAdmin):
         }),
     )
     ordering=('customer_id',)
+    search_fields=('customer_id',)
 
 
 # Register your models here.
