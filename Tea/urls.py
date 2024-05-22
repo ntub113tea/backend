@@ -14,9 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from myapp import views
 from django.contrib.auth import views as auth_views
+from myapp.routing import websocket_urlpatterns  # 引用 WebSocket 路徑配置
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -40,4 +41,7 @@ urlpatterns = [
     path('salelist_staff/',views.salelist_staff,name='salelist'),
     path('check_inventory/', views.check_inventory),
     path('history/', views.history_view, name='history'),
+    path('ws/', include(websocket_urlpatterns)),  # 包含 WebSocket 路徑
 ]
+
+

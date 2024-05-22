@@ -14,7 +14,10 @@ from .form import PostForm,CustomerRegistrationForm,LoginForm
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
 from datetime import datetime, timedelta
-import pytz,json
+import json,pytz
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
+
 
 
 @user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
@@ -211,7 +214,9 @@ def question(request):
             product_name = "客製化"  # 改成客製化
             order_time = utc_now  # 現在時間
             customer_id = request.user.customer_id if request.user.is_authenticated else id_result
+            show_result = []
             for i in range(len(herbs)):
+                show_result.append(herbs[i] + ":" + str(dosages[i]) + "g")
                 Sale.objects.create(
                 customer_id=customer_id,
                 product_name=product_name,
@@ -220,8 +225,25 @@ def question(request):
                 sales_value=dosages[i],
                 order_time=order_time
             )
+            show_result.insert(0,"顧客電話號碼：" + customer_id)
+            print(show_result)
+            # 進行數據運算
+            result = show_result
+
+            # 通過Channel層發送消息
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+                'chat_some_room',
+                {
+                    'type': 'chat_message',
+                    'message': 'test'
+                }
+            )
+
+        return redirect('/question/')
+
                 
-            return redirect ('/question/')
+            
     return render(request, "question.html")
     
 

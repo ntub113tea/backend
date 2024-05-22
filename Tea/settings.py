@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'myapp',#新增的app
 ]
 
@@ -74,6 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Tea.wsgi.application'
 
+ASGI_APPLICATION = 'Tea.asgi.application' #channels
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -92,11 +94,20 @@ DATABASES = {
     }
     
 }
-AUTH_USER_MODEL = 'myapp.Customer'
+AUTH_USER_MODEL = 'myapp.Customer' #自定義用戶模組
 AUTHENTICATION_BACKENDS = [
     #'myapp.backends.CustomerBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

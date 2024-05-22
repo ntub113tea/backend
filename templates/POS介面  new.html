@@ -67,9 +67,18 @@
             <button onclick="sendOrdersToDjango()">確認訂單</button>
         </div>
     </div>
+    <div id="result"></div>
 </div>
 
 <script>
+
+    const socket = new WebSocket('ws://127.0.0.1:8000/ws/some_path/');
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        document.getElementById('result').innerText = `結果是：${data.message}`;
+    };
+
     document.addEventListener('DOMContentLoaded', function() { //庫存不足顯示在pos上
             fetch('/check_inventory/')
                 .then(response => response.json())

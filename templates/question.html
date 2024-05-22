@@ -155,15 +155,42 @@
         <!-- 確認按鈕 -->
         <div style="display: flex; justify-content: center; margin-top: 20px;">
             <div class="row" style="text-align: center;">
-                <form method="post" name="question">
+                <form method="post" name="question" id="question">
                     {% csrf_token %}
-                    <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
+                    <button type="submit" name="confirm_button" id="submitButton" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
                 </form>
             </div>
         </div>
 </div>
 
 <script>
+    /* const form = document.getElementById('question');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const data = document.getElementById('data').value;
+
+            // 將數據發送到後端
+            const response = await fetch('/question/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ data: data })
+            });
+
+            const result = await response.json();
+
+            // 通過WebSocket通知第二台電腦
+            const socket = new WebSocket('ws://your_domain/ws/some_path/');
+            socket.onopen = () => {
+                socket.send(JSON.stringify({
+                    'message': result.result
+                }));
+            };
+        }); */
+
+
 document.querySelector('form[name="question"]').addEventListener('submit', function(event) {
     var allSymptomsSelected = true;
     var isAuthenticated = "{{ request.user.is_authenticated }}";
@@ -211,6 +238,12 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
             })
             .catch(error => console.error('Error:', error));
             
+            const socket = new WebSocket('ws://127.0.0.1:8000/ws/some_path/');
+            socket.onopen = () => {
+                socket.send(JSON.stringify({
+                    'message': 'Hello from WebSocket!'
+                }));
+            };
         });
     function updateStrength(buttonId) {
         switch (buttonId) {
