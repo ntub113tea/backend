@@ -16,6 +16,7 @@ from django.contrib.auth.hashers import make_password #加密
 from datetime import datetime, timedelta
 import pytz,json
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.shortcuts import get_object_or_404
 
 
 @user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
@@ -223,9 +224,14 @@ def question(request):
                 sales_value=dosages[i],
                 order_time=order_time
             )
-            customer=Customer.objects.get(customer_id=customer_id)
-            show_result.insert(0,"顧客名字：" + customer.customer_name)    
-            show_result.insert(0,"顧客電話號碼：" + customer_id)
+            show_id=request.user.customer_id if request.user.is_authenticated else "0"
+            show=Customer.objects.filter(customer_id=show_id).first()
+            if (request.user.is_authenticated) :
+                customer_name=show.customer_name
+                show_result.insert(0,"顧客名字：" + customer_name)
+            else:
+                show_result.insert(0,"顧客名字：" + "Guest")
+            show_result.insert(0,"顧客電話號碼：" + show_id)
             a=ShowResult.objects.get(show_id=0)
             a.data=show_result
             a.save()
