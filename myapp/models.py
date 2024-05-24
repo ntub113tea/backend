@@ -48,6 +48,14 @@ class DailyCounter(models.Model):
         counter_obj.counter = next_counter
         counter_obj.save()
         return next_counter
+    
+class ShowResult(models.Model):
+    show_id = models.IntegerField(primary_key=True)
+    data = models.CharField(max_length=1000)
+
+    class Meta:
+        managed = False
+        db_table = 'show_result'
 
 class Customer(AbstractBaseUser,PermissionsMixin):
     GENDER_CHOICES = (

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from myapp.models import Purchase,Sale,HerbStock,Customer,SymptomOfQuestion,DailyCounter
+from myapp.models import Purchase,Sale,HerbStock,Customer,SymptomOfQuestion,DailyCounter,ShowResult
 from myapp import models
 from django.http import HttpResponse,JsonResponse
 from django.http import HttpResponseRedirect
@@ -15,6 +15,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
 from datetime import datetime, timedelta
 import pytz,json
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 @user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
@@ -47,7 +48,6 @@ def rgst(request):
     return render(request, 'rgst.html', {'form': form})
     
 #---------------------------------------------------------------客製化表單
-
 def question(request):
     id_result= None
     if request.method == 'POST' and 'confirm_button' in request.POST: #新增按下按鈕才能更改資料庫中的數值
@@ -211,7 +211,10 @@ def question(request):
             product_name = "客製化"  # 改成客製化
             order_time = utc_now  # 現在時間
             customer_id = request.user.customer_id if request.user.is_authenticated else id_result
+            global show_result
+            show_result = []
             for i in range(len(herbs)):
+                show_result.append(herbs[i] + ":" + str(dosages[i]) + "g")
                 Sale.objects.create(
                 customer_id=customer_id,
                 product_name=product_name,
@@ -220,7 +223,13 @@ def question(request):
                 sales_value=dosages[i],
                 order_time=order_time
             )
-                
+            customer=Customer.objects.get(customer_id=customer_id)
+            show_result.insert(0,"顧客名字：" + customer.customer_name)    
+            show_result.insert(0,"顧客電話號碼：" + customer_id)
+            a=ShowResult.objects.get(show_id=0)
+            a.data=show_result
+            a.save()
+            print(show_result)
             return redirect ('/question/')
     return render(request, "question.html")
     
@@ -242,6 +251,7 @@ def history_view(request):
 
 #--------------------------------------------pos系統(非客製化)
 
+@ensure_csrf_cookie
 @user_passes_test(lambda user:user.is_staff,login_url='/accounts/login/')
 def pos(request):
     if request.method == 'POST':
@@ -298,11 +308,13 @@ def pos(request):
                     herbs_id = 10
                 # 創建銷售紀錄
                 Sale.objects.create(customer_id=customer_id, product_name=product, herbs_id=herbs_id, herbs_name=herb, sales_value=sale_value, order_time=current_time)
+                show_result=ShowResult.objects.get(show_id=0)
+                
             return JsonResponse({'message': '點餐成功！', 'refresh': True})
         except json.JSONDecodeError as e:
             return JsonResponse({'error': '無效的 JSON 資料'}, status=400)
-    
-    return render(request, "POS介面  new.html", locals())
+    show_result=ShowResult.objects.all()
+    return render(request, "POS介面  new.html", {'show_results': show_result})
 
 
     """ symptom = request.COOKIES.get('finalsymptom')

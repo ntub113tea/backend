@@ -166,3 +166,19 @@ button { /*加入購物車 確認訂單*/
     white-space: nowrap;
     justify-content: space-around;
 }
+
+.show_result {
+    padding: 5px 5px;
+    background-color: white;
+    border-radius: 25px;
+    margin-left: 0px;
+    position: absolute;
+    width: 450px;
+    height: 150px;
+    left: 10px;
+    top:70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
