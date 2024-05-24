@@ -17,12 +17,12 @@
     <!-- 提示存貨不足 -->
     <div id="lowInventoryList" class="lowInventoryList">庫存不足警示</div>
 
+    <!-- 輸出最新一筆的客製化結果 開啟網頁時會自動啟動相應的script -->
     <div class="show_result">
         <div style="margin: 2px;">最新一筆客製化結果</div>
-        {% for show_result in show_results %}
-        <div id="result"style="margin: 2px;">{{ show_result.data }}</div>
-        {% endfor %}
         
+        <div id="result"></div>
+
         {% csrf_token %}
         <!-- <button id="search-button" style="margin: 2px;" onclick="showResult()">查詢</button> -->
     </div>
@@ -81,6 +81,28 @@
 </div>
 
 <script>
+    window.onload = function(){
+            let data = "{{ show_result|safe }}";
+
+            // 去掉頭尾的中括號和單引號
+            let trimmedStr = data.slice(1, -1).replace(/'/g, "");
+
+            // 根據逗號分割字串
+            let parts = trimmedStr.split(',');
+
+            // 分割成三個部分
+            let customerName = parts[0];
+            let customerPhone = parts[1];
+            let herbs = parts.slice(2).join(',');
+
+            // 找到帶有特定ID的 div 並插入結果
+            let result = document.getElementById('result');
+            result.innerHTML = `
+                <p>${customerName}</p>
+                <p>${customerPhone}</p>
+                <p>藥草克數: ${herbs}</p>
+            `;
+    }
     
     document.addEventListener('DOMContentLoaded', function() { //庫存不足顯示在pos上
             fetch('/check_inventory/')

@@ -224,14 +224,15 @@ def question(request):
                 sales_value=dosages[i],
                 order_time=order_time
             )
-            show_id=request.user.customer_id if request.user.is_authenticated else "0"
-            show=Customer.objects.filter(customer_id=show_id).first()
+            #show_id=request.user.customer_id if request.user.is_authenticated else "0"
+            show=Customer.objects.filter(customer_id=customer_id).first()
             if (request.user.is_authenticated) :
                 customer_name=show.customer_name
                 show_result.insert(0,"顧客名字：" + customer_name)
+                show_result.insert(0,"顧客電話：" + customer_id)
             else:
                 show_result.insert(0,"顧客名字：" + "Guest")
-            show_result.insert(0,"顧客電話號碼：" + show_id)
+                show_result.insert(0,"未登入顧客編號：" + customer_id)
             a=ShowResult.objects.get(show_id=0)
             a.data=show_result
             a.save()
@@ -314,13 +315,14 @@ def pos(request):
                     herbs_id = 10
                 # 創建銷售紀錄
                 Sale.objects.create(customer_id=customer_id, product_name=product, herbs_id=herbs_id, herbs_name=herb, sales_value=sale_value, order_time=current_time)
-                show_result=ShowResult.objects.get(show_id=0)
                 
             return JsonResponse({'message': '點餐成功！', 'refresh': True})
         except json.JSONDecodeError as e:
             return JsonResponse({'error': '無效的 JSON 資料'}, status=400)
-    show_result=ShowResult.objects.all()
-    return render(request, "POS介面  new.html", {'show_results': show_result})
+    show=ShowResult.objects.filter(show_id=0).first()
+    show_result=show.data
+    print(show_result)
+    return render(request, "POS介面  new.html", {'show_result': show_result})
 
 
     """ symptom = request.COOKIES.get('finalsymptom')

@@ -174,11 +174,19 @@ button { /*加入購物車 確認訂單*/
     margin-left: 0px;
     position: absolute;
     width: 450px;
-    height: 150px;
     left: 10px;
     top:70%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+}
+
+#result {
+    text-align: left;
+}
+
+#result p {
+    margin:0;
+    padding: 5px;
 }
