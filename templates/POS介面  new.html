@@ -7,6 +7,7 @@
     {% load static %}
     <title>症狀、甜度與冰塊選擇</title>
     <link rel="stylesheet" href="{% static 'css/POS介面.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
        
     </style>
@@ -15,6 +16,16 @@
 <div class="main">
     <!-- 提示存貨不足 -->
     <div id="lowInventoryList" class="lowInventoryList">庫存不足警示</div>
+
+    <div class="show_result">
+        <div style="margin: 2px;">最新一筆客製化結果</div>
+        {% for show_result in show_results %}
+        <div id="result"style="margin: 2px;">{{ show_result.data }}</div>
+        {% endfor %}
+        
+        {% csrf_token %}
+        <!-- <button id="search-button" style="margin: 2px;" onclick="showResult()">查詢</button> -->
+    </div>
 
     <!-- 症狀選擇 -->
     <div class="container">
@@ -70,6 +81,7 @@
 </div>
 
 <script>
+    
     document.addEventListener('DOMContentLoaded', function() { //庫存不足顯示在pos上
             fetch('/check_inventory/')
                 .then(response => response.json())
@@ -82,6 +94,37 @@
                 })
                 .catch(error => console.error('Error fetching inventory:', error));
         });
+
+    function showResult() {
+        $.ajax({
+            url: '/pos/',
+            method: 'POST',
+            success: function(data) {
+                $('#result').text(data.value);
+            },
+            error: function(error) {
+                console.log("Error:", error);
+            }
+        });
+    }
+
+    // 獲取CSRF token
+    function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
         
     // 更新產品數量的函數
     function updateQuantity() {
@@ -261,11 +304,7 @@
         .catch(error => console.error('Error submitting order:', error));
     }
 
-    // 用來獲取 CSRF token 的函數，以便於在 POST 請求中使用
-    function getCookie(name) {
-        const cookieValue = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-        return cookieValue ? cookieValue[2] : null;
-    }
+    
 </script>
 </body>
 </html>
