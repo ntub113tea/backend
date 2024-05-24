@@ -1,0 +1,99 @@
+
+body { 
+    font-family: Arial, sans-serif;
+    background-color: #F5E8DD;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.header {
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    background-color: #EED3D9;
+    color: #0b0b0b;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 15px;
+    height: 100px;
+}
+
+.header-right {
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+}
+
+button.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.container {
+    max-width: 800px; /* 设置容器最大宽度 */
+    margin: 0 auto; /* 水平居中 */
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    }
+
+h1 {    /*選擇您的症狀 (1症狀最輕 5症狀最重)*/
+    text-align: center;
+}
+
+.row {
+    margin-bottom: 30px;
+    display: flex; /* 將.row設置為彈性容器 */
+    flex-wrap: wrap; /* 允許彈性容器的子元素在需要時進行換行 */
+    
+}
+
+.item {
+    display: block;
+    text-decoration: none;
+    margin-bottom: 20px;
+    flex: 0 0 calc(50% - 20px); /* 將每個.item設置為彈性項目，使其佔據一行中的一半寬度 */
+    margin-right: 20px; /* 添加右邊距以分隔每個項目 */
+}
+
+
+
+.item img {    /*圖片*/
+    height: 300px; /* 固定高度 */
+    width: auto; /* 圖片寬度自動 */
+}
+
+.title {  /*症狀字*/
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 30px; /* 修改這裡的字體大小 */
+}
+
+button { /*按鈕*/
+    margin: 0 5px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #f0f0f0; /* 按鈕的預設背景顏色 */
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+button.active {
+    background-color: #007bff !important; /* 選中按鈕的背景顏色 */
+    color: #fff;
+}
+
+.background-color{
+background-color: rgb(37, 44, 42);
+color: #000;
+text-align: center;
+padding: 10px;
+font-size: 30px;
+}
+
+.bitter {
+    margin: 30px auto;
+}

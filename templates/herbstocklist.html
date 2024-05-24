@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>庫存資料表</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/herbstocklist.css' %}">
+</head>
+<body>
+    <h2>庫存資料</h2>
+    <ul style="margin-left: 230px;">
+        <li><a href="/manage/">員工首頁</a></li>
+    </ul>
+    <table border="1" cellpadding="4" cellspacing="1">
+        <th>藥草id</th><th>藥草名稱</th><th>庫存數量</th>
+        {% for HerbStock in herbs %}
+            <tr>
+                <td>{{ HerbStock.herbs_id }}</td>
+                <td>{{ HerbStock.herbs_name }}</td>
+                <td>{{ HerbStock.current_stock }}</td>
+            </tr>
+        {% endfor %}
+    </table> 
+    
+</body>
+</html>

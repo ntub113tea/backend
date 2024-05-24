@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<head>
+    <title>資料表刪除</title>
+</head>
+<body>
+    <h2>進貨資料刪除</h2>
+    <form action="." method="post" name="purchasespostform">
+        {% csrf_token %}
+        <div>請輸入id:<input type="text" name="cId" /></div>
+        <div>
+            <input type="submit" name="button" value="刪除" />
+        </div>
+        <span style="color: red;">{{message}}</span>
+    </form>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<head>
+    <title>員工首頁</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/manage.css' %}">
+</head>
+<body>
+    {% csrf_token %}
+                <p align="right">
+                    員工：{{request.user.customer_name}} 
+                <a href="/accounts/logout/">登出</a></p>
+    <h1>
+        <a href="/pos/">POS系統</a>&nbsp;&nbsp;
+        <a href="/salelist_staff/">銷售資料表</a>
+    </h1>
+</body>
+</html>

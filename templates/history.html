@@ -1,0 +1,79 @@
+{% load my_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>歷史紀錄</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/history.css' %}">
+    <!-- <style>
+        table {
+            width: 100%;
+            border-collapse: collapse; /* 合併表格邊框 */
+            table-layout: fixed; /* 使用固定表格布局 */
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: center; /* 將表格內容水平置中 */
+            padding: 10px; /* 調整表格內容的填充 */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style> -->
+</head>
+<body>
+    <div class="header">
+        <span>
+            <a href="/index/"><img src="{% static 'images/logo.png' %}" style="height: 90px; width: auto;"></a>
+        </span>
+        <span class="header-right">
+            {% if request.user.is_authenticated %}
+                {% csrf_token %}
+                    <p align="right">
+                        顧客：{{request.user.customer_name}} &nbsp;&nbsp;
+                        電話號碼：{{request.user.customer_id|mask_phone}} &nbsp;&nbsp;
+                        <a href="/history/">歷史紀錄</a>&nbsp;&nbsp;
+                        <a href="/accounts/logout/">登出</a></p>
+                {% else %}
+                    <p align="right">
+                        您尚未登入喔~<a href="/accounts/login/">登入</a>
+                        若您還沒有帳號，請<a href="/accounts/register/">註冊</a>
+                        <br>建議您登入帳號,方便紀錄您前一次的症狀來推薦您
+                    </p>
+            {% endif %}
+        </span>           
+    </div>
+    <h1>顧客上次的點餐紀錄</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>電話號碼</th>
+                <th>睡不好</th>
+                <th>半暝還在嗨</th>
+                <th>早上哈啾</th>
+                <th>癢癢</th>
+                <th>胃生氣</th>
+                <th>厭世生理期</th>
+                <th>時間</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in history_records %}
+            <tr>
+                <td>{{request.user.customer_id|mask_phone}} </td>
+                <td>{{ record.q1 }}</td>
+                <td>{{ record.q2 }}</td>
+                <td>{{ record.q3 }}</td>
+                <td>{{ record.q4 }}</td>
+                <td>{{ record.q5 }}</td>
+                <td>{{ record.q6 }}</td>
+                <td>{{ record.question_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

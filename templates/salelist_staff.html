@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>銷售資料表</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/salelist.css' %}">
+</head>
+<body>
+    {% load static %}
+    <h2>銷售資料</h2>
+    <ul style="margin-left: 80px;">
+        <li><a href="/staff/">員工首頁</a></li>
+    </ul>
+    <table border="1" cellpadding="4" cellspacing="1">
+        <th>銷售id
+            <select id="sort_order">
+                <option>選擇排列方式</option>
+                <option value="ascending">最舊</option>
+                <option value="descending">最新</option>
+            </select>
+        </th>
+        <th>顧客id</th><th>商品名稱</th><th>使用藥草</th><th>使用量(g)</th><th>點餐時間</th>
+        {% for Sale in sales %}
+            <tr>
+                <td>{{ Sale.sale_id }}</td>
+                <td>{{ Sale.customer_id }}</td>
+                <td>{{ Sale.product_name }}</td>
+                <td>{{ Sale.herbs_name }}</td>
+                <td>{{ Sale.sales_value }}</td>
+                <td>{{ Sale.order_time }}</td>
+            </tr>
+        {% endfor %}
+    </table> 
+    <script>
+        document.getElementById('sort_order').addEventListener('change', function() {
+            var selectedOrder = this.value;
+            var url = "{% url 'salelist' %}?saleid=" + selectedOrder;
+            window.location.href = url;
+        });
+    </script>
+</body>
+</html>

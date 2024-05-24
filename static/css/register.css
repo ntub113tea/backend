@@ -1,0 +1,74 @@
+body {
+    font-family: Microsoft JhengHei;
+    margin: 0;
+    padding: 5% 35%;
+    height: 100%;
+    background-color: #F5E8DD;
+}
+.container {
+    border-radius: 25px;
+    box-shadow: 5px 5px 5px 0px gray;
+}
+
+h1 {
+    font-family: Microsoft JhengHei;
+}
+
+.top {
+    margin: 0 auto;
+    text-align: center;
+    padding: 5px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    background-color: #EED3D9;
+}
+
+.main {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color:white;
+}
+
+.error-message {
+    color: red;
+    margin-left: 10px; 
+}
+
+.input-field {
+    margin: 20px;
+}
+
+button, input{
+    margin: 5px;
+    border-radius: 10px;
+    font-size: large;
+}
+
+.pwd-btn {
+    background-color: #EED3D9;
+    border-color: #EED3D9;
+    margin: 0px 10px 20px;
+    padding: 5px;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom-btn {
+    background-color: #EED3D9;
+    border-color: #EED3D9;
+    margin: 0px 10px 20px;
+    padding: 10px;
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+    <title>註冊</title>
+    <style>
+        
+    </style>
+    
+</head>
+<body>
+
+    <div class="container" >
+        <div class="top">
+            
+            <h1>註冊新帳號</h1>
+
+        </div>
+        <div class="main">
+            <form action="" method="post" >
+                {% csrf_token %}
+                <div class="input-field"> 
+                {{ form.customer_id.label_tag }}<br>
+                {{ form.customer_id }}
+                {% if form.customer_id.errors %}
+                <br><span class="error-message">{{ form.customer_id.errors.as_text }}</span>
+                {% endif %}
+                </div>
+
+                <div class="input-field">
+                    {{ form.password.label_tag }}<br>
+                    {{ form.password }}
+                    <button class="pwd-btn" type="button" onclick="togglePassword()">查看</button>
+                    {% if form.password.errors %}
+                    <br><span class="error-message">{{ form.password.errors.as_text }}</span>
+                    {% endif %}
+                    <br>範例:099/01/01 生日:0990101
+                </div>
+
+                <div class="input-field">
+                    {{ form.password_confirmation.label_tag }}<br>
+                    {{ form.password_confirmation }}
+                    {% if form.password_confirmation.errors %}
+                    <span class="error-message">{{ form.password_confirmation.errors}}</span>
+                    {% endif %}
+                </div>
+
+                <div class="input-field">
+                    {{ form.customer_name.label_tag }}<br>
+                    {{ form.customer_name }}
+                    {% if form.customer_name.errors %}
+                        <span class="error-message">{{ form.customer_name.errors }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="input-field">
+                    {{ form.line_id.label_tag }}<br>
+                    {{ form.line_id }}
+                </div>
+
+                <div class="input-field">
+                    {{ form.sex.label_tag }}
+                    <div class="inline-radio">
+                        {% for radio in form.sex %}
+                            <label>
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="btn-container">
+                    <input class="bottom-btn" type="submit" value="註冊">
+                    <button class="bottom-btn" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
+                </div>
+                
+            </form> 
+        </div>        
+    </div>
+</div>
+    <script>
+        function togglePassword() {
+            var passwordInput = document.getElementById('password');
+            var toggleButton = document.querySelector('.pwd-btn');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.textContent = '隱藏';
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.textContent = '查看';
+            }
+        }
+    </script>
+</body>
+</html>

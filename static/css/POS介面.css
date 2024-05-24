@@ -1,0 +1,192 @@
+body {
+    font-family: '微軟正黑體', Arial, sans-serif;
+    background-color: #F5E8DD;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.main {
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.container {
+    display: inline-block;
+    margin: 50px;
+    max-width: 80%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 50px;
+    overflow: hidden;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.item {
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    width: calc(30% - 20px);
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+}
+
+.item:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+    background-color: #007bff; /* 鼠標懸停時的背景顏色 */
+}
+
+
+
+
+.item img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #ccc;
+}
+
+.item .title {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.item.selected {
+    background-color: #007bff; /* 已選中的項目背景顏色 */
+    color: #fff; /* 已選中的項目文字顏色 */
+}
+
+.option-group {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.option-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.option {
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+}
+
+.option.selected {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+}
+
+.lowInventoryList {  /* 庫存警告 */
+    display: inline-block;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    width: 200px; /* 固定寬度 */
+    height: 200px; /* 固定高度 */
+    overflow: auto; /* 如果內容超出框架大小，則添加滾動條 */
+    word-wrap: break-word; /* 將長的單詞或 URL 換行 */
+    white-space: pre-wrap;
+    margin-left: 0px;
+    position: absolute;
+    left: 0px; 
+}
+
+input {padding:10px 10px; border:1px black solid;
+    text-align:center;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+}
+
+button { /*加入購物車 確認訂單*/
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+}
+
+.resultbox { /*購物車內區塊*/
+    margin: 10px;
+    max-width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 50px;
+    float: left;
+}
+.resultContainer {
+    position: absolute;
+    right: 4px;
+    margin-right: auto;
+    margin-left: auto;
+    overflow-y: auto; /* 垂直方向溢出時顯示滾動條 */
+    max-height: calc(100vh - 100px); /* 限制容器的最大高度，這樣當內容超出一定高度時就會顯示滾動條 */
+    /* 其他樣式屬性 */
+}
+
+.sweetnessOptions {
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    justify-content: space-around;
+}
+
+.show_result {
+    padding: 5px 5px;
+    background-color: white;
+    border-radius: 25px;
+    margin-left: 0px;
+    position: absolute;
+    width: 450px;
+    left: 10px;
+    top:70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#result {
+    text-align: left;
+}
+
+#result p {
+    margin:0;
+    padding: 5px;
+}

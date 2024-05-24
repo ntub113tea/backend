@@ -15,7 +15,29 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from myapp import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('rgst/', views.rgst),
+    path('index/', views.index),
+    path('',views.url),
+    path("manage/", views.manage),
+    path('staff/',views.staff),
+    path("pos/", views.pos),
+    path('question/', views.question),
+    path('accounts/login/', views.login_view, name='login'),
+    path('accounts/logout/', views.logout),
+    path('accounts/profile/', views.index),
+    path('accounts/register/', views.register),
+    path('perchaselist/', views.perchaselist),
+    path('purchasepostform/', views.purchasepostform),
+    path('delete/<int:id>', views.delete),
+    path('edit/<int:id>/', views.edit),
+    path('herbstocklist/',views.herbstocklist),
+    path('salelist/',views.salelist,name='salelist'),
+    path('salelist_staff/',views.salelist_staff,name='salelist'),
+    path('check_inventory/', views.check_inventory),
+    path('history/', views.history_view, name='history'),
 ]

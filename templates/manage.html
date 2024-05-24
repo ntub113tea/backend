@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<head>
+    <title>管理員首頁</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/manage.css' %}">
+</head>
+<body>
+    {% csrf_token %}
+                <p align="right">
+                    管理員：{{request.user.customer_name}} 
+                    <a href="/admin/">後台管理系統</a>
+                <a href="/accounts/logout/">登出</a></p>
+    <h1>
+        <a href="/perchaselist/">進貨資料表</a>&nbsp;&nbsp;
+        <a href="/herbstocklist/">庫存資料表</a>&nbsp;&nbsp;
+        <a href="/salelist/">銷售資料表</a>&nbsp;&nbsp;
+        <a href="/pos/">POS系統</a>&nbsp;&nbsp;
+        <a href="/index/">網站首頁</a>
+    </h1>
+</body>
+</html>
