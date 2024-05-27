@@ -5,26 +5,30 @@ import re
 
 class PostForm(forms.Form):   #進貨資料驗證
     HERBS_CHOICES = [
-         ('', '--- 請選擇藥草 ---'),
-        ('1', '魚腥草'), ('2', '白鶴靈芝'), ('3', '積雪草'), 
-        ('4', '金銀花'), ('5', '蒲公英'), ('6', '忍冬'), 
-        ('7', '野茄樹'), ('8', '金錢薄荷'), ('9', '紫蘇'), 
-        ('10', '鴨舌癀'), ('11', '益母草'), ('12', '薄荷'), 
-        ('13', '甜菊'), ('14', '咸豐草'),
+        ('', '--- 請選擇藥草 ---'),
+        ('1', '魚腥草'),
+        ('2', '白鶴靈芝'),
+        ('3', '積雪草'),
+        ('4', '金銀花'),
+        ('5', '蒲公英'),
+        ('6', '忍冬'),
+        ('7', '野茄樹'),
+        ('8', '金錢薄荷'),
+        ('9', '紫蘇'),
+        ('10', '鴨舌癀'),
+        ('11', '益母草'),
+        ('12', '薄荷'),
+        ('13', '甜菊'),
+        ('14', '咸豐草')
     ]
-    herbs_name = forms.ChoiceField(
-        required=False,
-        choices=HERBS_CHOICES,
-        label='Herbs')
-    herbs_id = forms.IntegerField(required=True,min_value=1)
-    supply_id=forms.CharField(label='供應商編號', max_length=45)
+    
+    herbs_name = forms.ChoiceField(choices=HERBS_CHOICES, required=True)
+    herbs_id = forms.IntegerField(required=True, min_value=1)
+    supply_id = forms.CharField(label='供應商編號', max_length=45)
     purchases_value = forms.FloatField(required=True)
     purchases_time = forms.DateTimeField(required=True, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))
-    def clean_herbs_name(self):
-        herbs_name = self.cleaned_data['herbs_name']
-        if herbs_name == '':
-            raise ValidationError("請選擇一種藥草")
-        return herbs_name
+
+
 
 class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入）
     password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'id': 'password' }),label='生日') 
@@ -91,3 +95,28 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
 class LoginForm(forms.Form): #登入系統
     username = forms.CharField(label='電話號碼', max_length=10,)
     password = forms.CharField(label='　　生日', widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))
+
+class PurchaseForm(forms.Form): #進貨編輯驗證
+    herbs_id = forms.ChoiceField(
+        choices=[
+            ('', '--- 請選擇藥草 ---'),
+            ('1', '魚腥草'),
+            ('2', '白鶴靈芝'),
+            ('3', '積雪草'),
+            ('4', '金銀花'),
+            ('5', '蒲公英'),
+            ('6', '忍冬'),
+            ('7', '野茄樹'),
+            ('8', '金錢薄荷'),
+            ('9', '紫蘇'),
+            ('10', '鴨舌癀'),
+            ('11', '益母草'),
+            ('12', '薄荷'),
+            ('13', '甜菊'),
+            ('14', '咸豐草')
+        ],
+        required=True,
+    )
+    supply_id = forms.CharField(max_length=20, required=True)
+    purchases_value = forms.IntegerField( required=True)
+    purchases_time = forms.DateTimeField(required=True, widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}))

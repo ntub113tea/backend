@@ -10,7 +10,7 @@ from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.forms import UserCreationForm
 from datetime import datetime
-from .form import PostForm,CustomerRegistrationForm,LoginForm
+from .form import PostForm,CustomerRegistrationForm,LoginForm,PurchaseForm
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
 from datetime import datetime, timedelta
@@ -410,22 +410,28 @@ def perchaselist(request): #進貨表單設定
 
 def purchasepostform(request): #新增進貨資料
     if request.method == "POST":
-        postform=PostForm(request.POST)
+        postform = PostForm(request.POST)
         if postform.is_valid():
             herbs_id = postform.cleaned_data['herbs_name']
-            supply_id=postform.cleaned_data['supply_id']
-            herbs_name = dict(PostForm.HERBS_CHOICES).get(herbs_id, "Unknown Herb")
+            supply_id = postform.cleaned_data['supply_id']
             purchases_value = postform.cleaned_data['purchases_value']
-            purchases_time =postform.cleaned_data['purchases_time']
+            purchases_time = postform.cleaned_data['purchases_time']
+            
+            # 從 choices 中獲取對應的名稱
+            herbs_name = dict(PostForm.HERBS_CHOICES).get(herbs_id)
+            
             if herbs_id:  # 确保herbs_id非空
-                unit = Purchase.objects.create(herbs_name=herbs_name,supply_id=supply_id,herbs_id=herbs_id, purchases_value=purchases_value, purchases_time=purchases_time)
+                unit = Purchase.objects.create(
+                    herbs_name=herbs_name,
+                    supply_id=supply_id,
+                    herbs_id=herbs_id, 
+                    purchases_value=purchases_value, 
+                    purchases_time=purchases_time
+                )
             return redirect('/perchaselist/')
-        else:
-            message = postform.errors.get('herbs_name', ['請檢查輸入的資料'])[0]  # 藥草名稱錯誤訊息
     else:
-        message = '請輸入進貨資料'
-        postform=PostForm()
-    return render(request, "purchasepostform.html", {'postform': postform, 'message': message})
+        postform = PostForm()
+    return render(request, "purchasepostform.html", {'postform': postform})
 
 def delete(request,id=None): #刪除進貨資料
     if id!=None:
@@ -440,41 +446,42 @@ def delete(request,id=None): #刪除進貨資料
     return render(request, "delete.html", locals())
 
 def edit(request, id=None):  # 編輯進貨資料
+    unit = get_object_or_404(Purchase, purchases_id=id)
     if request.method == "POST":
-        unit = Purchase.objects.get(purchases_id=id)
-        herbs_id = request.POST['herbs_id']
-        herbs_name_mapping = {
-            '1': '魚腥草',
-            '2': '白鶴靈芝',
-            '3': '積雪草',
-            '4': '金銀花',
-            '5': '蒲公英',
-            '6': '忍冬',
-            '7': '野茄樹',
-            '8': '金錢薄荷',
-            '9': '紫蘇',
-            '10': '鴨舌癀',
-            '11': '益母草',
-            '12': '薄荷',
-            '13': '甜菊',
-            '14': '咸豐草',
-        }
-        unit.herbs_id = herbs_id
-        unit.herbs_name = herbs_name_mapping.get(herbs_id, '')
-        unit.supply_id = request.POST['supply_id']
-        unit.purchases_value = request.POST['value']
-        unit.purchases_time = request.POST['datetime']
-        unit.save()
-        message = '已修改'
-        return redirect('/perchaselist/')
+        form = PurchaseForm(request.POST)
+        if form.is_valid():
+            unit.herbs_id = form.cleaned_data['herbs_id']
+            herbs_name_mapping = {
+                '1': '魚腥草',
+                '2': '白鶴靈芝',
+                '3': '積雪草',
+                '4': '金銀花',
+                '5': '蒲公英',
+                '6': '忍冬',
+                '7': '野茄樹',
+                '8': '金錢薄荷',
+                '9': '紫蘇',
+                '10': '鴨舌癀',
+                '11': '益母草',
+                '12': '薄荷',
+                '13': '甜菊',
+                '14': '咸豐草',
+            }
+            unit.herbs_name = herbs_name_mapping.get(unit.herbs_id, '')
+            unit.supply_id = form.cleaned_data['supply_id']
+            unit.purchases_value = form.cleaned_data['purchases_value']
+            unit.purchases_time = form.cleaned_data['purchases_time']
+            unit.save()
+            return redirect('/perchaselist/')
     else:
-        unit = Purchase.objects.get(purchases_id=id)
-        herbs_name = unit.herbs_name
-        supply_id = unit.supply_id
-        purchases_value = unit.purchases_value
-        purchases_time = unit.purchases_time
-    return render(request, "edit.html", locals())
-
+        form = PurchaseForm(initial={
+            'herbs_id': unit.herbs_id,
+            'supply_id': unit.supply_id,
+            'purchases_value': unit.purchases_value,
+            'purchases_time': unit.purchases_time
+        })
+    
+    return render(request, "edit.html", {'form': form, 'unit': unit})
 
 #----------------------------------------庫存表單
 
