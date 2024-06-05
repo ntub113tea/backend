@@ -9,18 +9,24 @@ from django.contrib.auth.admin import UserAdmin
 User = get_user_model
 
 class HerbStockAdmin(admin.ModelAdmin):
-    list_display=('herbs_id','herbs_name','current_stock')
-    list_filter=('herbs_name',)
-    ordering=('herbs_id',)
+    def get_model_perms(self,request):
+        return {}
+    # list_display=('herbs_id','herbs_name','current_stock')
+    # list_filter=('herbs_name',)
+    # ordering=('herbs_id',)
 
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display=('purchases_id','herbs_id','herbs_name','purchases_value','purchases_time')
-    #list_filter()
-    ordering=('purchases_id',)
+    def get_model_perms(self,request):
+        return {}
+    # list_display=('purchases_id','herbs_id','herbs_name','purchases_value','purchases_time')
+    # #list_filter()
+    # ordering=('purchases_id',)
 
 class SaleAdmin(admin.ModelAdmin):
-    list_display=('sale_id','customer_id','herbs_id','herbs_name','product_name','order_time')
-    ordering=('sale_id',)
+    def get_model_perms(self,request):
+        return {}
+    # list_display=('sale_id','customer_id','herbs_id','herbs_name','product_name','order_time')
+    # ordering=('sale_id',)
 
 class CustomerAdmin(UserAdmin):
     
