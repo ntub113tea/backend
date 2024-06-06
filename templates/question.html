@@ -197,10 +197,10 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
 
     var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bitter_btn
     document.getElementById('submitButton').addEventListener('click', function() {
-            // 发送请求到 Django 后端
+            // 發送請求到 Django 後端
             fetch('/question/', {
                 method: 'GET',
-                credentials: 'same-origin'  // 发送同源 Cookie
+                credentials: 'same-origin'  // 發送 Cookie
             })
             .then(response => {
                 if (response.ok) {
@@ -315,10 +315,10 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
         var expirationDate = new Date();
         expirationDate.setTime(expirationDate.getTime() + 600000); // 设置为当前时间的600秒後
 
-        // 将过期时间转换为 UTC 格式的字符串
+        // 將過期時間轉換為 UTC 格式的字符串
         var expiresUTC = expirationDate.toUTCString();
 
-        // 设置 Cookie，包括过期时间和路径
+        // 設置 Cookie，包括過期時間和路徑
         document.cookie = "nosleep=" + nosleep +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "semi_darkness=" + semi_darkness +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "sneezing=" + sneezing +"; expires=" + expiresUTC + "; path=/question/";

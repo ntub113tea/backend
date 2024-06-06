@@ -60,7 +60,7 @@ def question(request):
         menstrual_anguish = request.COOKIES.get('menstrual_anguish')
         bitter = request.COOKIES.get('bitter')
         
-        # 获取顾客编号
+        # 獲取顧客編號
         customer_id = None
         if request.user.is_authenticated:
             customer_id = request.user.customer_id
@@ -80,8 +80,8 @@ def question(request):
 
         # 將症狀資料存入資料庫         
         try:          
-            # 如果用户已经登录，则将 customer_id 设置为当前用户的 customer_id
-            # 如果用户未登录，则将 customer_id 设置为 0
+            # 如果用戶已經登入，則將 customer_id 設置為當前用戶的 customer_id
+            # 如果用戶未登入，則將 customer_id 設置為 0
             symptom_customer_id = request.user.customer_id if request.user.is_authenticated else 0
             symptom = SymptomOfQuestion.objects.get(customer_id=symptom_customer_id)
 
@@ -189,24 +189,24 @@ def question(request):
             }        
         # 根據按鈕值進行處理
             if bitter == "True":
-                # 如果用户点击了"可以"按钮
+                # 如果用戶點擊"可以"按钮
                 herbs = [
                     "魚腥草",
-                    "蒲公英",  # 修改此处为单一草药
+                    "蒲公英",  # 修改此處為單一草藥
                     "金銀花",
                     "忍冬",
                     "積雪草",
-                    "益母草"  # 修改此处为单一草药
+                    "益母草"  # 修改此處為單一草藥
                 ]
             elif bitter == "False":
-                # 如果用户点击了"不行"按钮
+                # 如果用戶點擊"不行"按钮
                 herbs = [
                     "魚腥草",
-                    "白鶴靈芝",  # 修改此处为单一草药
+                    "白鶴靈芝",  # 修改此處為單一草藥
                     "金銀花",
                     "忍冬",
                     "積雪草",
-                    "鴨舌黃"  # 修改此处为单一草药
+                    "鴨舌黃"  # 修改此處為單一草藥
                 ]                  
            
             product_name = "客製化"  # 改成客製化
@@ -420,7 +420,7 @@ def purchasepostform(request): #新增進貨資料
             # 從 choices 中獲取對應的名稱
             herbs_name = dict(PostForm.HERBS_CHOICES).get(herbs_id)
             
-            if herbs_id:  # 确保herbs_id非空
+            if herbs_id:  # 確保herbs_id不是空的
                 unit = Purchase.objects.create(
                     herbs_name=herbs_name,
                     supply_id=supply_id,
