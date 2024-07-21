@@ -4,19 +4,57 @@
     <title>管理員首頁</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/manage.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}"> <!-- 引入自定義CSS -->
 </head>
+<style>
+   .header-bg {
+    height: 100%;
+    border-radius: 5px; /* 設置圓角 */
+    display: inline-block; /* 使背景顏色僅包圍內容 */
+    width: 100%; /* 設置寬度 */
+    margin: 0 auto; /* 中心對齊 */
+    padding: 20px; /* 設置內邊距 */
+    box-sizing: border-box; /* 包括内边距和边框在内的完整宽度和高度 */
+    text-align: center; /* 文本居中 */
+    
+}
+.header-bg h1 {
+    margin: 0; /* 移除h1的外邊距 */
+    white-space: nowrap; /* 禁止文本換行 */
+    overflow: hidden; /* 隱藏超出部分 */
+    text-overflow: ellipsis; /* 使用省略號 */
+}
+@media (max-width: 768px) {
+    .header-bg {
+        padding: 10px; /* 調整內邊距以適應小屏幕 */
+    }
+    .header-bg a {
+        display: block; /* 將鏈接設置為塊級元素以在小屏幕上換行 */
+        margin: 5px 0; /* 調整鏈接間距以適應小屏幕 */
+    }
+}
+</style>
 <body>
     {% csrf_token %}
-                <p align="right">
+    <div class="container mt-3">
+        <div class="text-right">
+                <p>
                     管理員：{{request.user.customer_name}} 
-                    <a href="/admin/">後台管理系統</a>
-                <a href="/accounts/logout/">登出</a></p>
-    <h1>
-        <a href="/perchaselist/">進貨資料表</a>&nbsp;&nbsp;
-        <a href="/herbstocklist/">庫存資料表</a>&nbsp;&nbsp;
-        <a href="/salelist/">銷售資料表</a>&nbsp;&nbsp;
-        <a href="/pos/">POS系統</a>&nbsp;&nbsp;
-        <a href="/index/">網站首頁</a>
+                    <a href="/admin/"class="btn btn-link">後台管理系統</a>
+                <a href="/accounts/logout/"class="btn btn-link">登出</a>
+                </p>
+        </div>
+    <h1 class=" header-bg mx-auto">
+        <a href="/perchaselist/" class="btn btn-outline-warning">進貨資料表</a>&nbsp;&nbsp;
+        <a href="/herbstocklist/" class="btn btn-outline-warning">庫存資料表</a>&nbsp;&nbsp;
+        <a href="/salelist/" class="btn btn-outline-warning">銷售資料表</a>&nbsp;&nbsp;
+        <a href="/pos/" class="btn btn-outline-warning">POS系統</a>&nbsp;&nbsp;
+        <a href="/index/" class="btn btn-outline-warning">網站首頁</a>
     </h1>
+</div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

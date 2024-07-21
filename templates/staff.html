@@ -1,18 +1,46 @@
 <!DOCTYPE html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>員工首頁</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/manage.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+<style>
+
+/* 在小屏幕下的樣式 */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px; /* 調整容器內邊距 */
+    }
+
+    .text-right {
+        text-align: center; /* 在小屏幕上居中對齊 */
+    }
+
+}
+
+
+</style>
 <body>
     {% csrf_token %}
-                <p align="right">
+    <div class="container mt-3">
+        <div class="text-right mb-3">
+            <p class="mb-0">
                     員工：{{request.user.customer_name}} 
-                <a href="/accounts/logout/">登出</a></p>
-    <h1>
-        <a href="/pos/">POS系統</a>&nbsp;&nbsp;
+                <a href="/accounts/logout/" class="btn btn-link">登出</a>
+            </p>
+        </div>
+    
+    <h1 class="header-bg mx-auto">
+        <a href="/pos/"class="btn btn-outline-warning">POS系統</a>&nbsp;&nbsp;
         <!-- <a href="/salelist_staff/">銷售資料表</a> -->
     </h1>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
