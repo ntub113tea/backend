@@ -401,6 +401,7 @@ def register(request): #用戶註冊
     else:
         form = CustomerRegistrationForm()
     return render(request, 'register.html', {'form': form})
+    
 
 #--------------------------------------------------------------------------進貨表單
 
