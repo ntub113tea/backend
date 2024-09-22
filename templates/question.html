@@ -22,6 +22,7 @@
             {% if request.user.is_authenticated %}
                 {% csrf_token %}
                     <p align="right">
+                        <p>{{ tongue_color }}</p>
                         顧客：{{request.user.customer_name}} &nbsp;&nbsp;
                         電話號碼：{{request.user.customer_id|mask_phone}} &nbsp;&nbsp;
                         <a href="/history/">歷史紀錄</a>&nbsp;&nbsp;

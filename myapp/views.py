@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from myapp.models import Purchase,Sale,HerbStock,Customer,SymptomOfQuestion,DailyCounter,ShowResult
 from myapp import models
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse,StreamingHttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, get_user_model
@@ -17,6 +17,11 @@ from datetime import datetime, timedelta
 import pytz,json
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import get_object_or_404
+import cv2
+from .utils import run_tongue_detection
+import base64
+from django.views.decorators import gzip
+import threading
 
 
 @user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
@@ -512,5 +517,17 @@ def salelist_staff(request): #銷售表單(員工)設定
     else:
         sales = Sale.objects.all().order_by('-sale_id')
     return render(request, "salelist_staff.html", {'sales': sales})
+
+#----------------------------------------辨識舌頭
+def detect_view(request):
+    return render(request, 'detect.html')
+
+def start_detection(request):
+    if request.method == 'POST':
+        # 在新線程中運行檢測程序
+        thread = threading.Thread(target=run_tongue_detection)
+        thread.start()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
 
 # Create your views here.

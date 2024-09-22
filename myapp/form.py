@@ -81,8 +81,6 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
         month = int(birthday[4:6])  # 提取月
         day = int(birthday[6:7])  # 提取日
 
-
-
         return birthday
 
     
