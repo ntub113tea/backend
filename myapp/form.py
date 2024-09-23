@@ -86,7 +86,7 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
     
 class LoginForm(forms.Form): #登入系統
     username = forms.CharField(label='電話號碼', max_length=10,)
-    password = forms.CharField(label='　　生日', widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))
+    password = forms.CharField(label='　　密碼', widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))
 
 class PurchaseForm(forms.Form): #進貨編輯驗證
     herbs_id = forms.ChoiceField(

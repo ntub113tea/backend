@@ -147,3 +147,14 @@ class SymptomOfQuestion(models.Model):
     class Meta:
         managed = False
         db_table = 'symptom of question'
+
+class TongueColor(models.Model):
+    customer_id = models.CharField(max_length=255, default='0')  
+    color = models.CharField(max_length=255)
+    detected_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'tonguecolor'
+
+    def __str__(self):
+        return self.color

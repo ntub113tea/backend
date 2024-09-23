@@ -1,6 +1,10 @@
 import numpy as np
 import cv2
 from matplotlib import pyplot as plt
+import time
+import threading
+from django.utils import timezone
+from myapp.models import TongueColor
 
 # 函数功能:求出输入矩阵中所有不为0元素的最大值与最小值
 # 输入:矩阵 
@@ -107,10 +111,10 @@ def tongueColorDetect(img):
     avg_r = np.mean(tongueArea[(I > 0) & (I < iterT),2])
     avg_g = np.mean(tongueArea[I >= iterT,1])
     avg_compare = np.mean(I[(I > 0) & (I < iterT)])
-    print("The average value of compare is:" + str(avg_compare))
-    print("The average value of r is:" + str(avg_r))
-    print("The average value of g is:" + str(avg_g))
-    print("The rate of the effective area is:" + str(effectiveRate))
+    # print("The average value of compare is:" + str(avg_compare))
+    # print("The average value of r is:" + str(avg_r))
+    # print("The average value of g is:" + str(avg_g))
+    # print("The rate of the effective area is:" + str(effectiveRate))
     # 新增：分析舌头颜色
     hsv = cv2.cvtColor(tongueArea, cv2.COLOR_BGR2HSV)
     avg_hue = np.mean(hsv[mask == 1, 0])
@@ -122,8 +126,8 @@ def tongueColorDetect(img):
     relative_brightness = avg_val / overall_brightness
 
     # 调试输出
-    print(f"avg_hue: {avg_hue}, avg_sat: {avg_sat}, avg_val: {avg_val}")
-    print(f"relative_brightness: {relative_brightness}")
+    # print(f"avg_hue: {avg_hue}, avg_sat: {avg_sat}, avg_val: {avg_val}")
+    # print(f"relative_brightness: {relative_brightness}")
 
     # 定义颜色范围（这些值可能需要根据实际情况调整）
     if relative_brightness > 1.3 and avg_sat < 50:  # 相对亮度高且饱和度低表示过白
@@ -142,29 +146,44 @@ def tongueColorDetect(img):
     else:
         return (False, None)
 
-def run_tongue_detection():
+def run_tongue_detection(user):
     WIDTH = 320
     HEIGHT = 240
     cap = cv2.VideoCapture(0)
-    cap.set(3,WIDTH)
-    cap.set(4,HEIGHT)
+    cap.set(3, WIDTH)
+    cap.set(4, HEIGHT)
+
+    last_color = None
+    color_start_time = None
 
     while True:
-        ret,frame = cap.read()
-        cv2.rectangle(frame, (WIDTH//3 - 5,HEIGHT//5*3 - 5), (WIDTH//3*2, HEIGHT), [0,255,0],1)
-        isTongue, tongue_color = tongueColorDetect(frame[HEIGHT//5*3:HEIGHT,WIDTH//3:WIDTH//3*2,:])
-        
+        ret, frame = cap.read()
+        cv2.rectangle(frame, (WIDTH // 3 - 5, HEIGHT // 5 * 3 - 5), (WIDTH // 3 * 2, HEIGHT), [0, 255, 0], 1)
+        isTongue, tongue_color = tongueColorDetect(frame[HEIGHT // 5 * 3:HEIGHT, WIDTH // 3:WIDTH // 3 * 2, :])
+
         if isTongue:
             if tongue_color:
-                cv2.putText(frame, f' {tongue_color}', (5,30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 255), 2, 8,0)
+                cv2.putText(frame, f' {tongue_color}', (5, 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 255), 2, 8, 0)
+                if last_color == tongue_color:
+                    if time.time() - color_start_time >= 2:
+                        save_color_to_db(tongue_color, user)
+                        break
+                else:
+                    last_color = tongue_color
+                    color_start_time = time.time()
             else:
-                cv2.putText(frame, 'ok', (5,30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 255), 2, 8,0)
+                cv2.putText(frame, 'ok', (5, 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 255), 2, 8, 0)
         else:
-            cv2.putText(frame, 'cant found tongue', (5,30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 255), 2, 8,0)
-          
-        cv2.imshow('Frame',frame)
-        if cv2.waitKey(10) &0xFF == ord('q'):
+            cv2.putText(frame, 'cant found tongue', (5, 30), cv2.FONT_HERSHEY_COMPLEX, 0.8, (0, 0, 255), 2, 8, 0)
+
+        cv2.imshow('Frame', frame)
+        if cv2.waitKey(10) & 0xFF == ord('q'):
             break
 
     cap.release()
     cv2.destroyAllWindows()
+
+def save_color_to_db(color, user):
+        customer_id = user.customer_id if user.is_authenticated else '0'
+        # 使用Django ORM存储颜色数据
+        TongueColor.objects.create(customer_id=customer_id, color=color)

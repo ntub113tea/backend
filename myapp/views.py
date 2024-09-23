@@ -524,8 +524,8 @@ def detect_view(request):
 
 def start_detection(request):
     if request.method == 'POST':
-        # 在新線程中運行檢測程序
-        thread = threading.Thread(target=run_tongue_detection)
+        # 在新線程中運行檢測程序，並傳遞 request.user
+        thread = threading.Thread(target=run_tongue_detection, args=(request.user,))
         thread.start()
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'})
