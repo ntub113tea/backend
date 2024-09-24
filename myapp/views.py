@@ -14,7 +14,7 @@ from .form import PostForm,CustomerRegistrationForm,LoginForm,PurchaseForm
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
 from datetime import datetime, timedelta
-import pytz,json
+import pytz,json,re
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import get_object_or_404
 import cv2
@@ -22,7 +22,9 @@ from .utils import run_tongue_detection
 import base64
 from django.views.decorators import gzip
 import threading
-
+import pandas as pd
+import os
+from django.conf import settings
 
 @user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
 def manage(request):
@@ -54,15 +56,60 @@ def rgst(request):
     return render(request, 'rgst.html', {'form': form})
     
 #---------------------------------------------------------------客製化表單
+# 读取CSV文件
+csv_path = os.path.join(settings.BASE_DIR, 'static', 'csv', 'herbs.csv')
+df = pd.read_csv(csv_path, header=None)
+df.columns = ['睡不好', '半暝還在嗨', '早上哈啾', '癢癢', '胃生氣', '厭世生理期', '結果']
+
+# 定義選項對應
+options_mapping = {
+    'nosleep': {
+        '1': '感到焦慮',
+        '2': '感到憂鬱',
+        '3': '容易緊張',
+        '4': '無'
+    },
+    'semi_darkness': {
+        '1': '22點以前入睡',
+        '2': '22-24點入睡',
+        '3': '24-3點入睡',
+        '4': '3點以後入睡'
+    },
+    'sneezing': {
+        '1': '長期，伴有呼吸胸悶',
+        '2': '偶發，伴有呼吸胸悶',
+        '3': '長期，無呼吸胸悶',
+        '4': '無'
+    },
+    'itchiness': {
+        '1': '長期過敏',
+        '2': '短期過敏',
+        '3': '有就醫拿藥',
+        '4': '無過敏'
+    },
+    'stomach_anger': {
+        '1': '胃脹氣',
+        '2': '反胃',
+        '3': '胃食道逆流',
+        '4': '無'
+    },
+    'menstrual_anguish': {
+        '1': '重度疼痛',
+        '2': '輕度疼痛',
+        '3': '不會痛',
+        '4': '無生理期'
+    }
+}
+
 def question(request):
-    id_result= None
+    id_result = None
     if request.method == 'POST' and 'confirm_button' in request.POST: #新增按下按鈕才能更改資料庫中的數值
-        nosleep = request.COOKIES.get('nosleep')
-        semi_darkness = request.COOKIES.get('semi_darkness')
-        sneezing = request.COOKIES.get('sneezing')
-        itchiness = request.COOKIES.get('itchiness')
-        stomach_anger = request.COOKIES.get('stomach_anger')
-        menstrual_anguish = request.COOKIES.get('menstrual_anguish')
+        nosleep = options_mapping['nosleep'][request.COOKIES.get('nosleep')]
+        semi_darkness = options_mapping['semi_darkness'][request.COOKIES.get('semi_darkness')]
+        sneezing = options_mapping['sneezing'][request.COOKIES.get('sneezing')]
+        itchiness = options_mapping['itchiness'][request.COOKIES.get('itchiness')]
+        stomach_anger = options_mapping['stomach_anger'][request.COOKIES.get('stomach_anger')]
+        menstrual_anguish = options_mapping['menstrual_anguish'][request.COOKIES.get('menstrual_anguish')]
         bitter = request.COOKIES.get('bitter')
         
         # 獲取顧客編號
@@ -75,7 +122,6 @@ def question(request):
             customer_id = f'{next_counter:03d}'
             id_result = customer_id
 
-        
         # 取得台北的時區
         taipei_tz = pytz.timezone('Asia/Taipei')
         # 獲取現在的台北時間
@@ -83,166 +129,146 @@ def question(request):
         # 將台北時間轉換為 UTC 時間
         utc_now = taipei_now.astimezone(pytz.utc)
 
-        # 將症狀資料存入資料庫         
-        try:          
-            # 如果用戶已經登入，則將 customer_id 設置為當前用戶的 customer_id
-            # 如果用戶未登入，則將 customer_id 設置為 0
-            symptom_customer_id = request.user.customer_id if request.user.is_authenticated else 0
-            symptom = SymptomOfQuestion.objects.get(customer_id=symptom_customer_id)
-
-            # 如果找到現有的記錄，則更新問題資料
-            symptom.question_time = utc_now
-            symptom.q1 = nosleep
-            symptom.q2 = semi_darkness
-            symptom.q3 = sneezing
-            symptom.q4 = itchiness
-            symptom.q5 = stomach_anger
-            symptom.q6 = menstrual_anguish
-            symptom.save()
-        except SymptomOfQuestion.DoesNotExist:
-            # 如果不存在，則創建一個新的記錄
-            SymptomOfQuestion.objects.create(
-                customer_id=symptom_customer_id,
-                question_time=utc_now,
-                q1=nosleep,
-                q2=semi_darkness,
-                q3=sneezing,
-                q4=itchiness,
-                q5=stomach_anger,
-                q6=menstrual_anguish
-            )
+        # 將症狀資料存入資料庫
+        SymptomOfQuestion.objects.create(
+            customer_id=request.user.customer_id if request.user.is_authenticated else 0,
+            question_time=utc_now,
+            q1=nosleep,
+            q2=semi_darkness,
+            q3=sneezing,
+            q4=itchiness,
+            q5=stomach_anger,
+            q6=menstrual_anguish
+        )
 
         # 如果有 nosleep，處理結果
         if nosleep:
-            def main():
-                symptoms = [
-                    "睏不好",
-                    "半暝還在嗨",
-                    "早上哈啾",
-                    "癢癢",
-                    "胃生氣",
-                    "厭世生理期"
-                ]
-                value = [
-                    nosleep,
-                    semi_darkness,
-                    sneezing,
-                    itchiness,
-                    stomach_anger,
-                    menstrual_anguish
-                ]
+            def get_herbs_result(nosleep, semi_darkness, sneezing, itchiness, stomach_anger, menstrual_anguish):
+                # 在DataFrame中查找匹配的行
+                matching_row = df[(df['睡不好'] == nosleep) & 
+                                  (df['半暝還在嗨'] == semi_darkness) & 
+                                  (df['早上哈啾'] == sneezing) & 
+                                  (df['癢癢'] == itchiness) & 
+                                  (df['胃生氣'] == stomach_anger) & 
+                                  (df['厭世生理期'] == menstrual_anguish)]
 
-                result = []
-                total_weight = 5  # 定義藥材克數的總和
-                for i in range(6):
-                    choice = value[i]
-                    result.append(choose_herb(symptoms[i], choice, total_weight))
-
-                # 如果六種藥材的克數加總超過5，則進行額外調整
-                total_sum = sum(float(item.split()[1][:-1]) for item in result)
-                adjustment_factor = 5 / total_sum
-                for i in range(len(result)):
-                    dosage = float(result[i].split()[1][:-1]) * adjustment_factor
-                    result[i] = result[i].split()[0] + f" {dosage:.2f}g"
-                return result
-            
-            def choose_herb(symptom, choice, total_weight):
-                herbs = {
-                    "睏不好": "魚腥草",
-                    "半暝還在嗨": ["白鶴靈芝", "蒲公英"],
-                    "早上哈啾": "金銀花",
-                    "癢癢": "忍冬",
-                    "胃生氣": "積雪草",
-                    "厭世生理期": ["鴨舌黃", "益母草"]
-                }
-
-                dosage = {
-                    "1": 0.5,
-                    "2": 1.0,
-                    "3": 1.5,
-                    "4": 2.0,
-                    "5": 2.5
-                }
-
-                if symptom in herbs:
-                    herb = herbs[symptom]
-                    if isinstance(herb, list):
-                        herb = "or".join(herb)
-                    if choice in dosage:
-                        # 計算每個症狀所需的藥材克數
-                        required_dosage = dosage[choice]
-                        
-                        return f"{herb} {required_dosage:.2f}g"
+                # 处理结果并输出
+                if not matching_row.empty:
+                    result = matching_row['結果'].values[0]
+                    print(f"原始結果: {result}")  # 调试信息
+                    
+                    # 移除方括号并分割药材
+                    result = result.strip("[]")
+                    herbs_list = [herb.strip().strip("'") for herb in result.split(",")]
+                    print(f"解析後的藥材列表: {herbs_list}")  # 调试信息
+                    
+                    if not herbs_list:
+                        print("無法解析藥材列表，請檢查數據格式。")
+                        return [], []
                     else:
-                        return "Invalid choice!"
+                        # 将药材剂量转换为浮点数
+                        herbs_dict = {}
+                        for herb in herbs_list:
+                            match = re.search(r'(.*) (\d+\.?\d*)g', herb)
+                            if match:
+                                name, amount = match.groups()
+                                herbs_dict[name] = float(amount)
+                            else:
+                                print(f"無法解析藥材: {herb}")
+                        
+                        # 计算总量并调整剂量
+                        total_amount = sum(herbs_dict.values())
+                        print(f"原始總量: {total_amount}g")  # 调试信息
+                        
+                        if total_amount == 0:
+                            print("藥材總量為零，無法調整。")
+                            return [], []
+                        else:
+                            scale_factor = 5 / total_amount
+                            
+                            adjusted_herbs = []
+                            for name, amount in herbs_dict.items():
+                                adjusted_amount = round(amount * scale_factor, 2)
+                                adjusted_herbs.append(f"{name} {adjusted_amount}g")
+                            
+                            print("調整後的藥材配方:")
+                            for herb in adjusted_herbs:
+                                print(herb)
+                            print(f"總量: {sum(float(h.split()[-1][:-1]) for h in adjusted_herbs)}g")
+                            
+                            # 儲存調整後的配方
+                            final_herbs = [f"{herb.replace('‘', '').replace('’', '')}" for herb in adjusted_herbs]
+                            print("最終配方:")
+                            print(final_herbs)
+                            return final_herbs, [float(h.split()[-1][:-1]) for h in adjusted_herbs]
                 else:
-                    return "Invalid symptom!"
-            
-            result = main()  # 調用 main 函式獲取處理結果列表
-            print(result)
+                    print("未找到匹配的結果")
+                    return [], []
+
+            result, dosages = get_herbs_result(nosleep, semi_darkness, sneezing, itchiness, stomach_anger, menstrual_anguish)
             herbs = []
-            dosages = []
-            for item in result:
-                parts = item.split()
-                herbs.append(parts[0])
-                dosages.append(float(parts[1][:-1]))    
-            herbs_mapping = {
-                "魚腥草": 1, "白鶴靈芝": 2,"積雪草": 3, 
-                "金銀花": 4,"蒲公英": 5,  "忍冬": 6, '野茄樹':7,'金錢薄荷':8,
-                '紫蘇':9,"鴨舌黃": 10, "益母草": 11,'薄荷':12,
-                '甜菊':13,'咸豐草':14
-            }        
-        # 根據按鈕值進行處理
-            if bitter == "True":
-                # 如果用戶點擊"可以"按钮
-                herbs = [
-                    "魚腥草",
-                    "蒲公英",  # 修改此處為單一草藥
-                    "金銀花",
-                    "忍冬",
-                    "積雪草",
-                    "益母草"  # 修改此處為單一草藥
-                ]
-            elif bitter == "False":
-                # 如果用戶點擊"不行"按钮
-                herbs = [
-                    "魚腥草",
-                    "白鶴靈芝",  # 修改此處為單一草藥
-                    "金銀花",
-                    "忍冬",
-                    "積雪草",
-                    "鴨舌黃"  # 修改此處為單一草藥
-                ]                  
-           
-            product_name = "客製化"  # 改成客製化
-            order_time = utc_now  # 現在時間
-            customer_id = request.user.customer_id if request.user.is_authenticated else id_result
-            global show_result
-            show_result = []
-            for i in range(len(herbs)):
-                show_result.append(herbs[i] + ":" + str(dosages[i]) + "g")
-                Sale.objects.create(
-                customer_id=customer_id,
-                product_name=product_name,
-                herbs_id=herbs_mapping.get(herbs[i]),
-                herbs_name=herbs[i],
-                sales_value=dosages[i],
-                order_time=order_time
-            )
-            #show_id=request.user.customer_id if request.user.is_authenticated else "0"
-            show=Customer.objects.filter(customer_id=customer_id).first()
-            if (request.user.is_authenticated) :
-                customer_name=show.customer_name
-                show_result.insert(0,"顧客名字：" + customer_name)
-                show_result.insert(0,"顧客電話：" + customer_id)
-            else:
-                show_result.insert(0,"顧客名字：" + "Guest")
-                show_result.insert(0,"未登入顧客編號：" + customer_id)
-            a=ShowResult.objects.get(show_id=0)
-            a.data=show_result
-            a.save()
-            print(show_result)
-            return redirect ('/question/')
+            if result:
+                for item in result:
+                    parts = item.split()
+                    herbs.append(parts[0])
+                herbs_mapping = {
+                    "魚腥草": 1, "白鶴靈芝": 2,"積雪草": 3, 
+                    "金銀花": 4,"蒲公英": 5,  "忍冬": 6, '野茄樹':7,'金錢薄荷':8,
+                    '紫蘇':9,"鴨舌黃": 10, "益母草": 11,'薄荷':12,
+                    '甜菊':13,'咸豐草':14
+                }        
+                # 根據按鈕值進行處理
+                final_herbs = []
+                for herb in herbs:
+                    if "or" in herb:
+                        options = herb.split("or")
+                        if bitter == "True":
+                            if "蒲公英" in options:
+                                final_herbs.append("蒲公英")
+                            if "益母草" in options:
+                                final_herbs.append("益母草")
+                        elif bitter == "False":
+                            if "白鶴靈芝" in options:
+                                final_herbs.append("白鶴靈芝")
+                            if "鴨舌黃" in options:
+                                final_herbs.append("鴨舌黃")
+                    else:
+                        final_herbs.append(herb)
+                
+                product_name = "客製化"  # 改成客製化
+                order_time = utc_now  # 現在時間
+                customer_id = request.user.customer_id if request.user.is_authenticated else id_result
+                global show_result
+                show_result = []
+                
+                # 調試輸出 herbs 和 dosages
+                print(f"herbs: {final_herbs}")
+                print(f"dosages: {dosages}")
+                
+                for i in range(len(final_herbs)):
+                    show_result.append(final_herbs[i] + ":" + str(dosages[i]) + "g")
+                    Sale.objects.create(
+                    customer_id=customer_id,
+                    product_name=product_name,
+                    herbs_id=herbs_mapping.get(final_herbs[i]),
+                    herbs_name=final_herbs[i],
+                    sales_value=dosages[i],
+                    order_time=order_time
+                )
+                #show_id=request.user.customer_id if request.user.is_authenticated else "0"
+                show=Customer.objects.filter(customer_id=customer_id).first()
+                if (request.user.is_authenticated) :
+                    customer_name=show.customer_name
+                    show_result.insert(0,"顧客名字：" + customer_name)
+                    show_result.insert(0,"顧客電話：" + customer_id)
+                else:
+                    show_result.insert(0,"顧客名字：" + "Guest")
+                    show_result.insert(0,"未登入顧客編號：" + customer_id)
+                a=ShowResult.objects.get(show_id=0)
+                a.data=show_result
+                a.save()
+                print(show_result)
+                return redirect ('/question/')
     return render(request, "question.html")
     
 

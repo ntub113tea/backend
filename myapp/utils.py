@@ -107,7 +107,7 @@ def tongueColorDetect(img):
     iterT = iterativeThreshold(I)   #调用函数获得阈值
     colorResult = tongueArea.copy()
     colorResult[I >= iterT] = [255,255,255]
-    cv2.imshow("Split",colorResult)
+    # cv2.imshow("Split",colorResult)
     avg_r = np.mean(tongueArea[(I > 0) & (I < iterT),2])
     avg_g = np.mean(tongueArea[I >= iterT,1])
     avg_compare = np.mean(I[(I > 0) & (I < iterT)])
