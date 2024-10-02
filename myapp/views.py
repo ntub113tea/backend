@@ -113,7 +113,6 @@ def question(request):
         stomach_anger = options_mapping['stomach_anger'][request.COOKIES.get('stomach_anger')]
         menstrual_anguish = options_mapping['menstrual_anguish'][request.COOKIES.get('menstrual_anguish')]
         bitter = request.COOKIES.get('bitter')
-        
         # 獲取顧客編號
         customer_id = None
         if request.user.is_authenticated:
@@ -181,6 +180,26 @@ def question(request):
             # 处理结果并输出
             result = result.strip("[]")
             herbs_list = [herb.strip().strip("'") for herb in result.split(",")]
+            if stomach_anger != '無':
+                selected_options = [option.strip() for option in stomach_anger.split(',')]
+                num_options = len(selected_options)
+                
+                # 根據選擇的數量調整推薦的藥材
+            if num_options == 1:
+                if '’積雪草 0.25g’' in herbs_list:
+                    herbs_list[herbs_list.index('’積雪草 0.25g’')] = '’積雪草 0.1g’'  # 替換
+                else:
+                    herbs_list.append('’積雪草 0.1g’')  # 新增
+            elif num_options == 2:
+                if '’積雪草 0.25g’'  in herbs_list:
+                    herbs_list[herbs_list.index('’積雪草 0.25g’' )] = '’積雪草 0.25g’'   # 替換
+                else:
+                    herbs_list.append('’積雪草 0.25g’' )  # 新增
+            elif num_options == 3:
+                if '’積雪草 0.25g’'  in herbs_list:
+                    herbs_list[herbs_list.index('’積雪草 0.25g’' )] = '’積雪草 0.5g’'   # 替換
+                else:
+                    herbs_list.append('’積雪草 0.5g’' )  # 新增
             print(f"解析後的藥材列表: {herbs_list}")  # 调试信息
             
             if not herbs_list:
