@@ -153,6 +153,7 @@
                     {% csrf_token %}
                     <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
                 </form>
+                <button onclick="goToDetect()" style="background-color: red; color: white; padding: 15px 30px; font-size: 20px; margin-left: 10px;">前往檢測</button>
             </div>
         </div>
 </div>
@@ -362,6 +363,27 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
             // alert('Cookie 已刪除！');
         }
 
+        function goToDetect() {
+    var allSymptomsSelected = true;
+    // 檢查是否所有症狀按鈕都被選中
+    document.querySelectorAll('.item').forEach(function(item) {
+        if (item.querySelectorAll('button.active').length < 1) {
+            allSymptomsSelected = false;
+        }
+    });
+
+    // 檢查是否選擇了接受苦的程度按鈕
+    if (!document.getElementById('bitterness-btn-yes').classList.contains('active') &&
+        !document.getElementById('bitterness-btn-no').classList.contains('active')) {
+        allSymptomsSelected = false;
+    }
+
+    if (allSymptomsSelected) {
+        location.href = '/detect/'; // 導向檢測頁面
+    } else {
+        alert('請為每個症狀選擇一個強度和接受苦的程度。');
+    }
+}
 </script>
 </body>
 </html>
