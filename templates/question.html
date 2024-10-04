@@ -105,19 +105,15 @@
         <!-- 第三行 -->
         <div class="row">
             <div class="item" id="symptom5">
-                <!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-    
                 <img src="{% static 'images/胃生氣.jpg' %}" alt="Item 5">
-                <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-    
                 <div class="title">胃生氣</div>
-    
-                <!--症狀強度的四個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到4，代表不同的強度程度。-->
-                <button onclick="updateStrength('stomach-anger-btn-1')" id="stomach-anger-btn-1">1</button>
-                <button onclick="updateStrength('stomach-anger-btn-2')" id="stomach-anger-btn-2">2</button>
-                <button onclick="updateStrength('stomach-anger-btn-3')" id="stomach-anger-btn-3">3</button>
-                <button onclick="updateStrength('stomach-anger-btn-4')" id="stomach-anger-btn-4">4</button>
+        
+                <button name="stomach-anger-btn-1" onclick="toggleButton('stomach-anger-btn-1')" id="stomach-anger-btn-1">胃脹氣</button>
+                <button name="stomach-anger-btn-2" onclick="toggleButton('stomach-anger-btn-2')" id="stomach-anger-btn-2">反胃</button>
+                <button name="stomach-anger-btn-3" onclick="toggleButton('stomach-anger-btn-3')" id="stomach-anger-btn-3">胃食道逆流</button>
+                <button name="stomach-anger-btn-4" onclick="toggleButton('stomach-anger-btn-4')" id="stomach-anger-btn-4">無</button>
             </div>
+        </div>
     
             <div class="item" id="symptom6">
                 <!-- 表示症狀項目的整個區塊，具有獨特的ID -->
@@ -151,6 +147,7 @@
             <div class="row" style="text-align: center;">
                 <form method="post" name="question">
                     {% csrf_token %}
+                    <input type="hidden" name="stomach_anger" id="stomach_anger" value="">
                     <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
                 </form>
                 <button onclick="goToDetect()" style="background-color: red; color: white; padding: 15px 30px; font-size: 20px; margin-left: 10px;">前往檢測</button>
@@ -383,6 +380,42 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
     } else {
         alert('請為每個症狀選擇一個強度和接受苦的程度。');
     }
+}
+function toggleButton(buttonId) {
+    var currentButton = document.getElementById(buttonId);
+    var isActive = currentButton.classList.toggle('active');
+
+    // 如果選擇了「無」，則取消其他選項的選擇
+    if (buttonId === 'stomach-anger-btn-4') { // 如果選擇的是「無」
+        if (isActive) { // 如果「無」被選中
+            document.getElementById('stomach-anger-btn-1').classList.remove('active');
+            document.getElementById('stomach-anger-btn-2').classList.remove('active');
+            document.getElementById('stomach-anger-btn-3').classList.remove('active');
+        }
+    } else { // 如果選擇的是其他選項
+        // 如果選擇了其他選項，則取消「無」的選擇
+        if (isActive) {
+            document.getElementById('stomach-anger-btn-4').classList.remove('active');
+        }
+    }
+
+    // 更新隱藏的輸入框的值
+    var stomachAngerChoices = [];
+    if (document.getElementById('stomach-anger-btn-1').classList.contains('active')) {
+        stomachAngerChoices.push('胃脹氣');
+    }
+    if (document.getElementById('stomach-anger-btn-2').classList.contains('active')) {
+        stomachAngerChoices.push('反胃');
+    }
+    if (document.getElementById('stomach-anger-btn-3').classList.contains('active')) {
+        stomachAngerChoices.push('胃食道逆流');
+    }
+    if (document.getElementById('stomach-anger-btn-4').classList.contains('active')) {
+        stomachAngerChoices.push('無');
+    }
+
+    // 將選擇的值轉換為字符串並更新隱藏的輸入框
+    document.getElementById('stomach_anger').value = stomachAngerChoices.join(', ');
 }
 </script>
 </body>
