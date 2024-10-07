@@ -31,7 +31,7 @@ tr {
 /* 添加表格邊框 */
 table {
     margin: auto;
-    width: 90%;
+    width: 100%;
     border-collapse: collapse; /* 合併表格邊框 */
     table-layout: fixed; /* 使用固定表格布局 */
 }
@@ -40,6 +40,7 @@ table {
 td, th { /*格字框*/
     border: 1px solid #000000; /* 邊框 */
     text-align: center; /* 文本對齊方式 */
+    padding: 10px;
 }
 
 .header {
@@ -49,7 +50,7 @@ td, th { /*格字框*/
     background-color: #EED3D9;
     color: #0b0b0b;
     text-align: center;
-    padding: 10px 0;
+    padding: 10px ;
     font-size: 15px;
     height: 100px;
 }

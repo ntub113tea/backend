@@ -2,25 +2,52 @@
 <html>
 <head>
     {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
+    
     <title>註冊</title>
     <style>
-        
+        .container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+    }
+    .top h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    @media (max-width: 600px) {
+        .container {
+            max-width: 90%;
+            padding: 10px;
+        }
+    }
+    .pwd-btn {
+        margin-top: 5px;
+    }
     </style>
     
 </head>
 <body>
 
     <div class="container" >
-        <div class="top">
-            
-            <h1>註冊新帳號</h1>
+        <div class="row">
+            <div class="col-12">
+                <div class="top">
+                    <h1>註冊新帳號</h1>
 
-        </div>
+                </div>
         <div class="main">
             <form action="" method="post" >
                 {% csrf_token %}
-                <div class="input-field"> 
+                <div class="form-group input-field"> 
                 {{ form.customer_id.label_tag }}<br>
                 {{ form.customer_id }}
                 {% if form.customer_id.errors %}
@@ -28,7 +55,7 @@
                 {% endif %}
                 </div>
 
-                <div class="input-field">
+                <div class=" form-group input-field">
                     {{ form.password.label_tag }}<br>
                     {{ form.password }}
                     <button class="pwd-btn" type="button" onclick="togglePassword()">查看</button>
@@ -37,7 +64,7 @@
                     {% endif %}
                 </div>
 
-                <div class="input-field">
+                <div class=" form-group input-field">
                     {{ form.password_confirmation.label_tag }}<br>
                     {{ form.password_confirmation }}
                     {% if form.password_confirmation.errors %}
@@ -45,7 +72,7 @@
                     {% endif %}
                 </div>
 
-                <div class="input-field">
+                <div class="form-group input-field">
                     {{ form.customer_name.label_tag }}<br>
                     {{ form.customer_name }}
                     {% if form.customer_name.errors %}
@@ -67,7 +94,7 @@
                     {{ form.line_id }}
                 </div>
 
-                <div class="input-field">
+                <div class="form-group input-field">
                     {{ form.sex.label_tag }}
                     <div class="inline-radio">
                         {% for radio in form.sex %}
@@ -80,11 +107,12 @@
                 </div>
                 
                 <div class="btn-container">
-                    <input class="bottom-btn" type="submit" value="註冊">
-                    <button class="bottom-btn" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
+                    <input class="btn btn-primary bottom-btn" type="submit" value="註冊">
+                    <button class="btn btn-primary bottom-btn" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
                 </div>
                 
-            </form> 
+                </form> 
+            </div>
         </div>        
     </div>
 </div>

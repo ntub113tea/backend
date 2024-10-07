@@ -19,6 +19,9 @@ body {
 
 
 .container {
+    position: fixed;
+    width: 500px;
+    
     display: inline-block;
     margin: 50px;
     max-width: 80%;
@@ -140,25 +143,27 @@ button { /*加入購物車 確認訂單*/
 }
 
 .resultbox { /*購物車內區塊*/
-    margin: 10px;
-    max-width: 100%;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    margin-top: 50px;
-    float: left;
+    margin: 10px; /* 外邊距 10 像素 */
+    max-width: 100%; /* 最大寬度 100% */
+    background-color: #fff; /* 背景顏色為白色 */
+    border-radius: 10px; /* 邊角圓滑 10 像素 */
+    padding: 10px; /* 內邊距 10 像素 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影效果 */
+    text-align: center; /* 文字居中對齊 */
+    margin-top: 50px; /* 上外邊距 50 像素 */
+    float: left; /* 左浮動 */
 }
+
 .resultContainer {
-    position: absolute;
-    right: 4px;
-    margin-right: auto;
-    margin-left: auto;
+    position: absolute; /* 絕對定位 */
+    right: 4px; /* 右側距離 4 像素 */
+    margin-right: auto; /* 自動設置右邊距 */
+    margin-left: auto; /* 自動設置左邊距 */
     overflow-y: auto; /* 垂直方向溢出時顯示滾動條 */
     max-height: calc(100vh - 100px); /* 限制容器的最大高度，這樣當內容超出一定高度時就會顯示滾動條 */
     /* 其他樣式屬性 */
 }
+
 
 .sweetnessOptions {
     display: flex;
