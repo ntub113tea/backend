@@ -22,6 +22,7 @@
             {% if request.user.is_authenticated %}
                 {% csrf_token %}
                     <p align="right">
+                        <p>{{ tongue_color }}</p>
                         顧客：{{request.user.customer_name}} &nbsp;&nbsp;
                         電話號碼：{{request.user.customer_id|mask_phone}} &nbsp;&nbsp;
                         <a href="/history/">歷史紀錄</a>&nbsp;&nbsp;
@@ -36,7 +37,7 @@
         </span>           
     </div>
 
-    <h1>選擇您的症狀 (1症狀最輕 5症狀最重)</h1>
+    <h1>選擇您的症狀 (1症狀最輕 4症狀最重)</h1>
 
     <div class="container"> <!-- 問卷區域 -->
         
@@ -44,100 +45,89 @@
         <div class="row">
             
             <div class="item" id="symptom1"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
+    
                 <img src="{% static 'images/睡不好.jpg' %}" alt="Item 1"><!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-
+    
                 <div class="title">睡不好</div> 
-
-                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+    
+                <!--症狀強度的四個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到4，代表不同的強度程度。-->
                 <button onclick="updateStrength('symptom-btn-1')" id="symptom-btn-1">1</button>
                 <button onclick="updateStrength('symptom-btn-2')" id="symptom-btn-2">2</button>
                 <button onclick="updateStrength('symptom-btn-3')" id="symptom-btn-3">3</button>
                 <button onclick="updateStrength('symptom-btn-4')" id="symptom-btn-4">4</button>
-                <button onclick="updateStrength('symptom-btn-5')" id="symptom-btn-5">5</button>
             </div>
-
+    
             <div class="item" id="symptom2"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
+    
                 <img src="{% static 'images/半暝還在嗨.jpg' %}" alt="Item 2"><!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
                 
                 <div class="title">半暝還在嗨</div>
-
-                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+    
+                <!--症狀強度的四個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到4，代表不同的強度程度。-->
                 <button onclick="updateStrength('semi-darkness-btn-1')" id="semi-darkness-btn-1">1</button>
-                <button result = main()  # 調用 main 函式獲取處理結果列表
-                onclick="updateStrength('semi-darkness-btn-2')" id="semi-darkness-btn-2">2</button>
+                <button onclick="updateStrength('semi-darkness-btn-2')" id="semi-darkness-btn-2">2</button>
                 <button onclick="updateStrength('semi-darkness-btn-3')" id="semi-darkness-btn-3">3</button>
                 <button onclick="updateStrength('semi-darkness-btn-4')" id="semi-darkness-btn-4">4</button>
-                <button onclick="updateStrength('semi-darkness-btn-5')" id="semi-darkness-btn-5">5</button>
             </div>
         </div>
-
+    
         <!-- 第二行 -->
         <div class="row">
             <div class="item" id="symptom3"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
+    
                 <img src="{% static 'images/早上哈啾.jpg' %}" alt="Item 3">
                 <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-
+    
                 <div class="title">早上哈啾</div>
-
-                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+    
+                <!--症狀強度的四個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到4，代表不同的強度程度。-->
                 <button onclick="updateStrength('sneezing-btn-1')" id="sneezing-btn-1">1</button>
                 <button onclick="updateStrength('sneezing-btn-2')" id="sneezing-btn-2">2</button>
                 <button onclick="updateStrength('sneezing-btn-3')" id="sneezing-btn-3">3</button>
                 <button onclick="updateStrength('sneezing-btn-4')" id="sneezing-btn-4">4</button>
-                <button onclick="updateStrength('sneezing-btn-5')" id="sneezing-btn-5">5</button>
             </div>
-
+    
             <div class="item" id="symptom4"><!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
+    
                 <img src="{% static 'images/癢癢.jpg' %}" alt="Item 4">
                 <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-
+    
                 <div class="title">癢癢</div>
-
-                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+    
+                <!--症狀強度的四個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到4，代表不同的強度程度。-->
                 <button onclick="updateStrength('itchiness-btn-1')" id="itchiness-btn-1">1</button>
                 <button onclick="updateStrength('itchiness-btn-2')" id="itchiness-btn-2">2</button>
                 <button onclick="updateStrength('itchiness-btn-3')" id="itchiness-btn-3">3</button>
                 <button onclick="updateStrength('itchiness-btn-4')" id="itchiness-btn-4">4</button>
-                <button onclick="updateStrength('itchiness-btn-5')" id="itchiness-btn-5">5</button>
             </div>
         </div>
-
+    
         <!-- 第三行 -->
         <div class="row">
             <div class="item" id="symptom5">
-                <!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
                 <img src="{% static 'images/胃生氣.jpg' %}" alt="Item 5">
-                <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-
                 <div class="title">胃生氣</div>
-
-                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
-                <button onclick="updateStrength('stomach-anger-btn-1')" id="stomach-anger-btn-1">1</button>
-                <button onclick="updateStrength('stomach-anger-btn-2')" id="stomach-anger-btn-2">2</button>
-                <button onclick="updateStrength('stomach-anger-btn-3')" id="stomach-anger-btn-3">3</button>
-                <button onclick="updateStrength('stomach-anger-btn-4')" id="stomach-anger-btn-4">4</button>
-                <button onclick="updateStrength('stomach-anger-btn-5')" id="stomach-anger-btn-5">5</button>
+        
+                <button name="stomach-anger-btn-1" onclick="toggleButton('stomach-anger-btn-1')" id="stomach-anger-btn-1">胃脹氣</button>
+                <button name="stomach-anger-btn-2" onclick="toggleButton('stomach-anger-btn-2')" id="stomach-anger-btn-2">反胃</button>
+                <button name="stomach-anger-btn-3" onclick="toggleButton('stomach-anger-btn-3')" id="stomach-anger-btn-3">胃食道逆流</button>
+                <button name="stomach-anger-btn-4" onclick="toggleButton('stomach-anger-btn-4')" id="stomach-anger-btn-4">無</button>
             </div>
-
+        </div>
+    
             <div class="item" id="symptom6">
                 <!-- 表示症狀項目的整個區塊，具有獨特的ID -->
-
+    
                 <img src="{% static 'images/生理期.jpg' %}" alt="Item 6">
                 <!-- 顯示症狀的圖片，alt屬性提供圖片的替代文字描述 -->
-                
+    
                 <div class="title">厭世生理期</div>
-
-                <!--症狀強度的五個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到5，代表不同的強度程度。-->
+    
+                <!--症狀強度的四個按鈕。每個按鈕都有一個onclick事件，按鈕被點擊時，會調用updateStrength函式，並傳遞相應按鈕的ID作為參數。按鈕的文字內容分別是1到4，代表不同的強度程度。-->
                 <button onclick="updateStrength('menstrual-anguish-btn-1')" id="menstrual-anguish-btn-1">1</button>
                 <button onclick="updateStrength('menstrual-anguish-btn-2')" id="menstrual-anguish-btn-2">2</button>
                 <button onclick="updateStrength('menstrual-anguish-btn-3')" id="menstrual-anguish-btn-3">3</button>
                 <button onclick="updateStrength('menstrual-anguish-btn-4')" id="menstrual-anguish-btn-4">4</button>
-                <button onclick="updateStrength('menstrual-anguish-btn-5')" id="menstrual-anguish-btn-5">5</button>
             </div>
         </div>
         
@@ -157,8 +147,10 @@
             <div class="row" style="text-align: center;">
                 <form method="post" name="question">
                     {% csrf_token %}
+                    <input type="hidden" name="stomach_anger" id="stomach_anger" value="">
                     <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
                 </form>
+                <button onclick="goToDetect()" style="background-color: red; color: white; padding: 15px 30px; font-size: 20px; margin-left: 10px;">前往檢測</button>
             </div>
         </div>
 </div>
@@ -368,6 +360,63 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
             // alert('Cookie 已刪除！');
         }
 
+        function goToDetect() {
+    var allSymptomsSelected = true;
+    // 檢查是否所有症狀按鈕都被選中
+    document.querySelectorAll('.item').forEach(function(item) {
+        if (item.querySelectorAll('button.active').length < 1) {
+            allSymptomsSelected = false;
+        }
+    });
+
+    // 檢查是否選擇了接受苦的程度按鈕
+    if (!document.getElementById('bitterness-btn-yes').classList.contains('active') &&
+        !document.getElementById('bitterness-btn-no').classList.contains('active')) {
+        allSymptomsSelected = false;
+    }
+
+    if (allSymptomsSelected) {
+        location.href = '/detect/'; // 導向檢測頁面
+    } else {
+        alert('請為每個症狀選擇一個強度和接受苦的程度。');
+    }
+}
+function toggleButton(buttonId) {
+    var currentButton = document.getElementById(buttonId);
+    var isActive = currentButton.classList.toggle('active');
+
+    // 如果選擇了「無」，則取消其他選項的選擇
+    if (buttonId === 'stomach-anger-btn-4') { // 如果選擇的是「無」
+        if (isActive) { // 如果「無」被選中
+            document.getElementById('stomach-anger-btn-1').classList.remove('active');
+            document.getElementById('stomach-anger-btn-2').classList.remove('active');
+            document.getElementById('stomach-anger-btn-3').classList.remove('active');
+        }
+    } else { // 如果選擇的是其他選項
+        // 如果選擇了其他選項，則取消「無」的選擇
+        if (isActive) {
+            document.getElementById('stomach-anger-btn-4').classList.remove('active');
+        }
+    }
+
+    // 更新隱藏的輸入框的值
+    var stomachAngerChoices = [];
+    if (document.getElementById('stomach-anger-btn-1').classList.contains('active')) {
+        stomachAngerChoices.push('胃脹氣');
+    }
+    if (document.getElementById('stomach-anger-btn-2').classList.contains('active')) {
+        stomachAngerChoices.push('反胃');
+    }
+    if (document.getElementById('stomach-anger-btn-3').classList.contains('active')) {
+        stomachAngerChoices.push('胃食道逆流');
+    }
+    if (document.getElementById('stomach-anger-btn-4').classList.contains('active')) {
+        stomachAngerChoices.push('無');
+    }
+
+    // 將選擇的值轉換為字符串並更新隱藏的輸入框
+    document.getElementById('stomach_anger').value = stomachAngerChoices.join(', ');
+}
 </script>
 </body>
 </html>

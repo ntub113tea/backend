@@ -31,9 +31,10 @@ class PostForm(forms.Form):   #進貨資料驗證
 
 
 class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入）
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'id': 'password' }),label='生日') 
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', 'id': 'password' }),label='密碼') 
     #autocomplete': 'new-password告訴瀏覽器這是新的密碼 不應該保存任何值
-    password_confirmation = forms.CharField(widget=forms.PasswordInput(), label='確認生日')
+    password_confirmation = forms.CharField(widget=forms.PasswordInput(), label='確認密碼')
+    birthday = forms.CharField(max_length=7, label='生日') 
     sex = forms.ChoiceField(
         choices=Customer.GENDER_CHOICES,
         widget=forms.RadioSelect,
@@ -42,7 +43,7 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
     customer_id = forms.CharField(label='電話號碼', max_length=10,)
     class Meta:
         model = Customer
-        fields = ['customer_id', 'password', 'customer_name', 'sex','line_id',]
+        fields = ['customer_id', 'password', 'customer_name', 'sex','line_id','birthday']
         labels = {
             'customer_name': '姓名',
             'line_id': 'LINE ID（可選填）'
@@ -60,19 +61,6 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
         if re.search(r'\d', customer_name):  # 使用正規表達檢查是否有數字
             raise ValidationError("姓名不應包含數字")
         return customer_name
-    def clean_password(self):
-        password = self.cleaned_data.get('password')
-        if not re.match(r'^\d{7}$', password):  # 確保密碼為7位數字
-            raise ValidationError("生日必須是7位數字")
-        month = int(password[3:5])
-        day = int(password[5:7])
-
-        if not (1 <= month <= 12):
-            raise ValidationError("月份必須在1到12之間")
-        if not (1 <= day <= 31):
-            raise ValidationError("日期必須在1到31之間")
-
-        return password
     def clean(self):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
@@ -80,21 +68,25 @@ class CustomerRegistrationForm(forms.ModelForm):  #註冊（處理用戶輸入�
 
         if password and password_confirmation:
             if password != password_confirmation:
-                self.add_error('password_confirmation', "密碼不一致")
-            else:
-                cleaned_data['birthday'] = password_confirmation  # 将 password_confirmation 存入 birthday
-    
+                self.add_error('password_confirmation', "密碼不一致")    
         return cleaned_data
-    def save(self, commit=True):
-        customer = super().save(commit=False)
-        customer.birthday = self.cleaned_data.get('birthday')  # 显式地将 birthday 字段保存到模型中
-        if commit:
-            customer.save()
-        return customer
+    def clean_birthday(self):
+        birthday = self.cleaned_data.get('birthday')
+
+        # 確保生日為7位數字格式
+        if not re.match(r'^\d{7}$', birthday):
+            raise forms.ValidationError("生日必須是7位數字格式")
+        
+        year = int(birthday[:4])  # 提取年
+        month = int(birthday[4:6])  # 提取月
+        day = int(birthday[6:7])  # 提取日
+
+        return birthday
+
     
 class LoginForm(forms.Form): #登入系統
     username = forms.CharField(label='電話號碼', max_length=10,)
-    password = forms.CharField(label='　　生日', widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))
+    password = forms.CharField(label='　　密碼', widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}))
 
 class PurchaseForm(forms.Form): #進貨編輯驗證
     herbs_id = forms.ChoiceField(

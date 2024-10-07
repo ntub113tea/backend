@@ -35,7 +35,6 @@
                     {% if form.password.errors %}
                     <br><span class="error-message">{{ form.password.errors.as_text }}</span>
                     {% endif %}
-                    <br>範例:099/01/01 生日:0990101
                 </div>
 
                 <div class="input-field">
@@ -54,6 +53,15 @@
                     {% endif %}
                 </div>
 
+                <div class="input-field">
+                    {{ form.birthday.label_tag }}<br>
+                    {{ form.birthday }}
+                    {% if form.birthday.errors %}
+                    <span class="error-message">{{ form.birthday.errors }}</span>
+                {% endif %}
+                <br>範例:099/01/01 生日:0990101
+                </div>
+                
                 <div class="input-field">
                     {{ form.line_id.label_tag }}<br>
                     {{ form.line_id }}

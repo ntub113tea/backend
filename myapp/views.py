@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from myapp.models import Purchase,Sale,HerbStock,Customer,SymptomOfQuestion,DailyCounter,ShowResult
 from myapp import models
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse,StreamingHttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import auth
 from django.contrib.auth import authenticate, login, get_user_model
@@ -14,10 +14,19 @@ from .form import PostForm,CustomerRegistrationForm,LoginForm,PurchaseForm
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.contrib.auth.hashers import make_password #加密
 from datetime import datetime, timedelta
-import pytz,json
+import pytz,json,re
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import get_object_or_404
-
+import cv2
+from .utils import run_tongue_detection
+import base64
+from django.views.decorators import gzip
+import threading
+import pandas as pd
+import os
+from django.conf import settings
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
 
 @user_passes_test(lambda user:user.is_superuser,login_url='/accounts/login/')
 def manage(request):
@@ -47,19 +56,71 @@ def rgst(request):
     else:
         form = CustomerRegistrationForm()
     return render(request, 'rgst.html', {'form': form})
-    
+
 #---------------------------------------------------------------客製化表單
+# 读取CSV文件
+csv_path = os.path.join(settings.BASE_DIR, 'static', 'csv', 'herbs.csv')
+df = pd.read_csv(csv_path, header=None)
+df.columns = ['睡不好', '半暝還在嗨', '早上哈啾', '癢癢', '胃生氣', '厭世生理期', '結果']
+
+# 定義選項對應
+options_mapping = {
+    'nosleep': {
+        '1': '感到憂鬱',
+        '2': '感到焦慮',
+        '3': '容易緊張',
+        '4': '無'
+    },
+    'semi_darkness': {
+        '1': '22點以前入睡',
+        '2': '22-24點入睡',
+        '3': '24-3點入睡',
+        '4': '3點以後入睡'
+    },
+    'sneezing': {
+        '1': '長期，伴有呼吸胸悶',
+        '2': '偶發，伴有呼吸胸悶',
+        '3': '長期，無呼吸胸悶',
+        '4': '無'
+    },
+    'itchiness': {
+        '1': '長期過敏',
+        '2': '短期過敏',
+        '3': '有就醫拿藥',
+        '4': '無過敏'
+    },
+    'stomach_anger': {
+        '1': '胃脹氣',
+        '2': '反胃',
+        '3': '胃食道逆流',
+        '4': '無'
+    },
+    'menstrual_anguish': {
+        '1': '重度疼痛',
+        '2': '輕度疼痛',
+        '3': '不會痛',
+        '4': '無生理期'
+    }
+}
+
 def question(request):
-    id_result= None
-    if request.method == 'POST' and 'confirm_button' in request.POST: #新增按下按鈕才能更改資料庫中的數值
-        nosleep = request.COOKIES.get('nosleep')
-        semi_darkness = request.COOKIES.get('semi_darkness')
-        sneezing = request.COOKIES.get('sneezing')
-        itchiness = request.COOKIES.get('itchiness')
-        stomach_anger = request.COOKIES.get('stomach_anger')
-        menstrual_anguish = request.COOKIES.get('menstrual_anguish')
+    id_result = None
+    if request.method == 'POST' and 'confirm_button' in request.POST:  # 新增按下按鈕才能更改資料庫中的數值
+        print(request.POST)
+        nosleep = options_mapping['nosleep'][request.COOKIES.get('nosleep')]
+        semi_darkness = options_mapping['semi_darkness'][request.COOKIES.get('semi_darkness')]
+        sneezing = options_mapping['sneezing'][request.COOKIES.get('sneezing')]
+        itchiness = options_mapping['itchiness'][request.COOKIES.get('itchiness')]
+           # 獲取胃生氣的選擇
+        stomach_anger = request.POST.get('stomach_anger', '')
+        stomach_anger_choices = stomach_anger.split(', ') if stomach_anger else []
+
+           # 將選擇的值轉換為字符串
+        stomach_anger_str = ', '.join(stomach_anger_choices)
+        print("stomach_anger_choices:", stomach_anger_choices)  # 用於調試
+        print("stomach_anger_str:", stomach_anger_str)  # 用於調試
+        menstrual_anguish = options_mapping['menstrual_anguish'][request.COOKIES.get('menstrual_anguish')]
         bitter = request.COOKIES.get('bitter')
-        
         # 獲取顧客編號
         customer_id = None
         if request.user.is_authenticated:
@@ -70,7 +131,6 @@ def question(request):
             customer_id = f'{next_counter:03d}'
             id_result = customer_id
 
-        
         # 取得台北的時區
         taipei_tz = pytz.timezone('Asia/Taipei')
         # 獲取現在的台北時間
@@ -78,168 +138,178 @@ def question(request):
         # 將台北時間轉換為 UTC 時間
         utc_now = taipei_now.astimezone(pytz.utc)
 
-        # 將症狀資料存入資料庫         
-        try:          
-            # 如果用戶已經登入，則將 customer_id 設置為當前用戶的 customer_id
-            # 如果用戶未登入，則將 customer_id 設置為 0
-            symptom_customer_id = request.user.customer_id if request.user.is_authenticated else 0
-            symptom = SymptomOfQuestion.objects.get(customer_id=symptom_customer_id)
+        # 將症狀資料存入資料庫
+        SymptomOfQuestion.objects.create(
+            customer_id=request.user.customer_id if request.user.is_authenticated else 0,
+            question_time=utc_now,
+            q1=nosleep,
+            q2=semi_darkness,
+            q3=sneezing,
+            q4=itchiness,
+            q5=stomach_anger,
+            q6=menstrual_anguish
+        )
 
-            # 如果找到現有的記錄，則更新問題資料
-            symptom.question_time = utc_now
-            symptom.q1 = nosleep
-            symptom.q2 = semi_darkness
-            symptom.q3 = sneezing
-            symptom.q4 = itchiness
-            symptom.q5 = stomach_anger
-            symptom.q6 = menstrual_anguish
-            symptom.save()
-        except SymptomOfQuestion.DoesNotExist:
-            # 如果不存在，則創建一個新的記錄
-            SymptomOfQuestion.objects.create(
-                customer_id=symptom_customer_id,
-                question_time=utc_now,
-                q1=nosleep,
-                q2=semi_darkness,
-                q3=sneezing,
-                q4=itchiness,
-                q5=stomach_anger,
-                q6=menstrual_anguish
-            )
-
-        # 如果有 nosleep，處理結果
         if nosleep:
-            def main():
-                symptoms = [
-                    "睏不好",
-                    "半暝還在嗨",
-                    "早上哈啾",
-                    "癢癢",
-                    "胃生氣",
-                    "厭世生理期"
-                ]
-                value = [
-                    nosleep,
-                    semi_darkness,
-                    sneezing,
-                    itchiness,
-                    stomach_anger,
-                    menstrual_anguish
-                ]
+            def get_herbs_result(nosleep, semi_darkness, sneezing, itchiness, stomach_anger, menstrual_anguish):
+                # 準備特徵數據
+                input_data = pd.DataFrame({
+                    '睡不好': [nosleep],
+                    '半暝還在嗨': [semi_darkness],
+                    '早上哈啾': [sneezing],
+                    '癢癢': [itchiness],
+                    '胃生氣': [stomach_anger],
+                    '厭世生理期': [menstrual_anguish]
+                })
 
-                result = []
-                total_weight = 5  # 定義藥材克數的總和
-                for i in range(6):
-                    choice = value[i]
-                    result.append(choose_herb(symptoms[i], choice, total_weight))
+                # 將分類變數轉換為數值型
+                input_data_encoded = pd.get_dummies(input_data)
 
-                # 如果六種藥材的克數加總超過5，則進行額外調整
-                total_sum = sum(float(item.split()[1][:-1]) for item in result)
-                adjustment_factor = 5 / total_sum
-                for i in range(len(result)):
-                    dosage = float(result[i].split()[1][:-1]) * adjustment_factor
-                    result[i] = result[i].split()[0] + f" {dosage:.2f}g"
-                return result
-            
-            def choose_herb(symptom, choice, total_weight):
-                herbs = {
-                    "睏不好": "魚腥草",
-                    "半暝還在嗨": ["白鶴靈芝", "蒲公英"],
-                    "早上哈啾": "金銀花",
-                    "癢癢": "忍冬",
-                    "胃生氣": "積雪草",
-                    "厭世生理期": ["鴨舌黃", "益母草"]
-                }
+                # 準備訓練數據
+                X = df[['睡不好', '半暝還在嗨', '早上哈啾', '癢癢', '胃生氣', '厭世生理期']]
+                y = df['結果']
 
-                dosage = {
-                    "1": 0.5,
-                    "2": 1.0,
-                    "3": 1.5,
-                    "4": 2.0,
-                    "5": 2.5
-                }
+                # 將訓練數據轉換為數值型
+                X_encoded = pd.get_dummies(X)
 
-                if symptom in herbs:
-                    herb = herbs[symptom]
-                    if isinstance(herb, list):
-                        herb = "or".join(herb)
-                    if choice in dosage:
-                        # 計算每個症狀所需的藥材克數
-                        required_dosage = dosage[choice]
-                        
-                        return f"{herb} {required_dosage:.2f}g"
+                # 創建決策樹分類器
+                clf = DecisionTreeClassifier(criterion='entropy')
+                clf.fit(X_encoded, y)
+
+                # 進行預測
+                predicted_result = clf.predict(input_data_encoded.reindex(columns=X_encoded.columns, fill_value=0))
+
+                # 返回預測結果
+                return predicted_result[0]
+            result = get_herbs_result(nosleep, semi_darkness, sneezing, itchiness, stomach_anger, menstrual_anguish)
+            print(f"預測結果: {result}")  # 調試信息
+
+            # 处理结果并输出
+            result = result.strip("[]")
+            herbs_list = [herb.strip().strip("'") for herb in result.split(",")]
+            if '無' not in stomach_anger_choices:
+                selected_options = [option.strip() for option in stomach_anger.split(',')]
+                num_options = len(selected_options)
+                
+                # 根據選擇的數量調整推薦的藥材
+                if num_options == 1:
+                    if '’積雪草 0.25g’' in herbs_list:
+                        herbs_list[herbs_list.index('’積雪草 0.25g’')] = '’積雪草 0.1g’'  # 替換
                     else:
-                        return "Invalid choice!"
-                else:
-                    return "Invalid symptom!"
+                        herbs_list.append('’積雪草 0.1g’')  # 新增
+                elif num_options == 2:
+                    if '’積雪草 0.25g’'  in herbs_list:
+                        herbs_list[herbs_list.index('’積雪草 0.25g’' )] = '’積雪草 0.25g’'   # 替換
+                    else:
+                        herbs_list.append('’積雪草 0.25g’' )  # 新增
+                elif num_options == 3:
+                    if '’積雪草 0.25g’'  in herbs_list:
+                        herbs_list[herbs_list.index('’積雪草 0.25g’' )] = '’積雪草 0.5g’'   # 替換
+                    else:
+                        herbs_list.append('’積雪草 0.5g’' )  # 新增
+            print(f"解析後的藥材列表: {herbs_list}")  # 调试信息
             
-            result = main()  # 調用 main 函式獲取處理結果列表
-            print(result)
+            if not herbs_list:
+                print("無法解析藥材列表，請檢查數據格式。")
+                return redirect('/question/')  # 返回有效的 HTTP 響應
+            else:
+                # 将药材剂量转换为浮点数
+                herbs_dict = {}
+                for herb in herbs_list:
+                    match = re.search(r'(.*) (\d+\.?\d*)g', herb)
+                    if match:
+                        name, amount = match.groups()
+                        herbs_dict[name] = float(amount)
+                    else:
+                        print(f"無法解析藥材: {herb}")
+                
+                # 计算总量并调整剂量
+                total_amount = sum(herbs_dict.values())
+                
+                if total_amount == 0:
+                    print("藥材總量為零，無法調整。")
+                    return redirect('/question/')  # 返回有效的 HTTP 響應
+                else:
+                    scale_factor = 5 / total_amount
+                    
+                    adjusted_herbs = []
+                    for name, amount in herbs_dict.items():
+                        adjusted_amount = round(amount * scale_factor, 2)
+                        adjusted_herbs.append(f"{name} {adjusted_amount}g")
+                    
+                    print("調整後的藥材配方:")
+                    for herb in adjusted_herbs:
+                        print(herb)
+                    print(f"總量: {sum(float(h.split()[-1][:-1]) for h in adjusted_herbs)}g")
+                    
+                    # 儲存調整後的配方
+                    final_herbs = [herb.split()[0].replace('‘', '').replace('’', '') for herb in adjusted_herbs]
+                    dosages=[float(h.split()[-1][:-1]) for h in adjusted_herbs]
+            # 在這裡處理最終藥材的選擇
             herbs = []
-            dosages = []
-            for item in result:
-                parts = item.split()
-                herbs.append(parts[0])
-                dosages.append(float(parts[1][:-1]))    
+            if herbs_list:
+                for item in herbs_list:
+                    parts = item.split()
+                    herbs.append(parts[0])
             herbs_mapping = {
-                "魚腥草": 1, "白鶴靈芝": 2,"積雪草": 3, 
-                "金銀花": 4,"蒲公英": 5,  "忍冬": 6, '野茄樹':7,'金錢薄荷':8,
-                '紫蘇':9,"鴨舌黃": 10, "益母草": 11,'薄荷':12,
-                '甜菊':13,'咸豐草':14
-            }        
-        # 根據按鈕值進行處理
-            if bitter == "True":
-                # 如果用戶點擊"可以"按钮
-                herbs = [
-                    "魚腥草",
-                    "蒲公英",  # 修改此處為單一草藥
-                    "金銀花",
-                    "忍冬",
-                    "積雪草",
-                    "益母草"  # 修改此處為單一草藥
-                ]
-            elif bitter == "False":
-                # 如果用戶點擊"不行"按钮
-                herbs = [
-                    "魚腥草",
-                    "白鶴靈芝",  # 修改此處為單一草藥
-                    "金銀花",
-                    "忍冬",
-                    "積雪草",
-                    "鴨舌黃"  # 修改此處為單一草藥
-                ]                  
-           
+                    "魚腥草": 1, "白鶴靈芝": 2, "積雪草": 3, 
+                    "金銀花": 4, "蒲公英": 5, "忍冬": 6, 
+                    "野茄樹": 7, "金錢薄荷": 8, "紫蘇": 9, 
+                    "鴨舌黃": 10, "益母草": 11, "薄荷": 12, 
+                    "甜菊": 13, "咸豐草": 14
+                }        
+            # 根據按鈕值進行處理
+            final_herbs = []
+            for herb in herbs:
+                herb = herb.replace('‘', '').replace('’', '').strip()
+                if "or" in herb:
+                    options = herb.split("or")
+                    if bitter == "True":
+                        if "蒲公英" in options:
+                            final_herbs.append("蒲公英")
+                        if "益母草" in options:
+                            final_herbs.append("益母草")
+                    elif bitter == "False":
+                        if "白鶴靈芝" in options:
+                            final_herbs.append("白鶴靈芝")
+                        if "鴨舌黃" in options:
+                            final_herbs.append("鴨舌黃")
+                else:
+                    final_herbs.append(herb)
+
+            print('最終藥材列表:', final_herbs)  # 輸出最終藥材列表
             product_name = "客製化"  # 改成客製化
             order_time = utc_now  # 現在時間
             customer_id = request.user.customer_id if request.user.is_authenticated else id_result
             global show_result
             show_result = []
-            for i in range(len(herbs)):
-                show_result.append(herbs[i] + ":" + str(dosages[i]) + "g")
+
+            for i in range(len(final_herbs)):
+                show_result.append(final_herbs[i] + ":" + str(dosages[i]) + "g")
                 Sale.objects.create(
-                customer_id=customer_id,
-                product_name=product_name,
-                herbs_id=herbs_mapping.get(herbs[i]),
-                herbs_name=herbs[i],
-                sales_value=dosages[i],
-                order_time=order_time
-            )
-            #show_id=request.user.customer_id if request.user.is_authenticated else "0"
-            show=Customer.objects.filter(customer_id=customer_id).first()
-            if (request.user.is_authenticated) :
-                customer_name=show.customer_name
-                show_result.insert(0,"顧客名字：" + customer_name)
-                show_result.insert(0,"顧客電話：" + customer_id)
+                    customer_id=customer_id,
+                    product_name=product_name,
+                    herbs_id=herbs_mapping.get(final_herbs[i]),
+                    herbs_name=final_herbs[i],
+                    sales_value=dosages[i],
+                    order_time=order_time
+                )
+                
+            show = Customer.objects.filter(customer_id=customer_id).first()
+            if request.user.is_authenticated:
+                customer_name = show.customer_name
+                show_result.insert(0, "顧客名字：" + customer_name)
+                show_result.insert(0, "顧客電話：" + customer_id)
             else:
-                show_result.insert(0,"顧客名字：" + "Guest")
-                show_result.insert(0,"未登入顧客編號：" + customer_id)
-            a=ShowResult.objects.get(show_id=0)
-            a.data=show_result
+                show_result.insert(0, "顧客名字：" + "Guest")
+                show_result.insert(0, "未登入顧客編號：" + customer_id)
+                
+            a = ShowResult.objects.get(show_id=0)
+            a.data = show_result
             a.save()
-            print(show_result)
-            return redirect ('/question/')
+            print('show_result:',show_result)
+            return redirect('/question/')
     return render(request, "question.html")
-    
 
 #--------------------------------------------------歷史紀錄
 
@@ -401,6 +471,7 @@ def register(request): #用戶註冊
     else:
         form = CustomerRegistrationForm()
     return render(request, 'register.html', {'form': form})
+    
 
 #--------------------------------------------------------------------------進貨表單
 
@@ -511,5 +582,17 @@ def salelist_staff(request): #銷售表單(員工)設定
     else:
         sales = Sale.objects.all().order_by('-sale_id')
     return render(request, "salelist_staff.html", {'sales': sales})
+
+#----------------------------------------辨識舌頭
+def detect_view(request):
+    return render(request, 'detect.html')
+
+def start_detection(request):
+    if request.method == 'POST':
+        # 在新線程中運行檢測程序，並傳遞 request.user
+        thread = threading.Thread(target=run_tongue_detection, args=(request.user,))
+        thread.start()
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'})
 
 # Create your views here.

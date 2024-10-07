@@ -26,7 +26,7 @@ urlpatterns = [
     path("manage/", views.manage),
     path('staff/',views.staff),
     path("pos/", views.pos),
-    path('question/', views.question),
+    path('question/', views.question,name='question'),
     path('accounts/login/', views.login_view, name='login'),
     path('accounts/logout/', views.logout),
     path('accounts/profile/', views.index),
@@ -40,4 +40,6 @@ urlpatterns = [
     path('salelist_staff/',views.salelist_staff,name='salelist'),
     path('check_inventory/', views.check_inventory),
     path('history/', views.history_view, name='history'),
+    path('detect/', views.detect_view, name='detect'),
+    path('start_detection/', views.start_detection, name='start_detection'),
 ]

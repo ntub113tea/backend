@@ -135,15 +135,27 @@ class Sale2(models.Model):
 
 
 class SymptomOfQuestion(models.Model):
-    customer = models.OneToOneField(Customer,on_delete=models.CASCADE, primary_key=True,related_name='symptom_questions')
-    question_time =models.DateTimeField()
-    q1 = models.IntegerField(db_column='Q1', blank=True, null=True)  # Field name made lowercase.
-    q2 = models.IntegerField(db_column='Q2', blank=True, null=True)  # Field name made lowercase.
-    q3 = models.IntegerField(db_column='Q3', blank=True, null=True)  # Field name made lowercase.
-    q4 = models.IntegerField(db_column='Q4', blank=True, null=True)  # Field name made lowercase.
-    q5 = models.IntegerField(db_column='Q5', blank=True, null=True)  # Field name made lowercase.
-    q6 = models.IntegerField(db_column='Q6', blank=True, null=True)  # Field name made lowercase.
+    id = models.AutoField(primary_key=True)  
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='symptom_questions')
+    question_time = models.DateTimeField()
+    q1 = models.CharField(db_column='Q1', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    q2 = models.CharField(db_column='Q2', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    q3 = models.CharField(db_column='Q3', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    q4 = models.CharField(db_column='Q4', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    q5 = models.CharField(db_column='Q5', max_length=255, blank=True, null=True)  # Field name made lowercase.
+    q6 = models.CharField(db_column='Q6', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'symptom of question'
+
+class TongueColor(models.Model):
+    customer_id = models.CharField(max_length=255, default='0')  
+    color = models.CharField(max_length=255)
+    detected_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'tonguecolor'
+
+    def __str__(self):
+        return self.color
