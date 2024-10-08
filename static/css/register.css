@@ -5,17 +5,17 @@ body {
     height: 100%;
     background-color: #F5E8DD;
 }
-.container {
+/* .container {
     border-radius: 25px;
     box-shadow: 5px 5px 5px 0px gray;
-}
+} */
 
 h1 {
     font-family: Microsoft JhengHei;
 }
 
 .top {
-    margin: 0 auto;
+    margin: 0;
     text-align: center;
     padding: 5px;
     border-top-left-radius: 25px;
@@ -24,7 +24,7 @@ h1 {
 }
 
 .main {
-    margin: 0 auto;
+    margin: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,8 +32,6 @@ h1 {
     text-align: left;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
-    display: flex;
-    flex-direction: column;
     justify-content: space-around;
     background-color:white;
 }

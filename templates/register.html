@@ -8,16 +8,11 @@
     
     <title>註冊</title>
     <style>
-        .container {
-        max-width: 1000px;
-        margin: auto;
-        padding: 15px;
+    .container {
+        padding: 0px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        width: 100%;
     }
     .top h1 {
         text-align: center;
@@ -38,84 +33,82 @@
 <body>
 
     <div class="container" >
-        <div class="row">
-            <div class="col-12">
+        <div class="col-12">
                 <div class="top">
                     <h1>註冊新帳號</h1>
 
                 </div>
-        <div class="main">
-            <form action="" method="post" >
-                {% csrf_token %}
-                <div class="form-group input-field"> 
-                {{ form.customer_id.label_tag }}<br>
-                {{ form.customer_id }}
-                {% if form.customer_id.errors %}
-                <br><span class="error-message">{{ form.customer_id.errors.as_text }}</span>
-                {% endif %}
-                </div>
-
-                <div class=" form-group input-field">
-                    {{ form.password.label_tag }}<br>
-                    {{ form.password }}
-                    <button class="pwd-btn" type="button" onclick="togglePassword()">查看</button>
-                    {% if form.password.errors %}
-                    <br><span class="error-message">{{ form.password.errors.as_text }}</span>
+            <div class="main">
+                <form action="" method="post" >
+                    {% csrf_token %}
+                    <div class="form-group input-field"> 
+                    {{ form.customer_id.label_tag }}<br>
+                    {{ form.customer_id }}
+                    {% if form.customer_id.errors %}
+                    <br><span class="error-message">{{ form.customer_id.errors.as_text }}</span>
                     {% endif %}
-                </div>
-
-                <div class=" form-group input-field">
-                    {{ form.password_confirmation.label_tag }}<br>
-                    {{ form.password_confirmation }}
-                    {% if form.password_confirmation.errors %}
-                    <span class="error-message">{{ form.password_confirmation.errors}}</span>
-                    {% endif %}
-                </div>
-
-                <div class="form-group input-field">
-                    {{ form.customer_name.label_tag }}<br>
-                    {{ form.customer_name }}
-                    {% if form.customer_name.errors %}
-                        <span class="error-message">{{ form.customer_name.errors }}</span>
-                    {% endif %}
-                </div>
-
-                <div class="input-field">
-                    {{ form.birthday.label_tag }}<br>
-                    {{ form.birthday }}
-                    {% if form.birthday.errors %}
-                    <span class="error-message">{{ form.birthday.errors }}</span>
-                {% endif %}
-                <br>範例:099/01/01 生日:0990101
-                </div>
-                
-                <div class="input-field">
-                    {{ form.line_id.label_tag }}<br>
-                    {{ form.line_id }}
-                </div>
-
-                <div class="form-group input-field">
-                    {{ form.sex.label_tag }}
-                    <div class="inline-radio">
-                        {% for radio in form.sex %}
-                            <label>
-                                {{ radio.tag }}
-                                {{ radio.choice_label }}
-                            </label>
-                        {% endfor %}
                     </div>
-                </div>
-                
-                <div class="btn-container">
-                    <input class="btn btn-primary bottom-btn" type="submit" value="註冊">
-                    <button class="btn btn-primary bottom-btn" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
-                </div>
-                
-                </form> 
+
+                    <div class=" form-group input-field">
+                        {{ form.password.label_tag }}<br>
+                        {{ form.password }}
+                        <button class="pwd-btn" type="button" onclick="togglePassword()">查看</button>
+                        {% if form.password.errors %}
+                        <br><span class="error-message">{{ form.password.errors.as_text }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class=" form-group input-field">
+                        {{ form.password_confirmation.label_tag }}<br>
+                        {{ form.password_confirmation }}
+                        {% if form.password_confirmation.errors %}
+                        <span class="error-message">{{ form.password_confirmation.errors}}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group input-field">
+                        {{ form.customer_name.label_tag }}<br>
+                        {{ form.customer_name }}
+                        {% if form.customer_name.errors %}
+                            <span class="error-message">{{ form.customer_name.errors }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-field">
+                        {{ form.birthday.label_tag }}<br>
+                        {{ form.birthday }}
+                        {% if form.birthday.errors %}
+                        <span class="error-message">{{ form.birthday.errors }}</span>
+                    {% endif %}
+                    <br>範例:099/01/01 生日:0990101
+                    </div>
+                    
+                    <div class="input-field">
+                        {{ form.line_id.label_tag }}<br>
+                        {{ form.line_id }}
+                    </div>
+
+                    <div class="form-group input-field">
+                        {{ form.sex.label_tag }}
+                        <div class="inline-radio">
+                            {% for radio in form.sex %}
+                                <label>
+                                    {{ radio.tag }}
+                                    {{ radio.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="btn-container">
+                        <input class="btn btn-primary bottom-btn" type="submit" value="註冊">
+                        <button class="btn btn-primary bottom-btn" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
+                    </div>
+                    
+                    </form> 
             </div>
         </div>        
     </div>
-</div>
     <script>
         function togglePassword() {
             var passwordInput = document.getElementById('password');
