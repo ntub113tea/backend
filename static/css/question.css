@@ -7,15 +7,14 @@ body {
     height: 100%;
 }
 .header {
-    margin: 0px;
     display: flex;
-    align-items: center;
+    justify-content: space-between; /* 左右两侧 */
+    align-items: center; /* 垂直居中，视情况选择 */
+    padding: 10px; /* 容器的内边距，可根据需求调整 */
     background-color: #EED3D9;
     color: #0b0b0b;
     text-align: center;
-    padding: 10px 0;
     font-size: 15px;
-    height: 100px;
 }
 
 .header-right {
@@ -40,6 +39,17 @@ button.active {
 
 h1 {    /*選擇您的症狀 */
     text-align: center;
+}
+
+/* 美化連結 */
+a {
+    text-decoration: none; /* 去除下劃線 */
+    color: blue; /* 文本顏色 */
+}
+
+/* 懸停連結時的樣式 */
+a:hover {
+    text-decoration: underline; /* 添加下劃線 */
 }
 
 .row {

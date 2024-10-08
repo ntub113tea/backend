@@ -20,10 +20,10 @@
         <div class="header row align-items-center">
             <div class="col-6">
                 <a href="/index/">
-                    <img src="{% static 'images/logo.png' %}" class="img-fluid" alt="Logo" style="height: 90px; width: auto;">
+                    <img align="left" src="{% static 'images/logo.png' %}" class="img-fluid" alt="Logo" style="height: 90px; width: auto;">
                 </a>
             </div>
-            <div class="col-6 text-end"> <!-- 占6列並右對齊的文本 -->
+            <div class="header-right col-6 text-end"> <!-- 占6列並右對齊的文本 -->
                 {% if request.user.is_authenticated %}
                     {% csrf_token %}
                     <p>
