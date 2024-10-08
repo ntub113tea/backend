@@ -1,76 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--  Bootstrap CSS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
     <title>登入</title>
-    <style>
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        
-        }
-        @media (max-width: 600px) {
-            .container {
-                max-width: 90%;
-                padding: 10px;
-            }
-        }
-        .error-message {
-            color: red;
-            margin-top: 10px;
-        }
-        .btn-container {
-            margin-top: 20px;
-        }
-        .bottom-btn {
-            margin-right: 10px;
-        }
-    </style>
+    
 </head>
 <body>
     <div class="container">
-        {% block content %} 
-            <div class="row">
-                <div class="col-12 text-center">
-                    <div class="top mb-4">
-                        <img src="{% static 'images/logo.png' %}" style="height: 90px; width: auto;">
-                    </div>
-
-                    <div class="main">
-                        <form method="post" action="{% url 'login' %}" >
-                            <div class="form-group  input-field">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                            </div>
-                            {% if error %}
-                                <div class="error-message">
-                                    {{ error }}
-                                </div>
-                            {% endif %}
-                            
-                            <div class="btn-container">
-                                <button type="submit" class="btn btn-primary bottom-btn">登入</button>
-                                <button type="button" onclick="window.location.href='/question/';" class="btn btn-primary bottom-btn">返回問卷表單</button>
-                            </div>
-                        </form>
-                    </div>
-                {% endblock %}
-            </div>
+        <div class="top">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 90px; width: auto;">
         </div>
-        <div class="text-center mt-3">還沒有帳號嗎？ <a href="/accounts/register/">註冊</a></div>
+        <div class="main">
+            <form method="post" action="{% url 'login' %}">
+                <div class="form-group">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                </div>
+                {% if error %}
+                    <div class="error-message">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary bottom-btn">登入</button>
+                    <button type="button" onclick="window.location.href='/question/';" class="btn btn-secondary bottom-btn">返回問卷表單</button>
+                </div>
+            </form>
+        </div>
+        <div class="text-center mt-3">
+            還沒有帳號嗎？ <a href="/accounts/register/">註冊</a>
+        </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
