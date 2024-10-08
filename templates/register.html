@@ -1,43 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/register.css' %}">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
     <title>註冊</title>
-    <style>
-    .container {
-        padding: 0px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .top h1 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    @media (max-width: 600px) {
-        .container {
-            max-width: 90%;
-            padding: 10px;
-        }
-    }
-    .pwd-btn {
-        margin-top: 5px;
-    }
-    </style>
-    
 </head>
 <body>
-
-    <div class="container" >
-        <div class="col-12">
-                <div class="top">
-                    <h1>註冊新帳號</h1>
-
-                </div>
+    <div class="container">
+        <div class="top">
+            <h1>註冊新帳號</h1>
+        </div>
             <div class="main">
                 <form action="" method="post" >
                     {% csrf_token %}
@@ -105,10 +80,14 @@
                         <button class="btn btn-primary bottom-btn" type="button" onclick="window.location.href='/question/';">返回問卷表單</button>
                     </div>
                     
-                    </form> 
-            </div>
-        </div>        
+                    </form>  
+            </div>        
+        
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
         function togglePassword() {
             var passwordInput = document.getElementById('password');
