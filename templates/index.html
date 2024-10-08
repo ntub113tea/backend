@@ -14,7 +14,7 @@
 </div>   
 <div class="vedio">
     <video id="videoPlayer" controls>
-    <source src="{% static 'images/AI Video .mp4' %}" type="video/mp4">
+    <source id="videoSource" src="" type="video/mp4">
     Your browser does not support the video tag or the file format of this video. 
     </video>
 </div> 
@@ -25,15 +25,29 @@
 </div>
 
 <script>
+    const videos = [
+        "{% static 'images/顏聿茗.mp4' %}",
+        "{% static 'images/張家凱.mp4' %}",
+        "{% static 'images/洪藝芸.mp4' %}",
+        "{% static 'images/徐若蓁.mp4' %}"
+    ];
+
+    // 隨機選擇影片
+    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+
+    // 設置影片目的地
+    document.getElementById('videoSource').src = randomVideo;
+
+
     var video = document.getElementById('videoPlayer');
     var nextPageButton = document.getElementById('nextPageButton');
 
     video.addEventListener('ended', function () {
-        window.location.href = "/question/"; // 影片播放完畢後導航到下一個 HTML 頁面
+        window.location.href = "/question/"; // 影片播放完畢後切換到下一個網頁
     });
 
     nextPageButton.addEventListener('click', function() {
-        window.location.href = "/question/"; // 點擊按鈕時導航到下一個 HTML 頁面
+        window.location.href = "/question/"; // 點擊按鈕時切換到下一個網頁
     });
 </script>
 
