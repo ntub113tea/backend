@@ -1,30 +1,32 @@
 body {
     font-family: Microsoft JhengHei;
     margin: 0;
-    padding: 5% 35%;
+    padding: 0; /* 移除默认填充 */
     height: 100%;
     background-color: #F5E8DD;
 }
 .container {
-    border-radius: 25px;
-    box-shadow: 5px 5px 5px 0px gray;
+    width: 800px;
+    padding: 20px; /* 增加内边距以防止内容紧贴边缘 */
+    /* border-radius: 25px;
+    box-shadow: 5px 5px 5px 0px gray; */
 }
 
 h1 {
     font-family: Microsoft JhengHei;
 }
 
-.top {
-    margin: 0 auto;
+.top{
+    margin: 0;
     text-align: center;
-    padding: 5px;
+    padding: 10px;
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     background-color: #EED3D9;
 }
 
 .main {
-    margin: 0 auto;
+    margin: 0;
     display: flex;
     flex-direction: column; 
     justify-content: center; 
@@ -32,8 +34,6 @@ h1 {
     text-align: left;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
-    display: flex;
-    flex-direction: column;
     justify-content: space-around;
     background-color:white;
 }
@@ -58,11 +58,82 @@ button, input{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap; /* 允许按钮换行 */
 }
 
 .bottom-btn {
     background-color: #EED3D9;
     border-color: #EED3D9;
-    margin: 0px 10px 20px;
-    padding: 10px;
+    margin: 10px; /* 统一间距 */
+    /* margin: 0px 10px 20px;
+    padding: 10px; */
 }
+
+@media (max-width: 600px) { /*宽度小于 600px 的设备（如手机）*/
+    .container {
+        padding: 10px; /* 在小屏幕上减少内边距 */
+        max-width: 90%; /* 限制容器宽度为 90% */
+    }
+    .top {
+        padding: 5px; /* 在小屏幕上减少顶部内边距 */
+        font-size: 18px; /* 调整字体大小 */
+    }
+    .main {
+        flex-direction: column; /* 使主内容垂直排列 */
+        align-items: center; /* 内容居中 */
+    }
+    .error-message {
+        font-size: 14px; /* 错误信息字体更小 */
+    }
+    .bottom-btn {
+        width: 100%; /* 按钮宽度为100% */
+        margin: 10px 0; /* 增加上下间距 */
+    }
+}
+@media (min-width: 601px) and (max-width: 768px) { /*宽度在 601px 到 768px 之间的设备（如平板）*/
+    .container {
+        padding: 20px; /* 在平板上增加内边距 */
+        max-width: 80%; /* 限制容器宽度为 80% */
+    }
+    .top {
+        padding: 10px; /* 增加顶部内边距 */
+        font-size: 20px; /* 调整字体大小 */
+    }
+    .main {
+        flex-direction: column; /* 主内容垂直排列 */
+        align-items: center; /* 内容居中 */
+    }
+    .bottom-btn {
+        width: 48%; /* 按钮宽度为48%以形成并排显示 */
+        margin: 10px 1%; /* 增加左右间距 */
+    }
+}
+@media (min-width: 769px) and (max-width: 1200px) { /*宽度在 769px 到 1200px 之间的设备（如桌面）*/
+    .container {
+        padding: 30px; /* 在大屏幕上增加内边距 */
+        max-width: 70%; /* 限制容器宽度为 70% */
+    }
+    .top {
+        padding: 15px; /* 增加顶部内边距 */
+        font-size: 22px; /* 调整字体大小 */
+    }
+    .bottom-btn {
+        width: 45%; /* 按钮宽度为45% */
+        margin: 10px 2%; /* 增加左右间距 */
+    }
+}
+@media (min-width: 1201px) { /*宽度超过 1200px 的设备（如大桌面或高清显示器）*/
+    .container {
+        padding: 40px; /* 在超大屏幕上增加内边距 */
+        max-width: 60%; /* 限制容器宽度为 60% */
+    }
+    .top {
+        padding: 20px; /* 增加顶部内边距 */
+        font-size: 24px; /* 调整字体大小 */
+    }
+    .bottom-btn {
+        width: 30%; /* 按钮宽度为30% */
+        margin: 10px 2%; /* 增加左右间距 */
+    }
+}
+

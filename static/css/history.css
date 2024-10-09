@@ -30,7 +30,7 @@ tr {
 
 /* 添加表格邊框 */
 table {
-    margin: auto;
+    margin: 0;
     width: 100%;
     border-collapse: collapse; /* 合併表格邊框 */
     table-layout: fixed; /* 使用固定表格布局 */
@@ -44,15 +44,15 @@ td, th { /*格字框*/
 }
 
 .header {
-    margin: 0px;
     display: flex;
-    align-items: center;
+    justify-content: space-between; /* 左右两侧 */
+    align-items: center; /* 垂直居中，视情况选择 */
+    padding: 10px; /* 容器的内边距，可根据需求调整 */
     background-color: #EED3D9;
     color: #0b0b0b;
     text-align: center;
-    padding: 10px ;
     font-size: 15px;
-    height: 100px;
+
 }
 
 .header-right {
@@ -61,15 +61,12 @@ td, th { /*格字框*/
     font-size: 20px;
 }
 
-tbody {
-    background-color: white;
+.tb-set {
+    padding: 0 10%;
 }
 
-/* 美化標題 */
-h2 {
-    margin: 20px;
-    font-size: 30px;
-    text-align: center;
+tbody {
+    background-color: white;
 }
 
 /* 美化連結 */
