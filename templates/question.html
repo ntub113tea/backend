@@ -30,7 +30,7 @@
                         顧客：{{ request.user.customer_name }} &nbsp;&nbsp;
                         電話號碼：{{ request.user.customer_id|mask_phone }} &nbsp;&nbsp;&nbsp;&nbsp;
                         <a href="/history/">歷史紀錄</a>&nbsp;&nbsp;
-                        <a href="/accounts/logout/">登出</a>
+                        <a href="/accounts/logout/" id="logout-button" onclick="logoutAndClear()">登出</a>
                     </p>
                 {% else %}
                     <p>
@@ -52,10 +52,10 @@
                 <div class="item" id="symptom1">
                     <img src="{% static 'images/睡不好.jpg' %}" alt="Item 1">
                     <div class="title">睡不好</div>
-                    <button onclick="updateStrength('symptom-btn-1')" id="symptom-btn-1">憂鬱最嚴重</button>
-                    <button onclick="updateStrength('symptom-btn-2')" id="symptom-btn-2">焦慮</button>
-                    <button onclick="updateStrength('symptom-btn-3')" id="symptom-btn-3">容易緊張</button>
-                    <button onclick="updateStrength('symptom-btn-4')" id="symptom-btn-4">無</button>
+                    <button onclick="updateStrength('nosleep-btn-1')" id="nosleep-btn-1">憂鬱最嚴重</button>
+                    <button onclick="updateStrength('nosleep-btn-2')" id="nosleep-btn-2">焦慮</button>
+                    <button onclick="updateStrength('nosleep-btn-3')" id="nosleep-btn-3">容易緊張</button>
+                    <button onclick="updateStrength('nosleep-btn-4')" id="nosleep-btn-4">無</button>
                 </div>
             </div>
             
@@ -63,10 +63,10 @@
                 <div class="item" id="symptom2">
                     <img src="{% static 'images/半暝還在嗨.jpg' %}" alt="Item 2">
                     <div class="title">半暝還在嗨（入睡時間）</div>
-                    <button onclick="updateStrength('semi-darkness-btn-1')" id="semi-darkness-btn-1">22點以前</button>
-                    <button onclick="updateStrength('semi-darkness-btn-2')" id="semi-darkness-btn-2">22-24點</button>
-                    <button onclick="updateStrength('semi-darkness-btn-3')" id="semi-darkness-btn-3">24-3點</button>
-                    <button onclick="updateStrength('semi-darkness-btn-4')" id="semi-darkness-btn-4">3點以後</button>
+                    <button onclick="updateStrength('semi_darkness-btn-1')" id="semi_darkness-btn-1">22點以前</button>
+                    <button onclick="updateStrength('semi_darkness-btn-2')" id="semi_darkness-btn-2">22-24點</button>
+                    <button onclick="updateStrength('semi_darkness-btn-3')" id="semi_darkness-btn-3">24-3點</button>
+                    <button onclick="updateStrength('semi_darkness-btn-4')" id="semi_darkness-btn-4">3點以後</button>
                 </div>
             </div>
         </div>
@@ -114,10 +114,10 @@
                 <div class="item" id="symptom6">
                     <img src="{% static 'images/生理期.jpg' %}" alt="Item 6">
                     <div class="title">厭世生理期</div>
-                    <button onclick="updateStrength('menstrual-anguish-btn-1')" id="menstrual-anguish-btn-1">重度疼痛</button>
-                    <button onclick="updateStrength('menstrual-anguish-btn-2')" id="menstrual-anguish-btn-2">輕度疼痛</button>
-                    <button onclick="updateStrength('menstrual-anguish-btn-3')" id="menstrual-anguish-btn-3">不會痛</button>
-                    <button onclick="updateStrength('menstrual-anguish-btn-4')" id="menstrual-anguish-btn-4">無生理期</button>
+                    <button onclick="updateStrength('menstrual_anguish-btn-1')" id="menstrual_anguish-btn-1">重度疼痛</button>
+                    <button onclick="updateStrength('menstrual_anguish-btn-2')" id="menstrual_anguish-btn-2">輕度疼痛</button>
+                    <button onclick="updateStrength('menstrual_anguish-btn-3')" id="menstrual_anguish-btn-3">不會痛</button>
+                    <button onclick="updateStrength('menstrual_anguish-btn-4')" id="menstrual_anguish-btn-4">無生理期</button>
                 </div>
             </div>
         </div>
@@ -168,6 +168,9 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
         event.preventDefault(); // 防止表單提交
         alert('請為每個症狀選擇一個選項和接受苦的程度。');
     }else {
+        if (event.submitter.name === 'confirm_button') {
+            sessionStorage.clear(); 
+        }
         if (isAuthenticated == 'True') {
             alert('已收到表單！');
         }else {
@@ -179,8 +182,8 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
 
 
 
-    var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bitter_btn
-    document.getElementById('submitButton').addEventListener('click', function() {
+var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bitter_btn
+{
             // 發送請求到 Django 後端
             fetch('/question/', {
                 method: 'GET',
@@ -195,38 +198,32 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
             })
             .catch(error => console.error('Error:', error));
             
-        });
+};
     function updateStrength(buttonId) {
         switch (buttonId) {
-            case 'symptom-btn-1': //睡不好
+            case 'nosleep-btn-1': //睡不好
                 nosleep=1;
                 break;
-            case 'symptom-btn-2':
+            case 'nosleep-btn-2':
                 nosleep=2;
                 break;
-            case 'symptom-btn-3':
+            case 'nosleep-btn-3':
                 nosleep=3;
                 break;
-            case 'symptom-btn-4':
+            case 'nosleep-btn-4':
                 nosleep=4;
                 break;
-            case 'symptom-btn-5':
-                nosleep=5;
-                break;
-            case 'semi-darkness-btn-1': //半暝還在嗨
+            case 'semi_darkness-btn-1': //半暝還在嗨
                 semi_darkness=1;
                 break;
-            case 'semi-darkness-btn-2':
+            case 'semi_darkness-btn-2':
                 semi_darkness=2;
                 break;
-            case 'semi-darkness-btn-3':
+            case 'semi_darkness-btn-3':
                 semi_darkness=3;
                 break;
-            case 'semi-darkness-btn-4':
+            case 'semi_darkness-btn-4':
                 semi_darkness=4;
-                break;
-            case 'semi-darkness-btn-5':
-                semi_darkness=5;
                 break;
             case 'sneezing-btn-1': //早上哈啾
                 sneezing=1;
@@ -240,9 +237,6 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
             case 'sneezing-btn-4':
                 sneezing=4;
                 break;
-            case 'sneezing-btn-5':
-                sneezing=5;
-                break;
             case 'itchiness-btn-1': //癢癢
                 itchiness=1;
                 break;
@@ -255,38 +249,17 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
             case 'itchiness-btn-4':
                 itchiness=4;
                 break;
-            case 'itchiness-btn-5':
-                itchiness=5;
-                break;
-            case 'stomach-anger-btn-1': //胃生氣
-                stomach_anger=1;
-                break;
-            case 'stomach-anger-btn-2':
-                stomach_anger=2;
-                break;
-            case 'stomach-anger-btn-3':
-                stomach_anger=3;
-                break;
-            case 'stomach-anger-btn-4':
-                stomach_anger=4;
-                break;
-            case 'stomach-anger-btn-5':
-                stomach_anger=5;
-                break;
-            case 'menstrual-anguish-btn-1': //厭世生理期
+            case 'menstrual_anguish-btn-1': //厭世生理期
                 menstrual_anguish=1;
                 break;
-            case 'menstrual-anguish-btn-2':
+            case 'menstrual_anguish-btn-2':
                 menstrual_anguish=2;
                 break;
-            case 'menstrual-anguish-btn-3':
+            case 'menstrual_anguish-btn-3':
                 menstrual_anguish=3;
                 break;
-            case 'menstrual-anguish-btn-4':
+            case 'menstrual_anguish-btn-4':
                 menstrual_anguish=4;
-                break;
-            case 'menstrual-anguish-btn-5':
-                menstrual_anguish=5;
                 break;
             case 'bitterness-btn-yes':
                 bitter_btn="True";
@@ -294,6 +267,7 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
             case 'bitterness-btn-no':
                 bitter_btn="False";
                 break;
+            
         }
         
         var expirationDate = new Date();
@@ -307,7 +281,6 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
         document.cookie = "semi_darkness=" + semi_darkness +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "sneezing=" + sneezing +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "itchiness=" + itchiness +"; expires=" + expiresUTC + "; path=/question/";
-        document.cookie = "stomach_anger=" + stomach_anger +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "menstrual_anguish=" + menstrual_anguish +"; expires=" + expiresUTC + "; path=/question/";
         document.cookie = "bitter=" + bitter_btn +"; expires=" + expiresUTC + "; path=/question/";
 
@@ -323,8 +296,33 @@ document.querySelector('form[name="question"]').addEventListener('submit', funct
 
         // 將當前按鈕標記為選擇狀態
         currentButton.classList.add('active');
-    }
 
+        sessionStorage.setItem('nosleep', nosleep);
+        sessionStorage.setItem('semi_darkness', semi_darkness);
+        sessionStorage.setItem('sneezing', sneezing);
+        sessionStorage.setItem('itchiness', itchiness);
+        sessionStorage.setItem('menstrual_anguish', menstrual_anguish);
+        sessionStorage.setItem('bitter', bitter_btn);
+    }
+    function loadSelectionsFromSessionStorage() {
+    var symptoms = ['nosleep', 'semi_darkness', 'sneezing', 'itchiness', 'menstrual_anguish', 'bitter'];
+    symptoms.forEach(function(symptom) {
+        var value = sessionStorage.getItem(symptom);
+        console.log(symptom + ':', value); // 檢查每個症狀的值
+        if (value) {
+            console.log('Restoring:', symptom + '-btn-' + value); // 檢查要恢復的按鈕 ID
+            if (symptom === 'bitter') {
+                if (value === "True") {
+                    document.getElementById('bitterness-btn-yes').classList.add('active');
+                } else {
+                    document.getElementById('bitterness-btn-no').classList.add('active');
+                }
+            } else {
+                document.getElementById(symptom + '-btn-' + value).classList.add('active');
+            }
+        }
+    });
+}
     function showAlert(){
         fetch('/question/', {
             method: 'POST',
@@ -384,7 +382,7 @@ function toggleButton(buttonId) {
             document.getElementById('stomach-anger-btn-2').classList.remove('active');
             document.getElementById('stomach-anger-btn-3').classList.remove('active');
         }
-    } else { // 如果選擇的是其他選項
+    } else { 
         // 如果選擇了其他選項，則取消「無」的選擇
         if (isActive) {
             document.getElementById('stomach-anger-btn-4').classList.remove('active');
@@ -408,6 +406,75 @@ function toggleButton(buttonId) {
 
     // 將選擇的值轉換為字符串並更新隱藏的輸入框
     document.getElementById('stomach_anger').value = stomachAngerChoices.join(', ');
+
+    // 將所有選擇的選項的狀態存入 sessionStorage
+    var selectedValues = [];
+    if (document.getElementById('stomach-anger-btn-1').classList.contains('active')) {
+        selectedValues.push(1); 
+    }
+    if (document.getElementById('stomach-anger-btn-2').classList.contains('active')) {
+        selectedValues.push(2);
+    }
+    if (document.getElementById('stomach-anger-btn-3').classList.contains('active')) {
+        selectedValues.push(3); 
+    }
+    if (document.getElementById('stomach-anger-btn-4').classList.contains('active')) {
+        selectedValues.push(4);
+    }
+
+    // 將選中的值轉換為逗號分隔的字符串
+    var stomachAngerString = selectedValues.join(',');
+
+    // 將選擇的值存入 sessionStorage
+    sessionStorage.setItem('stomach_anger', stomachAngerString);
+}
+
+// 頁面加載時調用該函數來恢復之前的選擇
+document.addEventListener('DOMContentLoaded', function() {
+    loadSelectionsFromSessionStorage();// 新增：從 sessionStorage 加載選擇
+    loadSelectionsFromSessionStorage_stomach_anger();
+});
+function loadSelectionsFromSessionStorage_stomach_anger() {
+    var stomachAngerString = sessionStorage.getItem('stomach_anger');
+    console.log('stomach_anger:', stomachAngerString); // 輸出從 sessionStorage 獲取的值
+    if (stomachAngerString) {
+        var selectedValues = stomachAngerString.split(',');
+        console.log('Selected values:', selectedValues); // 輸出選中的值
+        
+        // 用於存儲選擇的描述
+        var selectedDescriptions = [];
+
+        selectedValues.forEach(function(value) {
+            var buttonId = 'stomach-anger-btn-' + value;
+            var buttonElement = document.getElementById(buttonId);
+            if (buttonElement) {
+                buttonElement.classList.add('active');
+                // 將選擇的描述添加到數組中
+                switch (value) {
+                    case '1':
+                        selectedDescriptions.push('胃脹氣');
+                        break;
+                    case '2':
+                        selectedDescriptions.push('反胃');
+                        break;
+                    case '3':
+                        selectedDescriptions.push('胃食道逆流');
+                        break;
+                    case '4':
+                        selectedDescriptions.push('無');
+                        break;
+                }
+            }
+        });
+
+        // 將選擇的描述轉換為字符串並設置到隱藏輸入框中
+        document.getElementById('stomach_anger').value = selectedDescriptions.join(', ');
+        console.log('隱藏輸入框的值已設置為:', document.getElementById('stomach_anger').value);
+    }
+}
+function logoutAndClear() {
+    sessionStorage.clear();
+    window.location.href = '/accounts/logout/';
 }
 </script>
 </body>
