@@ -101,7 +101,7 @@
             <div class="col-md-6">
             <div class="item" id="symptom5">
                 <img src="{% static 'images/胃生氣.jpg' %}" alt="Item 5">
-                <div class="title">胃生氣</div>
+                <div class="title">胃生氣(可複選)</div>
         
                 <button name="stomach-anger-btn-1" onclick="toggleButton('stomach-anger-btn-1')" id="stomach-anger-btn-1">胃脹氣</button>
                 <button name="stomach-anger-btn-2" onclick="toggleButton('stomach-anger-btn-2')" id="stomach-anger-btn-2">反胃</button>
@@ -128,6 +128,11 @@
                 <div class="title">接受苦的程度</div>
                 <button onclick="updateStrength('bitterness-btn-yes')" id="bitterness-btn-yes" name="bitter-btn" value="bitterness-btn-yes">可以</button>
                 <button onclick="updateStrength('bitterness-btn-no')" id="bitterness-btn-no" name="bitter-btn" value="bitterness-btn-no">不行</button>
+                
+                <div class="color">
+                    <h2 id="tongueColorDisplay" style="display: none;">最近檢測的舌頭顏色：{{ tongue_color }}</h2>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -142,6 +147,8 @@
                     <button type="submit" name="confirm_button" style="background-color: #18b7fa; color: #ffffff; padding: 15px 30px; font-size: 20px;">確認</button>
                     <button onclick="goToDetect()" style="background-color: red; color: white; padding: 15px 30px; font-size: 20px; margin-left: 10px;">前往檢測</button>
                 </form>
+                <button onclick="goToDetect()" style="background-color: red; color: white; padding: 15px 30px; font-size: 20px; margin-left: 10px;">前往檢測</button>
+                <button onclick="show_color()" style="background-color: red; color: white; padding: 15px 30px; font-size: 20px; margin-left: 10px;">顯示結果</button>
             </div>
         </div>
     </div>
@@ -350,8 +357,9 @@ var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bit
             // alert('Cookie 已刪除！');
         }
 
-        function goToDetect() {
+    function goToDetect() {
     var allSymptomsSelected = true;
+    document.getElementById('tongueColorDisplay').style.display = 'block'; // 顯示文字
     // 檢查是否所有症狀按鈕都被選中
     document.querySelectorAll('.item').forEach(function(item) {
         if (item.querySelectorAll('button.active').length < 1) {
@@ -370,7 +378,12 @@ var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bit
     } else {
         alert('請為每個症狀選擇一個強度和接受苦的程度。');
     }
+    
 }
+    function show_color() {
+        document.getElementById('tongueColorDisplay').style.display = 'block'; // 顯示文字
+    }
+
 function toggleButton(buttonId) {
     var currentButton = document.getElementById(buttonId);
     var isActive = currentButton.classList.toggle('active');
@@ -476,6 +489,13 @@ function logoutAndClear() {
     sessionStorage.clear();
     window.location.href = '/accounts/logout/';
 }
+/* window.onload = function() {
+            // 隱藏舌頭顏色的顯示
+            const tongueColorDisplay = document.getElementById('tongueColorDisplay');
+            if (tongueColorDisplay) {
+                tongueColorDisplay.style.display = 'none'; // 隱藏顯示
+            }
+        }; */
 </script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from myapp.models import Purchase,Sale,HerbStock,Customer,SymptomOfQuestion,DailyCounter,ShowResult
+from myapp.models import Purchase,Sale,HerbStock,Customer,SymptomOfQuestion,DailyCounter,ShowResult,TongueColor
 from myapp import models
 from django.http import HttpResponse,JsonResponse,StreamingHttpResponse
 from django.http import HttpResponseRedirect
@@ -105,24 +105,27 @@ options_mapping = {
 
 def question(request):
     id_result = None
+    tongue_color = None  # 初始化舌頭顏色變數
+    tongue_color = TongueColor.objects.values('color').last()
     if request.method == 'POST' and 'confirm_button' in request.POST:  # 新增按下按鈕才能更改資料庫中的數值
         print(request.POST)
         nosleep = options_mapping['nosleep'][request.COOKIES.get('nosleep')]
         semi_darkness = options_mapping['semi_darkness'][request.COOKIES.get('semi_darkness')]
         sneezing = options_mapping['sneezing'][request.COOKIES.get('sneezing')]
         itchiness = options_mapping['itchiness'][request.COOKIES.get('itchiness')]
-           # 獲取胃生氣的選擇
+        
+        # 獲取胃生氣的選擇
         stomach_anger = request.POST.get('stomach_anger', '')
         stomach_anger_choices = stomach_anger.split(', ') if stomach_anger else []
 
-           # 將選擇的值轉換為字符串
+        # 將選擇的值轉換為字符串
         stomach_anger_str = ', '.join(stomach_anger_choices)
-        print("stomach_anger_choices:", stomach_anger_choices)  # 用於調試
-        print("stomach_anger_str:", stomach_anger_str)  # 用於調試
+        print("stomach_anger_choices:", stomach_anger_choices)  
+        print("stomach_anger_str:", stomach_anger_str)  
         menstrual_anguish = options_mapping['menstrual_anguish'][request.COOKIES.get('menstrual_anguish')]
         bitter = request.COOKIES.get('bitter')
+
         # 獲取顧客編號
-        customer_id = None
         if request.user.is_authenticated:
             customer_id = request.user.customer_id
             id_result = customer_id
@@ -150,6 +153,7 @@ def question(request):
             q6=menstrual_anguish
         )
 
+        # 這裡是您原有的邏輯
         if nosleep:
             def get_herbs_result(nosleep, semi_darkness, sneezing, itchiness, stomach_anger, menstrual_anguish):
                 # 準備特徵數據
@@ -181,6 +185,7 @@ def question(request):
 
                 # 返回預測結果
                 return predicted_result[0]
+
             result = get_herbs_result(nosleep, semi_darkness, sneezing, itchiness, stomach_anger, menstrual_anguish)
             print(f"預測結果: {result}")  # 調試信息
 
@@ -309,7 +314,7 @@ def question(request):
             a.save()
             print('show_result:',show_result)
             return redirect('/question/')
-    return render(request, "question.html")
+    return render(request, 'question.html', {'tongue_color': tongue_color})
 
 #--------------------------------------------------歷史紀錄
 
@@ -585,6 +590,10 @@ def salelist_staff(request): #銷售表單(員工)設定
 
 #----------------------------------------辨識舌頭
 def detect_view(request):
+    if request.method == 'POST':
+        tongue_color = run_tongue_detection(request.user)
+        return redirect(f'/question/?tongue_color={tongue_color}&start_detection=true')  # 重定向到 question 視圖
+
     return render(request, 'detect.html')
 
 def start_detection(request):

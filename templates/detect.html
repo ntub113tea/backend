@@ -63,17 +63,17 @@
                 });
             });
 
-            // 新增返回上一頁按鈕的功能
+            // 將返回按鈕改為直接導向問卷頁面
             $('#goBack').click(function() {
-                history.back();
+                window.location.href = '/question/';  // 導向問卷頁面
             });
+
         });
     </script>
 </head>
 <body>
     <h1>舌頭檢測</h1>
     <button id="startDetection">開始檢測</button>
-    <!-- 新增返回上一頁按鈕 -->
-    <button id="goBack">返回上一頁</button>
+    <button id="goBack">返回問卷</button>
 </body>
 </html>

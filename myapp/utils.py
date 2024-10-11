@@ -185,5 +185,4 @@ def run_tongue_detection(user):
 
 def save_color_to_db(color, user):
         customer_id = user.customer_id if user.is_authenticated else '0'
-        # 使用Django ORM存储颜色数据
         TongueColor.objects.create(customer_id=customer_id, color=color)
