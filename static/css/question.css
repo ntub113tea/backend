@@ -33,7 +33,7 @@ button.active {
     margin: 0 auto; /* 水平居中 */
     background-color: #fff;
     border-radius: 10px;
-    padding: 20px;
+    padding: 20px 20px 0 20px;
     text-align: center;
     }
 
@@ -109,5 +109,22 @@ font-size: 30px;
 }
 
 .color {
-    margin-top: 5px;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.lastbtn {
+    background-color: red;
+    color: white;
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 3px 10px 20px 10px;
+}
+
+.sbmbtn {
+    background-color: #18b7fa;
+    color: #ffffff;
+    padding: 15px 30px;
+    font-size: 20px;
+    margin: 3px 10px 20px 10px;
 }
