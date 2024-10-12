@@ -107,6 +107,7 @@ def question(request):
     id_result = None
     tongue_color = None  # 初始化舌頭顏色變數
     tongue_color = TongueColor.objects.values('color').last()
+    tongue_color_value = tongue_color['color'] if tongue_color else 'No color found'
     if request.method == 'POST' and 'confirm_button' in request.POST:  # 新增按下按鈕才能更改資料庫中的數值
         print(request.POST)
         nosleep = options_mapping['nosleep'][request.COOKIES.get('nosleep')]
@@ -314,7 +315,7 @@ def question(request):
             a.save()
             print('show_result:',show_result)
             return redirect('/question/')
-    return render(request, 'question.html', {'tongue_color': tongue_color})
+    return render(request, 'question.html', {'tongue_color': tongue_color_value})
 
 #--------------------------------------------------歷史紀錄
 
