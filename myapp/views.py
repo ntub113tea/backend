@@ -108,6 +108,10 @@ def question(request):
     tongue_color = None  # 初始化舌頭顏色變數
     tongue_color = TongueColor.objects.values('color').last()
     tongue_color_value = tongue_color['color'] if tongue_color else 'No color found'
+    if tongue_color_value == "white":
+        tongue_color_value = "白色"
+    else:
+        tongue_color_value = "粉色"      
     if request.method == 'POST' and 'confirm_button' in request.POST:  # 新增按下按鈕才能更改資料庫中的數值
         print(request.POST)
         nosleep = options_mapping['nosleep'][request.COOKIES.get('nosleep')]
