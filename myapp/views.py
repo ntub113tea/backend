@@ -158,7 +158,7 @@ def question(request):
             q6=menstrual_anguish
         )
 
-        # 這裡是您原有的邏輯
+        
         if nosleep:
             def get_herbs_result(nosleep, semi_darkness, sneezing, itchiness, stomach_anger, menstrual_anguish):
                 # 準備特徵數據
@@ -192,9 +192,9 @@ def question(request):
                 return predicted_result[0]
 
             result = get_herbs_result(nosleep, semi_darkness, sneezing, itchiness, stomach_anger, menstrual_anguish)
-            print(f"預測結果: {result}")  # 調試信息
+            print(f"預測結果: {result}")  
 
-            # 处理结果并输出
+            # 處理結果並輸出
             result = result.strip("[]")
             herbs_list = [herb.strip().strip("'") for herb in result.split(",")]
             if '無' not in stomach_anger_choices:
@@ -217,13 +217,13 @@ def question(request):
                         herbs_list[herbs_list.index('’積雪草 0.25g’' )] = '’積雪草 0.5g’'   # 替換
                     else:
                         herbs_list.append('’積雪草 0.5g’' )  # 新增
-            print(f"解析後的藥材列表: {herbs_list}")  # 调试信息
+            print(f"解析後的藥材列表: {herbs_list}")  
             
             if not herbs_list:
                 print("無法解析藥材列表，請檢查數據格式。")
-                return redirect('/question/')  # 返回有效的 HTTP 響應
+                return redirect('/question/')  
             else:
-                # 将药材剂量转换为浮点数
+                # 將藥材克數轉換為浮點數
                 herbs_dict = {}
                 for herb in herbs_list:
                     match = re.search(r'(.*) (\d+\.?\d*)g', herb)
@@ -233,7 +233,7 @@ def question(request):
                     else:
                         print(f"無法解析藥材: {herb}")
                 
-                # 计算总量并调整剂量
+                # 計算總量並調整克數
                 total_amount = sum(herbs_dict.values())
                 
                 if total_amount == 0:
