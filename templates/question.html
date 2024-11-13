@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <style>
     body {
-            background-color: #F5E8DD; /* 设置整个页面的背景颜色 */
+            background-color: #F5E8DD; /* 背景顏色 */
         }
 </style>
 </head>
@@ -18,12 +18,12 @@
 <body>
     <div class="container-fluid">
         <div class="header row align-items-center">
-            <div class="col-6">
+            <div class="col-12">
                 <a href="/index/">
-                    <img align="left" src="{% static 'images/logo.png' %}" class="img-fluid" alt="Logo" style="height: 90px; width: auto;">
+                    <img align="left" src="{% static 'images/logo.png' %}" class="img-fluid" alt="Logo" style="height: 120px; width: auto;">
                 </a>
             </div>
-            <div class="header-right col-6 text-end"> <!-- 占6列並右對齊的文本 -->
+            <div class="header-right col-6 text-end"> <!-- 占6列並右對齊 -->
                 {% if request.user.is_authenticated %}
                     {% csrf_token %}
                     <p>
@@ -46,9 +46,8 @@
     <h1 class="text-center mt-5">選擇您的症狀</h1>
 
     <div class="container">
-        <!-- 第一行 -->
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="item" id="symptom1">
                     <img src="{% static 'images/睡不好.jpg' %}" alt="Item 1">
                     <div class="title">睡不好</div>
@@ -58,8 +57,8 @@
                     <button onclick="updateStrength('nosleep-btn-4')" id="nosleep-btn-4">無</button>
                 </div>
             </div>
-            
-            <div class="col-md-6">
+    
+            <div class="col-12">
                 <div class="item" id="symptom2">
                     <img src="{% static 'images/半暝還在嗨.jpg' %}" alt="Item 2">
                     <div class="title">半暝還在嗨（入睡時間）</div>
@@ -69,11 +68,8 @@
                     <button onclick="updateStrength('semi_darkness-btn-4')" id="semi_darkness-btn-4">3點以後</button>
                 </div>
             </div>
-        </div>
     
-        <!-- 第二行 -->
-        <div class="row">
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="item" id="symptom3">
                     <img src="{% static 'images/早上哈啾.jpg' %}" alt="Item 3">
                     <div class="title">早上哈啾</div>
@@ -84,7 +80,7 @@
                 </div>
             </div>
     
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="item" id="symptom4">
                     <img src="{% static 'images/癢癢.jpg' %}" alt="Item 4">
                     <div class="title">癢癢</div>
@@ -94,23 +90,19 @@
                     <button onclick="updateStrength('itchiness-btn-4')" id="itchiness-btn-4">無</button>
                 </div>
             </div>
-        </div>
     
-        <!-- 第三行 -->
-        <div class="row">
-            <div class="col-md-6">
-            <div class="item" id="symptom5">
-                <img src="{% static 'images/胃生氣.jpg' %}" alt="Item 5">
-                <div class="title">胃生氣(可複選)</div>
-        
-                <button name="stomach-anger-btn-1" onclick="toggleButton('stomach-anger-btn-1')" id="stomach-anger-btn-1">胃脹氣</button>
-                <button name="stomach-anger-btn-2" onclick="toggleButton('stomach-anger-btn-2')" id="stomach-anger-btn-2">反胃</button>
-                <button name="stomach-anger-btn-3" onclick="toggleButton('stomach-anger-btn-3')" id="stomach-anger-btn-3">胃食道逆流</button>
-                <button name="stomach-anger-btn-4" onclick="toggleButton('stomach-anger-btn-4')" id="stomach-anger-btn-4">無</button>
+            <div class="col-12">
+                <div class="item" id="symptom5">
+                    <img src="{% static 'images/胃生氣.jpg' %}" alt="Item 5">
+                    <div class="title">胃生氣(可複選)</div>
+                    <button name="stomach-anger-btn-1" onclick="toggleButton('stomach-anger-btn-1')" id="stomach-anger-btn-1">胃脹氣</button>
+                    <button name="stomach-anger-btn-2" onclick="toggleButton('stomach-anger-btn-2')" id="stomach-anger-btn-2">反胃</button>
+                    <button name="stomach-anger-btn-3" onclick="toggleButton('stomach-anger-btn-3')" id="stomach-anger-btn-3">胃食道逆流</button>
+                    <button name="stomach-anger-btn-4" onclick="toggleButton('stomach-anger-btn-4')" id="stomach-anger-btn-4">無</button>
                 </div>
             </div>
     
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="item" id="symptom6">
                     <img src="{% static 'images/生理期.jpg' %}" alt="Item 6">
                     <div class="title">厭世生理期</div>
@@ -120,22 +112,20 @@
                     <button onclick="updateStrength('menstrual_anguish-btn-4')" id="menstrual_anguish-btn-4">無生理期</button>
                 </div>
             </div>
-        </div>
-     <!-- 第四行 -->
-     <div class="row">
-        <div class="col-md-12 bitter" style="text-align: center;"> <!-- 在較小屏幕上顯示為單列 -->
-            <div class="item" id="symptom7">
-                <div class="title">接受苦的程度</div>
-                <button onclick="updateStrength('bitterness-btn-yes')" id="bitterness-btn-yes" name="bitter-btn" value="bitterness-btn-yes">可以</button>
-                <button onclick="updateStrength('bitterness-btn-no')" id="bitterness-btn-no" name="bitter-btn" value="bitterness-btn-no">不行</button>
-                <div class="color">
-                    <h2 id="tongueColorDisplay" style="display: none;">最近檢測的舌頭顏色：{{ tongue_color }}</h2>
-                    
+    
+            <div class="col-12">
+                <div class="item" id="symptom7">
+                    <div class="title">接受苦的程度</div>
+                    <button onclick="updateStrength('bitterness-btn-yes')" id="bitterness-btn-yes" name="bitter-btn" value="bitterness-btn-yes">可以</button>
+                    <button onclick="updateStrength('bitterness-btn-no')" id="bitterness-btn-no" name="bitter-btn" value="bitterness-btn-no">不行</button>
+                    <div class="color">
+                        <h2 id="tongueColorDisplay" style="display: none;">最近檢測的舌頭顏色：{{ tongue_color }}</h2>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+        
     
         <!-- 確認按鈕 -->
         <div style="display: flex; justify-content: center; flex-direction: column; margin-top: 20px; align-items: center">
@@ -155,6 +145,8 @@
     
 
 <script>
+    
+
 document.querySelector('form[name="question"]').addEventListener('submit', function(event) {
     var allSymptomsSelected = true;
     var isAuthenticated = "{{ request.user.is_authenticated }}";
@@ -276,9 +268,24 @@ var nosleep,semi_darkness,sneezing,itchiness,stomach_anger,menstrual_anguish,bit
                 break;
             
         }
-        
+        var currentButton = document.getElementById(buttonId);
+        var parentItem = currentButton.closest('.item');
+        // Find the next symptom item (next question block)
+    var nextItem = parentItem.nextElementSibling;
+    
+    // Scroll to the next question smoothly if it exists
+    if (nextItem && nextItem.classList.contains('item')) {
+        nextItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Existing logic to mark button as active
+    var buttons = parentItem.querySelectorAll('button');
+    buttons.forEach(function(button) {
+        button.classList.remove('active');
+    });
+    currentButton.classList.add('active');
         var expirationDate = new Date();
-        expirationDate.setTime(expirationDate.getTime() + 600000); // 设置为当前时间的600秒後
+        expirationDate.setTime(expirationDate.getTime() + 600000); // 設置為當前時間的600秒後
 
         // 將過期時間轉換為 UTC 格式的字符串
         var expiresUTC = expirationDate.toUTCString();
