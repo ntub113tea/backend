@@ -145,7 +145,42 @@
     
 
 <script>
-    
+    function updateStrength(buttonId) {
+    // Set the selected button to "active" and update the symptom state
+    var currentButton = document.getElementById(buttonId);
+    var parentItem = currentButton.closest('.item');
+
+    // Clear 'active' class from all buttons in the current question
+    var buttons = parentItem.querySelectorAll('button');
+    buttons.forEach(function(button) {
+        button.classList.remove('active');
+    });
+    // Add 'active' class to the clicked button
+    currentButton.classList.add('active');
+
+    // Find the next question item
+    var nextItem = parentItem.nextElementSibling;
+    console.log[nextItem]
+    // Scroll smoothly to the next question if it exists
+    if (nextItem || nextItem.classList.contains('item')) {
+        nextItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Update state variables as before (sample case)
+    //switch (buttonId) {
+     //   case 'nosleep-btn-1':
+           // nosleep = 1;
+           // break;
+       // case 'nosleep-btn-2':
+          //  nosleep = 2;
+         //   break;
+        // Continue for other cases as needed...
+   // }
+
+    // Example: Store the selected symptom in sessionStorage if needed
+    //sessionStorage.setItem('nosleep', nosleep);
+}
+
 
 document.querySelector('form[name="question"]').addEventListener('submit', function(event) {
     var allSymptomsSelected = true;
