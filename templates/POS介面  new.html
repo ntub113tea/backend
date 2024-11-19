@@ -75,14 +75,15 @@
             <h2>已點餐點：</h2>
             <ul id="productList"></ul>
             <!-- 確認訂單 -->
-            <button onclick="sendOrdersToDjango()">確認訂單</button>
+            <button onclick="sendOrdersToDjango(); displayOrder();">確認訂單</button>
         </div>
     </div>
     <!-- 顯示未出餐的容器 -->
     <div class="orderContainer" style="display: inline-block;">
         <div class="orderbox">
             <h2>未出餐點：</h2>
-            <ul id="productList"></ul>
+            <ul id="orderList"></ul>
+            <button onclick="deleteSelectedOrders(); ">已完成</button>
         </div>
     </div>
 </div>
@@ -307,7 +308,9 @@
         item.parentNode.remove();  // 從 UI 中刪除對應的訂單項目
     }
     
+    
     function sendOrdersToDjango() {
+        completeOrder = [...orders];
         fetch('/pos/', {
             method: 'POST',
             headers: {
@@ -319,19 +322,64 @@
         .then(response => response.json())
         .then(data => {
             alert(data.message);  // 可以根據後端返回的訊息進行不同的提示
+            
             // 清空 orders 陣列
             orders = [];
             // 清空 UI 中的訂單列表
             document.getElementById('productList').innerHTML = '';
             // 隱藏結果容器
-            document.querySelector('.resultContainer').style.display = 'none';
-            if (data.refresh) {
-                // 如果包含重整的指示，則重新整理網頁
-                window.location.reload();
-            }
+            //document.querySelector('.resultContainer').style.display = 'none';
+            // if (data.refresh) {
+            //     // 如果包含重整的指示，則重新整理網頁
+            //     window.location.reload();
+            // }
         })
         .catch(error => console.error('Error submitting order:', error));
+        
     }
+    
+    
+    function displayOrder() {
+        
+        const orderListElement = document.getElementById("orderList");
+
+            // 用來顯示訂單的 HTML
+            let htmlContent = "";
+
+            // 遍歷 completeOrder 陣列並生成 HTML
+            completeOrder.forEach((order, index) => {
+                htmlContent += `
+                    <p>
+                        症狀: ${order.symptom}
+                        甜度: ${order.sweetness}
+                        冰塊: ${order.ice}
+                        數量: ${order.quantity}
+                    </p>
+                    <input type="checkbox" class="orderCheckbox" data-index="${index}">
+                `;
+            });
+
+            // 插入生成的 HTML 到頁面中
+            orderListElement.innerHTML = htmlContent;
+            console.log(htmlContent);
+    }
+    // 刪除勾選的訂單內容
+    function deleteSelectedOrders() {
+            // 取得所有勾選的 checkbox
+            const checkboxes = document.querySelectorAll(".orderCheckbox:checked");
+
+            // 遍歷每個勾選的 checkbox
+            checkboxes.forEach(checkbox => {
+                // 獲取該 checkbox 對應的訂單索引
+                const index = checkbox.getAttribute("data-index");
+
+                // 刪除對應的訂單
+                completeOrder.splice(index, 1);
+            });
+
+            // 重新顯示更新後的訂單內容
+            displayOrder();
+        }
 
     
 </script>
