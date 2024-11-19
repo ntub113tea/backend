@@ -29,7 +29,7 @@
 
     <!-- 症狀選擇 -->
     <div class="container">
-        <h1>選擇飲品</h1>
+        <div class="option-title">選擇飲品</div>
         <div class="row">
             <a class="item" id="symptom1" onclick="selectSymptom('symptom1')">星夜寧靜</a>
             <a class="item" id="symptom2" onclick="selectSymptom('symptom2')">宵福調和</a>
@@ -70,12 +70,19 @@
     </div>
 
     <!-- 顯示選擇結果的容器 -->
-    <div class="resultContainer" style="display: none;">
+    <div class="resultContainer" style="display: inline-block;">
         <div class="resultbox">
             <h2>已點餐點：</h2>
             <ul id="productList"></ul>
             <!-- 確認訂單 -->
             <button onclick="sendOrdersToDjango()">確認訂單</button>
+        </div>
+    </div>
+    <!-- 顯示未出餐的容器 -->
+    <div class="orderContainer" style="display: inline-block;">
+        <div class="orderbox">
+            <h2>未出餐點：</h2>
+            <ul id="productList"></ul>
         </div>
     </div>
 </div>
@@ -281,7 +288,7 @@
         document.body.prepend(li)
         li.after(ul)
         //刪除鍵
-        li.insertAdjacentHTML('beforeend',`<button onclick="removeItem(this)">刪除</button>`)
+        li.insertAdjacentHTML('beforeend',`<br><button onclick="removeItem(this)">刪除</button>`)
 
 
         document.getElementById('productList').appendChild(li);
@@ -299,7 +306,7 @@
         orders.splice(index, 1);  // 從 orders 陣列中刪除對應索引的訂單資料
         item.parentNode.remove();  // 從 UI 中刪除對應的訂單項目
     }
-
+    
     function sendOrdersToDjango() {
         fetch('/pos/', {
             method: 'POST',
