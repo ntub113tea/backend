@@ -21,7 +21,7 @@ body{
 .container {
     display: inline-block;
     margin: 50px;
-    max-width: 80%;
+    max-width: 50vw;
     background-color: #fff;
     border-radius: 10px;
     padding: 40px;
@@ -250,7 +250,15 @@ button { /*加入購物車 確認訂單*/
     border-radius: 10px;
 }
 
-.sweetnessOptions {
+.sweetnessOptions  {
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.row {
     display: flex;
     flex-wrap: nowrap;
     white-space: nowrap;
@@ -262,10 +270,10 @@ button { /*加入購物車 確認訂單*/
     padding: 5px 5px;
     background-color: white;
     border-radius: 25px;
-    margin-left: 0px;
     position: absolute;
-    width: 25vw;
-    left: 10px;
+    max-width: 20vw;
+    margin-right: 10px;
+    left: 1%;
     top:70%;
     display: flex;
     flex-direction: column;
@@ -288,3 +296,116 @@ button { /*加入購物車 確認訂單*/
 #productList {
     list-style: none;
 }
+
+/* 響應式設計 */
+
+/* 手機裝置 */
+@media (max-width: 768px) {
+    .item {
+      width: 100%;
+      max-width: 180px;
+      margin: 10px auto;
+    }
+  
+    .option {
+      width: 100%;
+      max-width: 180px;
+      margin: 10px auto;
+    }
+  
+    .resultContainer,
+    .orderContainer,
+    .lowInventoryList {
+      width: 90%;
+      max-width: 300px;
+      margin: 10px auto;
+    }
+  
+    .option-title {
+      font-size: 24px;
+    }
+  
+    .submitButton {
+      font-size: 18px;
+    }
+  }
+  
+  /* 平板裝置 */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .main {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    
+    body{
+        background:red;
+      }
+  
+    .container {
+      width: 60%;
+    }
+
+    .item {
+        font-size: 18px;
+    }
+
+    .option {
+        font-size: 18px;
+    }
+    
+    .option-title {
+        font-size: 25px;
+    }
+  
+    .resultContainer,
+    .orderContainer {
+      width: 20%;
+    }
+  
+    .lowInventoryList {
+      width: 20%;
+    }
+
+    .show_result {
+        width: 20%;
+
+    }
+
+    .sweetnessOptions {
+        flex-wrap: wrap;
+    }
+    
+  }
+  
+  /* 桌面裝置 */
+  @media (min-width: 1024px) {
+    .main {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  
+    .container {
+      width: 90%;
+    }
+  
+    .resultContainer,
+    .orderContainer {
+        width: 20vw;
+        height: 45vh;
+    }
+  
+    .lowInventoryList {
+      position: absolute;
+      left: 1%;
+      top: 30%;
+    }
+  
+    .show_result {
+      position: absolute;
+      left: 1%;
+      bottom: 5%;
+      margin-right: 1%;
+      width: 30%;
+    }
+  }
