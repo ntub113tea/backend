@@ -7,20 +7,23 @@ body{
     text-align: center;
     display: flex;
     justify-content: center;
+    flex-direction: column; /* 改為列方向佈局 */
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* 確保高度至少等於視窗高度 */
+    overflow-y: auto; /* 允許滾動，避免內容溢出 */
 }
 
 .main {
     display: flex;
     align-items: center;
     justify-content: center;
+    
 }
 
 
 .container {
     display: inline-block;
-    margin: 50px;
+    margin: 0 auto;
     max-width: 50vw;
     background-color: #fff;
     border-radius: 10px;
@@ -85,15 +88,15 @@ hr {
 
 .option {
     display: inline-block;
-    margin: 10px;
+    margin: 5px;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border-radius: 10px;
     background-color: #fff;
     color: #333;
     border: 1px solid #ccc;
     transition: background-color 0.3s ease;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .productQuantityInput{
@@ -106,7 +109,8 @@ hr {
     color: #333;
     border: 1px solid #ccc;
     transition: background-color 0.3s ease;
-    font-size: 25px;
+    font-size: 20px;
+    
 }
 
 .submitButton{
@@ -119,7 +123,7 @@ hr {
     color: #333;
     border: 1px solid #ccc;
     transition: background-color 0.3s ease;
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .option.selected {
@@ -181,8 +185,8 @@ button { /*加入購物車 確認訂單*/
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* 垂直方向溢出時顯示滾動條 */
     width: 25vw;
-    height: 45vh;
-    max-height: 49vh; 
+    height: 40vh;
+    max-height: 40vh; 
     border: 1px solid #ddd;
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
@@ -207,7 +211,7 @@ button { /*加入購物車 確認訂單*/
     border-radius: 10px;
 }
 
-.orderbox { /*購物車內區塊*/
+.orderbox { 
     max-width: 100%;
     text-align: center;
     width: 100%;
@@ -224,8 +228,8 @@ button { /*加入購物車 確認訂單*/
     overflow-y: auto; /* 垂直方向溢出時顯示滾動條 */
     scrollbar-gutter: stable;
     width: 25vw;
-    height: 48vh;
-    max-height: 49vh; 
+    height: 40vh;
+    max-height: 40vh; 
     border: 1px solid #ddd;
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
@@ -268,8 +272,7 @@ button { /*加入購物車 確認訂單*/
 
 .show_result {
     padding: 5px 5px;
-    background-color: white;
-    border-radius: 25px;
+    
     position: absolute;
     max-width: 20vw;
     margin-right: 10px;
@@ -280,12 +283,22 @@ button { /*加入購物車 確認訂單*/
     justify-content: space-around;
     align-items: center;
     font-size: 20px;
+    /* 關鍵部分 */
+    height: auto;          /* 高度自適應內容 */
+    min-height: 50px;      /* 設置一個最小高度（可選） */
+    overflow: visible;     /* 確保不截斷溢出文字 */
+    word-wrap: break-word; /* 長單詞自動換行 */
+    white-space: normal;   /* 避免文字不換行 */
 }
 
 
 
 #result {
+    background-color: white;
+    border-radius: 25px;
     text-align: left;
+    overflow: visible;  
+    height: auto;       
 }
 
 #result p {
@@ -386,7 +399,11 @@ button { /*加入購物車 確認訂單*/
     }
   
     .container {
-      width: 90%;
+      width: 80%;
+    }
+
+    .option-title {
+        font-size: 28px;
     }
   
     .resultContainer,

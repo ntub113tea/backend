@@ -130,7 +130,14 @@
             url: '/pos/',
             method: 'POST',
             success: function(data) {
-                $('#result').text(data.value);
+                // 更新結果並處理高度
+            $('#result').text(data.value);
+
+            // 確保容器的高度會自動調整
+            $('#result').css({
+                'height': 'auto',         // 讓高度隨內容變動
+                'overflow': 'visible'     // 讓溢出部分不被隱藏
+            });
             },
             error: function(error) {
                 console.log("Error:", error);
@@ -380,6 +387,14 @@
             // 重新顯示更新後的訂單內容
             displayOrder();
         }
+    document.addEventListener('scroll', () => {
+        const scrollY = window.scrollY; // 滾動條的垂直位置
+        const viewportHeight = window.innerHeight; // 獲取視窗高度
+
+        const orderContainer = document.querySelector('.orderContainer');
+        document.querySelector('.resultContainer').style.top = `${scrollY + 10}px`; // 固定距離
+        orderContainer.style.top = `${scrollY + viewportHeight - orderContainer.offsetHeight - 10}px`;
+        });
 
     
 </script>
