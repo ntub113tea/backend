@@ -1,33 +1,35 @@
-body {
-    font-family: '微軟正黑體', Arial, sans-serif;
+@import url(https://fonts.googleapis.com/earlyaccess/cwtexyen.css);
+body{
+  font-family: ‘cwTeXYen’, sans-serif;
     background-color: #F5E8DD;
     margin: 0;
     padding: 0;
     text-align: center;
     display: flex;
     justify-content: center;
+    flex-direction: column; /* 改為列方向佈局 */
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* 確保高度至少等於視窗高度 */
+    overflow-y: auto; /* 允許滾動，避免內容溢出 */
 }
 
 .main {
-    
     display: flex;
     align-items: center;
     justify-content: center;
+    
 }
 
 
 .container {
     display: inline-block;
-    margin: 50px;
-    max-width: 80%;
+    margin: 0 auto;
+    max-width: 50vw;
     background-color: #fff;
     border-radius: 10px;
     padding: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin-top: 50px;
     overflow: hidden;
 }
 
@@ -36,17 +38,22 @@ h1 {
     margin-bottom: 20px;
 }
 
+hr {
+    margin: 20px;
+}
+
 .item {
     display: inline-block;
-    margin: 10px;
+    margin: 5px;
+    padding: 10px;
     cursor: pointer;
     width: calc(30% - 20px);
     text-align: center;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 30px;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    
+    font-size: 25px;
 }
 
 .item:hover {
@@ -55,20 +62,13 @@ h1 {
     background-color: #007bff; /* 鼠標懸停時的背景顏色 */
 }
 
-
-
-
 .item img {
     width: 100%;
     height: auto;
     border-bottom: 2px solid #ccc;
 }
 
-.item .title {
-    margin: 10px 0;
-    font-size: 18px;
-    color: #333;
-}
+
 
 .item.selected {
     background-color: #007bff; /* 已選中的項目背景顏色 */
@@ -76,25 +76,54 @@ h1 {
 }
 
 .option-group {
-    margin-bottom: 20px;
+    margin: 20px;
     text-align: center;
 }
 
 .option-title {
     font-weight: bold;
     margin-bottom: 10px;
+    font-size: 40px;
 }
 
 .option {
     display: inline-block;
-    margin: 10px;
+    margin: 5px;
     cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 5px 10px;
+    border-radius: 10px;
     background-color: #fff;
     color: #333;
     border: 1px solid #ccc;
     transition: background-color 0.3s ease;
+    font-size: 20px;
+}
+
+.productQuantityInput{
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+    
+}
+
+.submitButton{
+    display: inline-block;
+    margin: 10px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease;
+    font-size: 20px;
 }
 
 .option.selected {
@@ -137,56 +166,263 @@ button { /*加入購物車 確認訂單*/
     color: #333;
     border: 1px solid #ccc;
     transition: background-color 0.3s ease;
+    font-size: 20px;
 }
 
 .resultbox { /*購物車內區塊*/
-    margin: 10px;
     max-width: 100%;
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    margin-top: 50px;
-    float: left;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
 }
 .resultContainer {
     position: absolute;
-    right: 4px;
-    margin-right: auto;
-    margin-left: auto;
+    right: 10px;
+    top:1%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow-y: auto; /* 垂直方向溢出時顯示滾動條 */
-    max-height: calc(100vh - 100px); /* 限制容器的最大高度，這樣當內容超出一定高度時就會顯示滾動條 */
-    /* 其他樣式屬性 */
+    width: 25vw;
+    height: 40vh;
+    max-height: 40vh; 
+    border: 1px solid #ddd;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
 }
 
-.sweetnessOptions {
+/* WebKit 滾動條樣式 */
+.resultContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.resultContainer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.resultContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.resultContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.orderbox { 
+    max-width: 100%;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+}
+.orderContainer {
+    position: absolute;
+    right: 10px;
+    bottom:1%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* 垂直方向溢出時顯示滾動條 */
+    scrollbar-gutter: stable;
+    width: 25vw;
+    height: 40vh;
+    max-height: 40vh; 
+    border: 1px solid #ddd;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+/* WebKit 滾動條樣式 */
+.orderContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.orderContainer::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.orderContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.orderContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.sweetnessOptions  {
     display: flex;
     flex-wrap: nowrap;
     white-space: nowrap;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .show_result {
     padding: 5px 5px;
-    background-color: white;
-    border-radius: 25px;
-    margin-left: 0px;
+    
     position: absolute;
-    width: 450px;
-    left: 10px;
+    max-width: 20vw;
+    margin-right: 10px;
+    left: 1%;
     top:70%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    font-size: 20px;
+    /* 關鍵部分 */
+    height: auto;          /* 高度自適應內容 */
+    min-height: 50px;      /* 設置一個最小高度（可選） */
+    overflow: visible;     /* 確保不截斷溢出文字 */
+    word-wrap: break-word; /* 長單詞自動換行 */
+    white-space: normal;   /* 避免文字不換行 */
 }
 
+
+
 #result {
+    background-color: white;
+    border-radius: 25px;
     text-align: left;
+    overflow: visible;  
+    height: auto;       
 }
 
 #result p {
     margin:0;
     padding: 5px;
 }
+
+#productList {
+    list-style: none;
+}
+
+/* 響應式設計 */
+
+/* 手機裝置 */
+@media (max-width: 768px) {
+    .item {
+      width: 100%;
+      max-width: 180px;
+      margin: 10px auto;
+    }
+  
+    .option {
+      width: 100%;
+      max-width: 180px;
+      margin: 10px auto;
+    }
+  
+    .resultContainer,
+    .orderContainer,
+    .lowInventoryList {
+      width: 90%;
+      max-width: 300px;
+      margin: 10px auto;
+    }
+  
+    .option-title {
+      font-size: 24px;
+    }
+  
+    .submitButton {
+      font-size: 18px;
+    }
+  }
+  
+  /* 平板裝置 */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .main {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    
+    body{
+        background:red;
+      }
+  
+    .container {
+      width: 60%;
+    }
+
+    .item {
+        font-size: 18px;
+    }
+
+    .option {
+        font-size: 18px;
+    }
+    
+    .option-title {
+        font-size: 25px;
+    }
+  
+    .resultContainer,
+    .orderContainer {
+      width: 20%;
+    }
+  
+    .lowInventoryList {
+      width: 20%;
+    }
+
+    .show_result {
+        width: 20%;
+
+    }
+
+    .sweetnessOptions {
+        flex-wrap: wrap;
+    }
+    
+  }
+  
+  /* 桌面裝置 */
+  @media (min-width: 1024px) {
+    .main {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  
+    .container {
+      width: 80%;
+    }
+
+    .option-title {
+        font-size: 28px;
+    }
+  
+    .resultContainer,
+    .orderContainer {
+        width: 20vw;
+        height: 45vh;
+    }
+  
+    .lowInventoryList {
+      position: absolute;
+      left: 1%;
+      top: 30%;
+    }
+  
+    .show_result {
+      position: absolute;
+      left: 1%;
+      bottom: 5%;
+      margin-right: 1%;
+      width: 30%;
+    }
+  }
