@@ -8,19 +8,20 @@ body {
 }
 .header {
     display: flex;
-    justify-content: space-between; /* 左右两侧 */
-    align-items: center; /* 垂直居中，视情况选择 */
-    padding: 10px; /* 容器的内边距，可根据需求调整 */
+    justify-content: space-between; /* 左右兩側 */
+    align-items: center; /* 垂直居中， */
+    padding: 10px; /* 容器的內邊距 */
     background-color: #EED3D9;
     color: #0b0b0b;
     text-align: center;
     font-size: 15px;
 }
 
-.header-right {
+.header-right { /* 登入註冊那段話 */
     position: absolute;
     right: 10px;
     font-size: 20px;
+    height: 80px; /* 設定固定高度 */
 }
 
 button.active {
@@ -29,7 +30,7 @@ button.active {
 }
 
 .container {
-    max-width: 800px; /* 设置容器最大宽度 */
+    max-width: 800px; /* 寬度 */
     margin: 0 auto; /* 水平居中 */
     background-color: #fff;
     border-radius: 10px;
@@ -60,39 +61,44 @@ a:hover {
 }
 
 .item {
+    padding: 40px;
     display: block;
     text-decoration: none;
-    margin-bottom: 20px;
-    flex: 0 0 calc(50% - 20px); /* 將每個.item設置為彈性項目，使其佔據一行中的一半寬度 */
-    margin-right: 20px; /* 添加右邊距以分隔每個項目 */
+    margin-bottom: 50px;
+    flex: 0 0 calc(50% - 20px); /* 將.item設置為彈性項目 佔據一行中的一半寬度 */
+    margin-right: 20px; /* 添加右邊距分隔每個項目 */
 }
 
 
 
 .item img {    /*圖片*/
+    width: 100%;
     height: 300px; /* 固定高度 */
     width: auto; /* 圖片寬度自動 */
+    max-height: 500px;
+    margin-bottom: 50px;
+    
 }
 
 .title {  /*症狀字*/
     text-align: center;
-    margin-top: 10px;
+    margin-top: 20px;
     font-weight: bold;
-    font-size: 30px; /* 修改這裡的字體大小 */
+    font-size: 36px; /* 字體大小 */
 }
 
 button { /*按鈕*/
-    margin: 0 5px;
-    padding: 10px 20px;
+    padding: 20px 50px;/* 按鈕高度 長度 */
     border: none;
     cursor: pointer;
-    background-color: #f0f0f0; /* 按鈕的預設背景顏色 */
-    border-radius: 5px;
-    font-size: 18px;
+    background-color: #f0f0f0; /* 按鈕的背景顏色 */
+    border-radius: 15px;
+    font-size: 25px;
+    
 }
 
 button.active {
-    background-color: #007bff !important; /* 選中按鈕的背景顏色 */
+    background-color: #007bff !important; /* 按鈕背景顏色 */
     color: #fff;
 }
 
@@ -128,3 +134,55 @@ font-size: 30px;
     font-size: 20px;
     margin: 3px 10px 20px 10px;
 }
+/* 小型螢幕 (如手機) */
+@media (max-width: 600px) {
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 5px; /* 縮小 */
+    }
+    .header img { /* LOGO */
+        max-width: 50%; /* LOGO 寬度 */
+        
+        height: auto; 
+    }
+    .item button { /* 按鈕*/
+        width: 100%; /* 寬度 */
+        margin: 5px 0; /* 上下間距 */
+        font-size: 16px; /* 字體大小 */
+    }
+    .row {
+        display: flex;
+        flex-direction: column; /* 垂直 */
+        gap: 10px; /* 按鈕間距 */
+        align-items: center;
+    }
+
+}
+
+.next-button {
+    background-color: #00ff08;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 15px auto;
+    display: block;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.next-button:hover {
+    background-color: #18b7fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.next-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
