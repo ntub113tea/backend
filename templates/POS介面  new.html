@@ -31,14 +31,14 @@
     <div class="container">
         <div class="option-title">選擇飲品</div>
         <div class="row">
-            <a class="item" id="symptom1" onclick="selectSymptom('symptom1')">星夜寧靜</a>
-            <a class="item" id="symptom2" onclick="selectSymptom('symptom2')">宵福調和</a>
-            <a class="item" id="symptom3" onclick="selectSymptom('symptom3')">鼻福寧茶</a>
+            <a class="item" id="symptom1" onclick="selectSymptom('symptom1')">星夜寧靜 $50</a>
+            <a class="item" id="symptom2" onclick="selectSymptom('symptom2')">宵福調和 $50</a>
+            <a class="item" id="symptom3" onclick="selectSymptom('symptom3')">鼻福寧茶 $50</a>
         </div>
         <div class="row">
-            <a class="item" id="symptom4" onclick="selectSymptom('symptom4')">悅膚寧茶</a>
-            <a class="item" id="symptom5" onclick="selectSymptom('symptom5')">慰胃來茶</a>
-            <a class="item" id="symptom6" onclick="selectSymptom('symptom6')">月悅茶</a>
+            <a class="item" id="symptom4" onclick="selectSymptom('symptom4')">悅膚寧茶 $60</a>
+            <a class="item" id="symptom5" onclick="selectSymptom('symptom5')">慰胃來茶 $60</a>
+            <a class="item" id="symptom6" onclick="selectSymptom('symptom6')">月悅茶 $60</a>
         </div>
         <hr>
         <!-- 甜度選擇 -->
@@ -75,7 +75,11 @@
             <h2>已點餐點：</h2>
             <ul id="productList"></ul>
             <!-- 確認訂單 -->
-            <button onclick="sendOrdersToDjango(); displayOrder();">確認訂單</button>
+            <div class="footer">
+                <div id="totalAmount">總金額：$0</div>
+                <button onclick="sendOrdersToDjango(); displayOrder();" id="confirmOrderButton">確認訂單</button>
+            </div>
+            <!-- <button onclick="sendOrdersToDjango(); displayOrder();">確認訂單</button> -->
         </div>
     </div>
     <!-- 顯示未出餐的容器 -->
@@ -241,6 +245,15 @@
         return selectedOption;
     }
 
+    const productPrices = {
+        "星夜寧靜": 50,
+        "宵福調和": 50,
+        "鼻福寧茶": 50,
+        "悅膚寧茶": 60,
+        "慰胃來茶": 60,
+        "月悅茶": 60
+    };
+    let totalAmount = 0;  // 儲存總金額
 
     let orders = [];  // 儲存訂單的陣列
     // 用戶點擊確定按鈕時被調用
@@ -265,7 +278,8 @@
             return;
         }
 
-        const selectedSymptom = selectedSymptomElement.textContent.trim();
+        const selectedSymptom = selectedSymptomElement.textContent.slice(0,-4);
+        
         const productQuantity = document.querySelector('.productQuantityInput').value.trim();
 
         // 檢查產品數量是否為空或負數。
@@ -278,41 +292,60 @@
             return;
         }
 
+        // 計算商品金額
+        const productPrice = productPrices[selectedSymptom] || 0; // 獲取該飲品的價格
+        const orderAmount = productPrice * productQuantity;  // 單筆訂單金額
+        totalAmount += orderAmount;  // 累加至總金額
+
         // 將訂單資料儲存為物件
         const order = {
             symptom: selectedSymptom,
             sweetness: selectedSweetness,
             ice: selectedIce,
-            quantity: productQuantity
+            quantity: productQuantity,
+            amount: orderAmount
         };
 
         // 將訂單物件推送到 orders 陣列中
         orders.push(order);
 
-        // 建立新的 li 元素來顯示使用者選擇的產品訊息
+        // 顯示使用者選擇的結果
         const li = document.createElement('li');
-        const ul = document.createElement('u1');
-        li.textContent = `${selectedSymptom}，甜度：${selectedSweetness}，冰塊：${selectedIce}，數量：${productQuantity}`;
-        document.body.prepend(li)
-        li.after(ul)
-        //刪除鍵
-        li.insertAdjacentHTML('beforeend',`<br><button onclick="removeItem(this)">刪除</button>`)
+        li.innerHTML = `
+            ${selectedSymptom}，甜度：${selectedSweetness}，冰塊：${selectedIce}，數量：${productQuantity}，金額：$${orderAmount}
+            <br><button onclick="removeItem(this)">刪除</button>
+        `;
 
 
         document.getElementById('productList').appendChild(li);
 
-        // 清空输入框中的值
-        document.querySelector('.productQuantityInput').value = '';
+       
 
-        // 顯示使用者選擇的結果
-        document.querySelector('.resultContainer').style.display = 'inline-block';
+        // 更新總金額顯示
+        const totalAmountElement = document.getElementById('totalAmount');
+        if (!totalAmountElement) {
+            const totalAmountDiv = document.createElement('div');
+            totalAmountDiv.id = 'totalAmount';
+            totalAmountDiv.textContent = `總金額：$${totalAmount}`;
+            document.querySelector('.resultContainer').appendChild(totalAmountDiv);
+        } else {
+            totalAmountElement.textContent = `總金額：$${totalAmount}`;
         }
+
+        // 數量輸入格的初始值
+        document.querySelector('.productQuantityInput').value = '1'; 
+    }
 
     // 刪除項目
     function removeItem(item) {
-        const index = item.parentNode.index;
+        const index = Array.from(item.parentNode.parentNode.children).indexOf(item.parentNode);
+        const order = orders[index];
+        totalAmount -= order.amount;  // 減去該筆金額
         orders.splice(index, 1);  // 從 orders 陣列中刪除對應索引的訂單資料
         item.parentNode.remove();  // 從 UI 中刪除對應的訂單項目
+        
+        // 更新總金額顯示
+        document.getElementById('totalAmount').textContent = `總金額：$${totalAmount}`;
     }
     
     
@@ -334,6 +367,7 @@
             orders = [];
             // 清空 UI 中的訂單列表
             document.getElementById('productList').innerHTML = '';
+            document.getElementById('totalAmount').textContent = `總金額：$0`;
             // 隱藏結果容器
             //document.querySelector('.resultContainer').style.display = 'none';
             // if (data.refresh) {
