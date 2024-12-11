@@ -1,4 +1,3 @@
-/* 重置默認的邊距和填充 */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -8,19 +7,19 @@ body {
 }
 h1 {
     margin: 0 auto;
-    padding: 20px 5%; /* 頁面添加上下各 20px，左右各 30px 的邊距 */
+    padding: 20px 5%;
     text-align: center;
 }
 
 /* 美化表頭 */
 th {
-    background-color: #EED3D9; /* 背景顏色 */
-    padding: 10px; /* 填充 */
+    background-color: #EED3D9;
+    padding: 10px;
 }
 
 /* 美化表格單元格 */
 td {
-    padding: 10px; /* 填充 */
+    padding: 10px;
 }
 
 /* 在表格行之間添加一些間距 */
@@ -45,9 +44,9 @@ td, th { /*格字框*/
 
 .header {
     display: flex;
-    justify-content: space-between; /* 左右两侧 */
-    align-items: center; /* 垂直居中，视情况选择 */
-    padding: 10px; /* 容器的内边距，可根据需求调整 */
+    justify-content: space-between; /* 左右兩側 */
+    align-items: center; /* 垂直居中 */
+    padding: 10px;
     background-color: #EED3D9;
     color: #0b0b0b;
     text-align: center;
